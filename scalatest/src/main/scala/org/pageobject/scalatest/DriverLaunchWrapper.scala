@@ -20,7 +20,6 @@ import org.pageobject.core.driver.DefaultDriverFactoryList
 import org.pageobject.core.driver.DriverFactories
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
-import org.pageobject.core.driver.RunWithDrivers
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.scalatest.Args
 import org.scalatest.DoNotDiscover
@@ -29,7 +28,6 @@ import org.scalatest.ParallelTestExecution
 import org.scalatest.Status
 import org.scalatest.Suite
 import org.scalatest.Suites
-import org.scalatest.tools.AnnotationHelper
 
 /**
  * Helper Object to get the corresponding DriverFactories
@@ -38,7 +36,6 @@ object DriverLaunchWrapper {
   def getDriverFactories(clazz: Class[_]): DriverFactories = {
     sys.env.get("RUN_WITH_DRIVERS")
       .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
-      .orElse(AnnotationHelper.find(classOf[RunWithDrivers], clazz).map(_.value()))
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
         case None | Some("0") | Some("false") => Some(classOf[DefaultDriverFactoryList])
         case Some(_) => None
