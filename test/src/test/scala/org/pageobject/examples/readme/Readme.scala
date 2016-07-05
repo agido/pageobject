@@ -17,12 +17,12 @@ package org.pageobject.examples.readme
 
 import org.pageobject.core.JettySuite.JettyPage
 import org.pageobject.core.page.PageModule
-import org.pageobject.examples.ExamplePageObjectSpec
+import org.pageobject.examples.ExampleJettyPageObjectSpec
 
 /**
  * The is a PageObjectSuite for the ReadmePage example.
  */
-class Readme extends ExamplePageObjectSpec {
+class Readme extends ExampleJettyPageObjectSpec {
 
   /**
    * ReadmePage is a PageObject because JettyPage extends PageObject.

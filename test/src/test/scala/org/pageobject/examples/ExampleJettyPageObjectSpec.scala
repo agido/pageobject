@@ -15,12 +15,8 @@
  */
 package org.pageobject.examples
 
-import org.pageobject.scalatest.DriverLaunchWrapper
-import org.pageobject.scalatest.PageObjectSuite
-import org.scalatest.DiagrammedAssertions
-import org.scalatest.FunSpec
-import org.scalatest.GivenWhenThen
-import org.scalatest.WrapWith
+import org.pageobject.core.JettySuite
 
-@WrapWith(classOf[DriverLaunchWrapper])
-abstract class ExamplePageObjectSpec extends FunSpec with PageObjectSuite with GivenWhenThen with DiagrammedAssertions
+abstract class ExampleJettyPageObjectSpec extends ExamplePageObjectSpec with JettySuite {
+  override val webAppContext = "test/src/test/webapp"
+}

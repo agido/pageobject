@@ -19,9 +19,9 @@ import org.openqa.selenium.By
 import org.pageobject.core.JettySuite.JettyPage
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule
-import org.pageobject.examples.ExamplePageObjectSpec
+import org.pageobject.examples.ExampleJettyPageObjectSpec
 
-class SelectTest extends ExamplePageObjectSpec with BrowserPageDsl {
+class SelectTest extends ExampleJettyPageObjectSpec with BrowserPageDsl {
 
   case class SelectTestPage() extends JettyPage {
     val path = "/select.html"

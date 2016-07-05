@@ -15,9 +15,9 @@
  */
 package org.pageobject.examples.angularjs.todo
 
-import org.pageobject.examples.ExamplePageObjectSpec
+import org.pageobject.examples.ExampleJettyPageObjectSpec
 
-class TodoSpec extends ExamplePageObjectSpec {
+class TodoSpec extends ExampleJettyPageObjectSpec {
   describe("AngularJs TODO App") {
     describe("the footer") {
       it("should initially not be visible") {

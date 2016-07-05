@@ -15,14 +15,11 @@
  */
 package org.pageobject.examples.wikipedia
 
-import org.pageobject.scalatest.PageObjectSuite
+import org.pageobject.examples.ExamplePageObjectSpec
 import org.pageobject.scalatest.tags.InternetTest
-import org.scalatest.DiagrammedAssertions
-import org.scalatest.FunSpec
-import org.scalatest.GivenWhenThen
 
 @InternetTest
-class WikipediaTest extends FunSpec with PageObjectSuite with DiagrammedAssertions with GivenWhenThen {
+class WikipediaTest extends ExamplePageObjectSpec {
   private val term = "Selenium (software)"
 
   describe("wikipedia homepage") {
