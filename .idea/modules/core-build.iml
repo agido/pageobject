@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="core-build" external.linked.project.path="$MODULE_DIR$/../../core/project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="sbt._, Keys._, dsl._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, $16e0c8e2c9af737281ff.test, $16e0c8e2c9af737281ff.scalatest, $16e0c8e2c9af737281ff.core, $16e0c8e2c9af737281ff.root" sbt.resolvers="https://repo1.maven.org/maven2/|maven|public, /home/drieks/.ivy2/cache|ivy|Local cache" type="SBT_MODULE" version="4">
+<module external.linked.project.id="core-build" external.linked.project.path="$MODULE_DIR$/../../core/project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" sbt.imports="sbt._, Keys._, dsl._, _root_.org.scalastyle.sbt.ScalastylePlugin._, _root_.net.virtualvoid.sbt.graph.DependencyGraphPlugin.autoImport._, _root_.sbt.plugins.IvyPlugin, _root_.sbt.plugins.JvmPlugin, _root_.sbt.plugins.CorePlugin, _root_.sbt.plugins.JUnitXmlReportPlugin, _root_.net.virtualvoid.sbt.graph.DependencyGraphPlugin, $baf0622f1f052ebe6372.test, $baf0622f1f052ebe6372.scalatest, $baf0622f1f052ebe6372.core, $baf0622f1f052ebe6372.root" sbt.resolvers="https://repo1.maven.org/maven2/|maven|public, /home/drieks/.ivy2/cache|ivy|Local cache" type="SBT_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../core/project/target/idea-classes" />
     <output-test url="file://$MODULE_DIR$/../../core/project/target/idea-test-classes" />
@@ -14,6 +14,12 @@
     <orderEntry type="module-library">
       <library name="SBT: sbt-and-plugins">
         <CLASSES>
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.github.mdr/ascii-graphs_2.10/jars/ascii-graphs_2.10-0.0.3.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/com.typesafe/config/bundles/config-1.2.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.scalariform/scalariform_2.10/jars/scalariform_2.10-0.1.7.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/org.scalastyle/scalastyle_2.10/jars/scalastyle_2.10-0.8.0.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/scala_2.10/sbt_0.13/net.virtual-void/sbt-dependency-graph/jars/sbt-dependency-graph-0.8.2.jar!/" />
+          <root url="jar://$USER_HOME$/.ivy2/cache/scala_2.10/sbt_0.13/org.scalastyle/scalastyle-sbt-plugin/jars/scalastyle-sbt-plugin-0.8.0.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.6/lib/jansi.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.6/lib/jline.jar!/" />
           <root url="jar://$USER_HOME$/.sbt/boot/scala-2.10.6/lib/scala-compiler.jar!/" />
