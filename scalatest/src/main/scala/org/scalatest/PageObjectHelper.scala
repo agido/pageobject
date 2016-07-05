@@ -22,8 +22,11 @@ import org.scalatest.tools.ConcurrentDistributor
 
 object PageObjectHelper {
   def failedStatus(throwable: Throwable): Status = {
-    val result = new ScalaTestStatefulStatus
+    // TODO not reported?
+    throwable.printStackTrace()
+    val result = new StatefulStatus
     result.setFailedWith(throwable)
+    result.setCompleted()
     result
   }
 
