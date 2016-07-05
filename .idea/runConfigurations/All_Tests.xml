@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All Tests" type="ScalaTestRunConfiguration" factoryName="ScalaTest" singleton="true">
+    <module name="test" />
+    <setting name="path" value="" />
+    <setting name="package" value="" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="" />
+    <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <setting name="searchForTest" value="Across module dependencies" />
+    <setting name="testName" value="" />
+    <setting name="testKind" value="All in package" />
+    <setting name="showProgressMessages" value="true" />
+    <envs>
+      <envVar name="FIREFOX_LIMIT" value="0" />
+      <envVar name="RUN_WITH_DRIVERS" value="org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList" />
+      <envVar name="TEST_LIMIT" value="1" />
+      <envVar name="TRACE_REMOTE_WEB_DRIVER" value="1" />
+    </envs>
+    <method />
+  </configuration>
+</component>

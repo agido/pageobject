@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="scalastyle" type="SbtRunConfiguration" factoryName="SBT Task" singleton="true">
+    <setting name="tasks" value="scalastyle test:scalastyle" />
+    <setting name="vmparams" value="-Xms512M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled -Dwebdriver.chrome.driver=../chromedriver" />
+    <envs />
+    <method />
+  </configuration>
+</component>
