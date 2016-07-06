@@ -32,21 +32,21 @@ import scala.concurrent.blocking
  * Because it is not safe to releay on shutdownAll,
  * the VncServer should shutdown itself then the parent process has gone.
  */
-case class VncServerManager[V <: VncServer](createVncServer: (() => Unit) => V) extends WaitFor {
+case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) => V) extends WaitFor {
   // VNC servers currently in use
   private val running = mutable.Set[V]()
 
   // VNC servers that can be reused
   private val free = mutable.Set[V]()
 
-  private def tryStart(): AtomicReference[Option[V]] = {
-    val ref = new AtomicReference[Option[V]]
-    val ret: V = createVncServer(() => VncServerManager.synchronized {
-      free -= ref.get.get
-      running -= ref.get.get
-      ref.set(None)
+  private def tryStart(): AtomicReference[Either[Option[V], Boolean]] = {
+    val ref = new AtomicReference[Either[Option[V], Boolean]](Left(None))
+    val ret: V = createVncServer(retry => VncServerManager.synchronized {
+      free -= ref.get.left.get.get
+      running -= ref.get.left.get.get
+      ref.set(Right(retry))
     })
-    ref.set(Some(ret))
+    ref.set(Left(Some(ret)))
     ret.start()
     ref
   }
@@ -62,18 +62,18 @@ case class VncServerManager[V <: VncServer](createVncServer: (() => Unit) => V) 
       step <- 0 to seconds by step
     } {
       Thread.sleep(step)
-      val vncServerOption = vncServerRef.get()
-      if (vncServerOption.isEmpty) {
-        // check every 100ms if startup has failed
-        return start(retryCount - 1) // scalastyle:ignore return
-      }
-      if (step % each == 0) {
-        // check every second if startup has succeeded
-        val vncServer = vncServerOption.get
-        if (vncServer.checkConnection()) {
-          running += vncServer
-          return vncServer // scalastyle:ignore return
-        }
+      // check every 100ms if startup has failed
+      vncServerRef.get() match {
+        case Right(true) | Left(None) => return start(retryCount - 1) // scalastyle:ignore return
+        case Right(false) => return start(-1) // scalastyle:ignore return
+        case Left(Some(vncServer)) =>
+          if (step % each == 0) {
+            // check every second if startup has succeeded
+            if (vncServer.checkConnection()) {
+              running += vncServer
+              return vncServer // scalastyle:ignore return
+            }
+          }
       }
     }
     start(retryCount - 1)

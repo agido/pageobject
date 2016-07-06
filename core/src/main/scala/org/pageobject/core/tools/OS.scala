@@ -23,4 +23,5 @@ object OS {
 
   val isOSX = name.indexOf("darwin") != -1
   val isWindows = name.startsWith("windows")
+  val isLinux = name.indexOf("linux") != -1
 }

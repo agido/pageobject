@@ -22,24 +22,22 @@ package org.pageobject.core.driver.vnc
  *
  * You can configure the used script by setting the environment variable PAGEOBJECT_VNC_SCRIPT.
  *
- * It is recommented that the VNC script will watch the parent process id ($PPID in bash) and
+ * It is recommented that the VNC script will watch the parent process id (\$PPID in bash) and
  * shutdown the VNC Server when the process has finished.
  *
  * Because you can easly stop the java process using the debugger no additional cleanup is required
  * to terminate the VNC server cleanly when watching the PPID
  */
-case class DefaultVncServer(onTerminated: () => Unit) extends SeleniumVncServer with CountedId with FixedSeleniumPort {
+case class DefaultVncServer(onTerminated: Boolean => Unit) extends SeleniumVncServer with CountedId with FixedSeleniumPort {
   private val display = sys.env.getOrElse("DISPLAY", "")
 
-  protected val script: String = sys.env.getOrElse("PAGEOBJECT_VNC_SCRIPT", "./vnc.sh")
+  protected val script: String = sys.env.getOrElse("PAGEOBJECT_VNC_SCRIPT", "vnc/vnc.sh")
 
-  protected def command(cmd: String): Option[String] = Some(s"$script $cmd :$id $seleniumPort $display")
+  protected val startCommand: Option[String] = Some(s"$script start :$id $display")
 
-  protected val startCommand: Option[String] = command("start")
+  protected val checkCommand: Option[String] = Some(s"$script check :$id $seleniumPort")
 
-  protected val checkCommand: Option[String] = command("check")
-
-  protected val stopCommand: Option[String] = command("stop")
+  protected val stopCommand: Option[String] = None
 }
 
 /**

@@ -15,10 +15,10 @@
  */
 package org.pageobject.core.driver.vnc
 
-import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.openqa.selenium.net.PortProber
+import org.pageobject.core.tools.OS
 
 import scala.sys.process.BasicIO
 import scala.sys.process.Process
@@ -38,15 +38,17 @@ trait VncServer {
 
   protected def stopCommand: Option[String]
 
-  protected def onTerminated: () => Unit
+  protected def onTerminated: Boolean => Unit
 
   protected def id: Int
 
   protected val logger: ProcessLogger = ProcessLogger(message => println(s"VNC $id $message"))
 
-  protected def execute(cmd: String): Process = {
-    Process(cmd, new File("..")).run(BasicIO(withIn = false, logger).daemonized)
+  protected def execute(cmd: String, extraEnv: (String, String)*): Process = {
+    Process(cmd, None, extraEnv: _*).run(BasicIO(withIn = false, logger).daemonized)
   }
+
+  protected def extraEnv: Seq[(String, String)] = Seq()
 
   def shutdown(): Unit = {
     stopCommand.foreach(execute(_))
@@ -57,11 +59,10 @@ trait VncServer {
   }
 
   def start(): Unit = {
-    val process = execute(startCommand.get)
+    val process = execute(startCommand.get, extraEnv: _*)
     val thread = new Thread(VncServer.threadGroup, new Runnable {
       override def run(): Unit = {
-        process.exitValue()
-        onTerminated()
+        onTerminated(process.exitValue() != 127)
       }
     })
     thread.setName(s"VncServerThread-$id")
@@ -89,6 +90,16 @@ trait CountedId {
  */
 trait SeleniumVncServer extends VncServer {
   def seleniumPort: Int
+
+  protected def seleniumScript: Option[String] = None match {
+    case _ if OS.isOSX => Some("selenium/osx.sh")
+    case _ if OS.isWindows => Some("selenium/win.bat")
+    case _ if OS.isLinux => Some("selenium/linux.sh")
+  }
+
+  protected def seleniumCommand: Option[String] = seleniumScript.map(script => s"$script -port $seleniumPort")
+
+  protected override def extraEnv = seleniumCommand.map(command => Seq("SELENIUM_COMMAND" -> command)).getOrElse(Seq())
 
   lazy val url = s"http://localhost:$seleniumPort/wd/hub"
 }
