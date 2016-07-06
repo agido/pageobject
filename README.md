@@ -4,7 +4,7 @@ A Page Object Pattern implementation written in Scala.
 PageObject is a free, open-source ([Apache Licence v2](https://www.apache.org/licenses/LICENSE-2.0.txt)) extension for test runners implementing the Page Object Pattern.
 Currently only ScalaTest 3 is supported, but other testing frameworks should be easy to add.
 
-Official Website: http://www.pageobject.org/
+Official Website: https://www.pageobject.org/
 
 PageObject was initially based on [ScalaTest's Selenium Support](http://www.scalatest.org/user_guide/using_selenium).
 
