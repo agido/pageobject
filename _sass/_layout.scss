@@ -2,15 +2,18 @@
  * Site header
  */
 .site-header {
-	border-top: 5px solid $grey-color-dark;
 	border-bottom: 1px solid $grey-color-light;
 	min-height: 56px;
+	background: #ffffff;
+	-webkit-box-shadow: 2px 0px 2px 2px #888;
+	-moz-box-shadow: 2px 0px 2px 2px #888;
 
 	// Positioning context for the mobile navigation icon
 	position: relative;
 }
 
 .site-title {
+	@extend %agido;
 	font-size: 26px;
 	font-weight: 300;
 	line-height: 56px;
@@ -20,8 +23,25 @@
 
 	&,
 	&:visited {
-		color: $grey-color-dark;
+		color: $text-color;
+		text-decoration: none;
 	}
+	&:hover {
+		color: $brand-color;
+		text-decoration: none;
+	}
+}
+
+.col-wrapper {
+	margin-left: -$spacing-unit / 2;
+	@extend %clearfix;
+}
+
+.col {
+	float: left;
+	padding-left: $spacing-unit / 2;
+	width: -webkit-calc(50% - (#{$spacing-unit} / 2));
+	width:         calc(50% - (#{$spacing-unit} / 2));
 }
 
 .site-nav {
@@ -98,8 +118,37 @@
  * Site footer
  */
 .site-footer {
-	border-top: 1px solid $grey-color-light;
-	padding: $spacing-unit 0;
+	background: #3d3c3f;
+	padding: 10px 0;
+	color: #ffffff;
+	width: 100%;
+
+	h3 {
+		@extend %agido;
+		color: $brand-color;
+		font-size: 24px;
+		border-bottom: 1px solid white;
+		padding: 0 10px 7px 10px;
+	}
+
+	.space {
+		margin-top: 4px;
+	}
+
+	b {
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
+	.copyright {
+		border-top: 1px solid white;
+		padding-top: 5px;
+		font-size: 14px;
+	}
+	
+	a:hover {
+		color: #ffffff;
+	}
 }
 
 .footer-heading {
@@ -115,37 +164,35 @@
 
 .footer-col-wrapper {
 	font-size: 15px;
-	color: $grey-color;
 	margin-left: -$spacing-unit / 2;
 	@extend %clearfix;
 }
 
 .footer-col {
 	float: left;
-	margin-bottom: $spacing-unit / 2;
 	padding-left: $spacing-unit / 2;
 }
 
 .footer-col-1 {
 	width: -webkit-calc(35% - (#{$spacing-unit} / 2));
-	width:		 calc(35% - (#{$spacing-unit} / 2));
+	width:         calc(35% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-2 {
 	width: -webkit-calc(20% - (#{$spacing-unit} / 2));
-	width:		 calc(20% - (#{$spacing-unit} / 2));
+	width:         calc(20% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-3 {
 	width: -webkit-calc(45% - (#{$spacing-unit} / 2));
-	width:		 calc(45% - (#{$spacing-unit} / 2));
+	width:         calc(45% - (#{$spacing-unit} / 2));
 }
 
 @include media-query($on-laptop) {
 	.footer-col-1,
 	.footer-col-2 {
 		width: -webkit-calc(50% - (#{$spacing-unit} / 2));
-		width:		 calc(50% - (#{$spacing-unit} / 2));
+		width:         calc(50% - (#{$spacing-unit} / 2));
 	}
 
 	.footer-col-3 {
@@ -169,6 +216,11 @@
  */
 .page-content {
 	padding: $spacing-unit 0;
+	
+	.wrapper {
+		padding: 20px 10px 10px 20px;
+		background: #ffffff;
+	}
 }
 
 .page-heading {
