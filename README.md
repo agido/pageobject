@@ -94,6 +94,8 @@ Currently no public release is available. Please check out this repository and r
 * **core** All Test Runner independent files of PageObject
 * **scalatest** Classes needed to use PageObject with ScalaTest 3 
 * **test** Unit Tests and examples for PageObject, tested with ScalaTest 3
+* **selenium** Selenium Scripts and chrome driver, used for building pageobject
+* **vnc** A VNC server and control script reference implementation, used for building pageobject
 
 ## Building PageObject
 ### Prerequisites
