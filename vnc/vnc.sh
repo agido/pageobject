@@ -21,7 +21,7 @@ basedir=$(dirname $(readlink -f $0))
 vncdir=$basedir/$(uname -s)-$(uname -m)
 
 function mute() {
-	$@ >/dev/zero 2>&1 || true
+	$@ >/dev/zero 2>&1
 }
 
 function vncid() {
@@ -46,7 +46,7 @@ function islocked() {
 }
 
 function isfn() {
-    mute type $1
+	mute type $1
 }
 
 function fatal() {
@@ -54,9 +54,9 @@ function fatal() {
 	local code="$2"
 	echo $message
 	if [ -z "$code" ]; then
-	    exit 1
+		exit 1
 	else
-	    exit $code
+		exit $code
 	fi
 }
 
@@ -81,10 +81,20 @@ function call() {
 }
 
 function isexec() {
-    local cmd=$(which $1)
-    if [ -z "$cmd" -o ! -e "$cmd" -o ! -x "$cmd" ] ; then
-        fatal "$1 not found" 127
-    fi
+	local cmd=$(which $1)
+	if [ -z "$cmd" -o ! -e "$cmd" -o ! -x "$cmd" ] ; then
+		fatal "$1 not found" 127
+	fi
+}
+
+function stop() {
+	local pid=$1
+	local what=$2
+	if mute kill $pid ; then
+		echo "stopped $what"
+	else
+		echo "$what was not running"
+	fi
 }
 
 function cmd_start() {
@@ -103,12 +113,12 @@ function cmd_start() {
 	require "$id" "$message"
 	require "$SELENIUM_COMMAND" "SELENIUM_COMMAND not set!"
 
-    isexec $(echo $SELENIUM_COMMAND | cut -d ' ' -f 1)
-    isexec $vncdir/Xvnc
-    isexec xterm
-    if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-        isexec $vncdir/vncviewer
-    fi
+	isexec $(echo $SELENIUM_COMMAND | cut -d ' ' -f 1)
+	isexec $vncdir/Xvnc
+	isexec xterm
+	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
+		isexec $vncdir/vncviewer
+	fi
 
 	export WAIT_FOR_PID=$PPID
 	export CLIENT_DISPLAY_PORT=$display
@@ -128,7 +138,7 @@ function cmd_start() {
 	islocked $DISPLAY || fatal "vnc server $DISPLAY could not be started!"
 	echo "vnc server is ready!"
 
-	xterm -maximized -fa 'Monospace' -fs 14 -e "$SELENIUM_COMMAND" &
+	xterm -maximized -fa 'Monospace' -fs 14 -e $SELENIUM_COMMAND &
 	terminalPid=$!
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
@@ -144,11 +154,12 @@ function cmd_start() {
 		sleep 0.5
 		mute jobs
 	done
+
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-		mute kill $viewerPid
+		stop $viewerPid vncviewer
 	fi
-	mute kill $terminalPid
-	mute kill $vncPid
+	stop $terminalPid xterm
+	stop $vncPid vncserver
 }
 
 function cmd_check() {
@@ -160,7 +171,7 @@ function cmd_check() {
 	require "$id" "$message"
 	require "$seleniumPort" "$message"
 
-	curl http://127.0.0.1:$seleniumPort/wd/hub/status >/dev/zero 2>&1 || exit 1
+	mute curl http://127.0.0.1:$seleniumPort/wd/hub/status || exit 1
 }
 
 function main() {
