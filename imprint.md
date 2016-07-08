@@ -22,12 +22,13 @@ Hafenpromenade 3a
 Fon:+49 0231 399 802 70
 Fax:+49 0231 399 802 69
 
-<a href="mailto:info@agido.com">info@agido.com</a>
+Homepage: <a href="https://www.agido.com/">https://www.agido.com/</a>
+EMail: <a href="mailto:info@agido.com">info@agido.com</a>
 
 		</div>
 	</div>
 	<div class="col">
-		<img src="/images/agido.svg" alt="agido GmbH logo">
+		<a href="https://www.agido.com/"><img src="/images/agido.svg" alt="agido GmbH logo"></a>
 	</div>
 </div>
 
