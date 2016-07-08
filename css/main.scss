@@ -29,7 +29,13 @@ $content-width:	800px;
 $on-palm:		  600px;
 $on-laptop:		800px;
 
-
+@font-face {
+	font-family: 'Geogrotesque';
+	src: url("/fonts/Geogrotesque-SemiBoldIt.ttf");
+	src: url("/fonts/Geogrotesque-SemiBoldIt.otf");
+	font-weight: normal;
+	font-style: normal;
+}
 
 // Use media queries like this:
 // @include media-query($on-palm) {
