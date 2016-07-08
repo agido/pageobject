@@ -3,7 +3,7 @@
  */
 .site-header {
 	border-bottom: 1px solid $grey-color-light;
-	min-height: 56px;
+	height: 50px;
 	background: #ffffff;
 	-webkit-box-shadow: 2px 0px 2px 2px #888;
 	-moz-box-shadow: 2px 0px 2px 2px #888;
@@ -14,21 +14,23 @@
 
 .site-title {
 	@extend %agido;
-	font-size: 26px;
+	font-size: 28px;
 	font-weight: 300;
-	line-height: 56px;
-	letter-spacing: -1px;
+	
 	margin-bottom: 0;
 	float: left;
 
 	&,
-	&:visited {
-		color: $text-color;
+	&:visited,
+	&:hover {
+		color: #3A3A39;
 		text-decoration: none;
 	}
-	&:hover {
-		color: $brand-color;
-		text-decoration: none;
+	img {
+		margin-top: -9px;
+	}
+	span {
+		line-height: 55px;
 	}
 }
 
