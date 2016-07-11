@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="travis build command" type="SbtRunConfiguration" factoryName="SBT Task" singleton="true">
+    <setting name="tasks" value="test" />
+    <setting name="vmparams" value="" />
+    <envs>
+      <env name="RUN_WITH_DRIVERS" value="org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList" />
+      <env name="FIREFOX_LIMIT" value="0" />
+    </envs>
+    <method />
+  </configuration>
+</component>
