@@ -6,7 +6,7 @@ Currently only ScalaTest 3 is supported, but other testing frameworks should be 
 
 Official Website: https://www.pageobject.org/
 
-PageObject was initially based on [ScalaTest's Selenium Support](http://www.scalatest.org/user_guide/using_selenium).
+PageObject was initially based on [ScalaTest's Selenium Support](http://www.scalatest.org/user_guide/using_selenium) and has adopted some features of [geb](http://www.gebish.org/).
 
 ## Contributing
 Feel free to open an Issue if you think something is missing our you found a bug. Pull Requests are very welcome!
@@ -88,7 +88,20 @@ class Readme extends ExamplePageObjectSpec {
 ```
 
 ## Using PageObject
-Currently no public release is available. Please check out this repository and run `$ sbt publishLocal` if you want to try it.
+Currently no stable release of PageObject is available, current version is 0.1.0-SNAPSHOT.
+
+You can find a list of all snapshot versions [here](https://oss.sonatype.org/#nexus-search;quick~org.pageobject).
+
+To use PageObject, add this lines to yours build.sbt:
+```
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0-SNAPSHOT"
+```
+
+Alternative you can checkout this repository and run `$ sbt publishLocal` if you want to modify or try it out.
+
+Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issues/1)) we need to use a patched version. ```org.pageobject.patch.org.scalatest``` is a current build of ScalaTest 3.0.x, the only difference is that the [PR](https://github.com/scalatest/scalatest/issues/931) to fix this bug was added. We hope that this PR will be merged into ScalaTest but unfortunately it looks like that pull requests are ignored...
 
 ## Project Structure
 * **core** All Test Runner independent files of PageObject
@@ -111,5 +124,9 @@ This command will build and run the regular tests:
   `$ sbt test`
 
 If you are using Linux and want to run all Browsers inside of VNC Servers, (recommended for both linux developers and linux build/test servers) use this command:
+
+  `$ ./travis.sh`
+
+  which will execute:
 
   `$ RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList sbt test`
