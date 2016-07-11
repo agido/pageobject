@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/agido/pageobject.svg?branch=master)](https://travis-ci.org/agido/pageobject)
 # PageObject
 A Page Object Pattern implementation written in Scala.
 
