@@ -6,7 +6,7 @@ scala:
   - 2.11.8
 
 jdk:
-  - openjdk7
+  - openjdk6
 
 notifications:
   email: support@pageobject.org
@@ -16,6 +16,8 @@ script:
   - "[ \"$TRAVIS_BRANCH\" = \"master\" ] && travis/upload-to-maven-central.sh"
 
 before_install:
+  - sudo hostname "$(hostname | cut -c1-63)"
+  - (cat /etc/hosts ; echo 127.0.0.1 $(hostname)) | sudo tee /etc/hosts
   - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y google-chrome-stable
