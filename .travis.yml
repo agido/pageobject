@@ -1,12 +1,20 @@
 dist: trusty
+
 language: scala
+
 scala:
   - 2.11.8
+
 jdk:
   - oraclejdk8
-script: ./travis.sh ++$TRAVIS_SCALA_VERSION
+
+script:
+  - "travis/build.sh ++$TRAVIS_SCALA_VERSION"
+  - "[ \"$TRAVIS_BRANCH\" = \"master\" ] && travis/upload-to-maven-central.sh"
+
 before_install:
- - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
- - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
- - sudo apt-get update
- - sudo apt-get install -y xterm google-chrome-stable
+  - sudo apt-get update
+  - sudo apt-get install -y google-chrome-stable
+
+ENCRYPTION_PASSWORD=password:
+  secure: lDK++kaJbYdpqQCT/ScxKC1KjPDy0BrIRfmV03NAEHdpdsQtaaq46/miyan2O0iz/908ZyJ8EEG4jnQdS6hb8Cs2T0FO3EHM4PTAFOzIzCQeaCsXxeNHh7qsHdi2k5YzFcQfCDpvGPmqpn+0RiV8mpxOkkO8zkihm2hfbSr4U5IXA2Mi3ZEEtIBA2WJxU1EgaocaIFSNaJkpVHa1//617qvxm1fQ0Qb7ehk9jD/VV3DeVrk+dS6UCVtjX+qcn3YizTVVA5VdlntAz/n+HkWR4s0L4U8o/mier0j2bBb41/PoFycquKzk/SUxGlfTL+hR/XAkIRe053ad6zULwWI7nlmqwR1gBs+gFQ5FThAPoo8a89lKpSRxFrV1/ZE+eLWIRFpXDPb0a/dZILCatgR6g/h2e8HZAawH7BvznL16VSYiyHTm0h9G7gY37+IPTLkxIQcr0SDUqAbXCNCzrrD4b69hNsvLXGWvhm79tSjzk8ddOY/okinnOJ0AURuMWRLNYoOIiJnRBfM5rMwzVMikywwlvIroLGDjJ4hvBglWRUwEeK+ovqTSycqdgpU8pNidmGiMXDRAPUm4Vsle1ouk3Rofc1gRugKlzBWn/mhv5+XK1M2su0DGdyZM9nczOB/AURQWKeVmtpZ2QYrXAjABqKZeqSxyzTHYa2BUju/Otqs=

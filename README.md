@@ -110,6 +110,7 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 * **test** Unit Tests and examples for PageObject, tested with ScalaTest 3
 * **selenium** Selenium Scripts and chrome driver, used for building pageobject
 * **vnc** A VNC server and control script reference implementation, used for building pageobject
+* **travis** Scripts used by travis to build and upload PageObject to sonatype
 
 ## Building PageObject
 ### Prerequisites
@@ -126,7 +127,7 @@ This command will build and run the regular tests:
 
 If you are using Linux and want to run all Browsers inside of VNC Servers, (recommended for both linux developers and linux build/test servers) use this command:
 
-  `$ ./travis.sh`
+  `$ travis/build.sh`
 
   which will execute:
 
