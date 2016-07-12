@@ -6,7 +6,10 @@ scala:
   - 2.11.8
 
 jdk:
-  - oraclejdk8
+  - openjdk6
+
+notifications:
+  email: support@pageobject.org
 
 script:
   - "travis/build.sh ++$TRAVIS_SCALA_VERSION"
@@ -17,5 +20,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y google-chrome-stable
 
-ENCRYPTION_PASSWORD=password:
-  secure: hpDO121M4AKKAI6vsARdTyGd0OGSOAWI3xk0SWT4CxHrU1EP7ULpPGecTSm/24u82/IPnsfBi1yDL+BNzF7nqEqtwzT0vL6gnmbW5OtLDNSIuWHnmzvY790Rb1npt0WCjgrYLMEqXv4oT+WAc7KEeJYWdvbjIrrmkYzqhylWqZPxO/sV78EbJGuwWkBHxe6QBSMWvIVldSpnqMtrMUCQ+U3WQL/XURo9zx2HiXW/hkEf+/oKhZT0AdUllJN/im84qqjSlXe9tPnEze1Jo9SitC8U61kBVlIGcczGZzcFEH7MHTteYAoV43uD0DXHysiDFvupSJjw20HH1jXTM4eEzOInqbgeaRkNSoq0MKDIpWK4BTOdXfkKocDmyHaA4tsBwJw4nCfJnbYOWQ4k9BIarLf58/rvSDaweaGqa4WnW0LuGkk8XqK1N0EXIC2Nk8gbhe9tvtuUVqAGff6F5Pu8EirjyT0lftgtg33M8KaYSR2hCeC4x2GQpLjcc02+QekFIQkIquF8aDv3Qfb1JYAvuVjCkHqZTni3h4qG7mQhbfB8R6hn1RofbgARy9uR2PJ74pJeVarzrRCc2+xDc01PFPCLmmOi1eXgBa1Zi1FYQo4hxnfVrRu+lsBfibT+1KEcbCjs7jNOIZ3eIWm2IXdo0wbgO1ur2JYdt+jArhQICwk=
+env:
+  global:
+    secure: 2NzkoBcSA4BX0sa/QtaqfHqMUPRLnRbaCMPaeVSnmb3OXMB/fdIvvYAUy3D50IJcFfyXQmQborbCjl0Z1P0kvWT63ZQHJi1gSl98sS3XZpZAW10aE7K4O8ecGF8DkbEn07YlYmBzX8ThqpfJ/2gldjc7UxFJdSmi8tNOGuY7z9xO/OJ5WiHY9CUF9yDv8Br2ItYHjjxF6iRLJWdAaheCaKaxAP3kAvdzldMA+e9AytDXrlMAl84bhUfxaS/TPe3HrNOXQ8yZWT7//s78RTzVAI3DS8Bq/qCGK81zx3HT5T7g+xMbGb7lyNkHQGiU0mLgUNJD6uPUnOPp/tODhgg+/xrI9pPDoCkiVdlz/V4KM9AZWCjvJ6s+vz/3F3eZPE1R3QUnNcW/lVeIb7pVOFTSdjLwxC1am35Uy2BeqrrgLxrpoTd8YJ8W/aiUt+T7AU+B31hpd35dpJLV7tXF0qv9qmpa/KSHb81sw8Tz8BQBQGrFU1sbPnre6l+onUu0MAexKkc4LG+gajucMheTdz49UGgHcoTgfMyZ0g8Pwvd1/VvA2lxd+htlRwAqDG5OVqwdxl1UKGjc+jTM24sdSiQ7XhOjv/JDjCyB5jrWv5To/cjoyM7eZJZqhrZ9UfeR+ifRQwJRoBWcTQbQ9RfKQg01Lztf+owivks/4r7/RdrI7cE=
