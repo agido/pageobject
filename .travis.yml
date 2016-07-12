@@ -6,7 +6,7 @@ scala:
   - 2.11.8
 
 jdk:
-  - openjdk6
+  - openjdk7
 
 notifications:
   email: support@pageobject.org
