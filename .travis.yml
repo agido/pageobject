@@ -13,8 +13,9 @@ script:
   - "[ \"$TRAVIS_BRANCH\" = \"master\" ] && travis/upload-to-maven-central.sh"
 
 before_install:
+  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
   - sudo apt-get update
   - sudo apt-get install -y google-chrome-stable
 
 ENCRYPTION_PASSWORD=password:
-  secure: lDK++kaJbYdpqQCT/ScxKC1KjPDy0BrIRfmV03NAEHdpdsQtaaq46/miyan2O0iz/908ZyJ8EEG4jnQdS6hb8Cs2T0FO3EHM4PTAFOzIzCQeaCsXxeNHh7qsHdi2k5YzFcQfCDpvGPmqpn+0RiV8mpxOkkO8zkihm2hfbSr4U5IXA2Mi3ZEEtIBA2WJxU1EgaocaIFSNaJkpVHa1//617qvxm1fQ0Qb7ehk9jD/VV3DeVrk+dS6UCVtjX+qcn3YizTVVA5VdlntAz/n+HkWR4s0L4U8o/mier0j2bBb41/PoFycquKzk/SUxGlfTL+hR/XAkIRe053ad6zULwWI7nlmqwR1gBs+gFQ5FThAPoo8a89lKpSRxFrV1/ZE+eLWIRFpXDPb0a/dZILCatgR6g/h2e8HZAawH7BvznL16VSYiyHTm0h9G7gY37+IPTLkxIQcr0SDUqAbXCNCzrrD4b69hNsvLXGWvhm79tSjzk8ddOY/okinnOJ0AURuMWRLNYoOIiJnRBfM5rMwzVMikywwlvIroLGDjJ4hvBglWRUwEeK+ovqTSycqdgpU8pNidmGiMXDRAPUm4Vsle1ouk3Rofc1gRugKlzBWn/mhv5+XK1M2su0DGdyZM9nczOB/AURQWKeVmtpZ2QYrXAjABqKZeqSxyzTHYa2BUju/Otqs=
+  secure: hpDO121M4AKKAI6vsARdTyGd0OGSOAWI3xk0SWT4CxHrU1EP7ULpPGecTSm/24u82/IPnsfBi1yDL+BNzF7nqEqtwzT0vL6gnmbW5OtLDNSIuWHnmzvY790Rb1npt0WCjgrYLMEqXv4oT+WAc7KEeJYWdvbjIrrmkYzqhylWqZPxO/sV78EbJGuwWkBHxe6QBSMWvIVldSpnqMtrMUCQ+U3WQL/XURo9zx2HiXW/hkEf+/oKhZT0AdUllJN/im84qqjSlXe9tPnEze1Jo9SitC8U61kBVlIGcczGZzcFEH7MHTteYAoV43uD0DXHysiDFvupSJjw20HH1jXTM4eEzOInqbgeaRkNSoq0MKDIpWK4BTOdXfkKocDmyHaA4tsBwJw4nCfJnbYOWQ4k9BIarLf58/rvSDaweaGqa4WnW0LuGkk8XqK1N0EXIC2Nk8gbhe9tvtuUVqAGff6F5Pu8EirjyT0lftgtg33M8KaYSR2hCeC4x2GQpLjcc02+QekFIQkIquF8aDv3Qfb1JYAvuVjCkHqZTni3h4qG7mQhbfB8R6hn1RofbgARy9uR2PJ74pJeVarzrRCc2+xDc01PFPCLmmOi1eXgBa1Zi1FYQo4hxnfVrRu+lsBfibT+1KEcbCjs7jNOIZ3eIWm2IXdo0wbgO1ur2JYdt+jArhQICwk=
