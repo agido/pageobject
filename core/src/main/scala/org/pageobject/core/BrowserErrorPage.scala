@@ -28,6 +28,7 @@ case class BrowserErrorPage() extends PageObject {
 
   object content extends PageModule with BrowserControlDsl {
     private def isFirefoxErrorPage = $(cssSelector("link[href=\"chrome://browser/skin/aboutNetError.css\"]"))
+    private def isChromeErrorPage = $(id("main-frame-error"))
 
     def isBrowserErrorPage: Boolean = {
       val url = currentUrl
@@ -35,8 +36,9 @@ case class BrowserErrorPage() extends PageObject {
       url == "" ||
         // chrome e.g. http://localhost:65534/
         url == "data:text/html,chromewebdata" ||
+        isChromeErrorPage.anyDisplayed ||
         // firefox
-        isFirefoxErrorPage.elements.nonEmpty ||
+        isFirefoxErrorPage.anyDisplayed ||
         url.startsWith("about:neterror")
     }
   }
