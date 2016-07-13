@@ -56,7 +56,7 @@ class TestHelperImpl extends TestHelper {
   }
 
   def isAssertionError(th: Throwable): Boolean = th match {
-    case tfe: TestFailedException => tfe.getStackTrace.head.getMethodName == "newAssertionFailedException"
+    case tfe: TestFailedException => tfe.getStackTrace()(0).getMethodName.startsWith("newAssertionFailedException")
     case _ => false
   }
 
