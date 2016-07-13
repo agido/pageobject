@@ -16,7 +16,7 @@ notifications:
 
 script:
   - "travis/build.sh ++$TRAVIS_SCALA_VERSION"
-  - "[ \"$TRAVIS_BRANCH\" = \"master\" ] && travis/upload-to-maven-central.sh"
+  - "[ \"$TRAVIS_BRANCH\" = \"master\" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION"
 
 before_install:
   - sudo hostname "$(hostname | cut -c1-63)"

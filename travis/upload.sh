@@ -32,4 +32,4 @@ decrypt .gnupg/credentials.sbt
 
 mv .gnupg/credentials.sbt project
 
-sbt core/publishSigned scalatest/publishSigned
+sbt $@ core/publishSigned scalatest/publishSigned
