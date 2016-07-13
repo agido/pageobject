@@ -132,3 +132,7 @@ If you are using Linux and want to run all Browsers inside of VNC Servers, (reco
   which will execute:
 
   `$ RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList sbt test`
+
+Before first run you need to download VNC and selenium files:
+
+  `$ travis/setup.sh`
