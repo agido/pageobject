@@ -31,13 +31,14 @@ We created an overview presentation showing you how to use PageObject to create 
 * [Download as PDF](/downloads/PageObjectTour.pdf) (download hosted on pageobject.org).
 
 ## Using PageObject
-Currently no public release is available. Please check out this repository and run
+Currently no stable release of PageObject is available, current version is 0.1.0-SNAPSHOT.
 
+To use PageObject, add this lines to yours build.sbt:
 ```
-$ sbt publishLocal
-```
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 
-if you want to try it.
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0-SNAPSHOT"
+```
 
 ## Download PageObject
 The code is hosted and developed in the [PageObject GitHub repository](https://github.com/agido/pageobject/).
