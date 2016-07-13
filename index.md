@@ -33,7 +33,10 @@ We created an overview presentation showing you how to use PageObject to create 
 ## Using PageObject
 Currently no stable release of PageObject is available, current version is 0.1.0-SNAPSHOT.
 
+Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
+
 To use PageObject, add this lines to yours build.sbt:
+
 ```
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 
