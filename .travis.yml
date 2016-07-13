@@ -5,8 +5,9 @@ language: scala
 scala:
   - 2.11.8
 
+# selenium requires java 7 which is EOL, so only oraclejdk8 is tested
 jdk:
-  - openjdk6
+  - oraclejdk8
 
 notifications:
   email: support@pageobject.org
