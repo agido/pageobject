@@ -4,6 +4,7 @@ language: scala
 
 scala:
   - 2.11.8
+  - 2.10.6
 
 # selenium requires java 7 which is EOL, so only oraclejdk8 is tested
 jdk:

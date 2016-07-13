@@ -16,9 +16,10 @@
 package org.pageobject.examples.wikipedia
 
 import org.pageobject.examples.ExamplePageObjectSpec
-import org.pageobject.scalatest.tags.InternetTest
 
-@InternetTest
+// TODO this is not working in scala 2.10
+// import org.pageobject.scalatest.tags.InternetTest
+// @InternetTest
 class WikipediaTest extends ExamplePageObjectSpec {
   private val term = "Selenium (software)"
 

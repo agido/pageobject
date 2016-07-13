@@ -811,7 +811,7 @@ abstract class AbstractSel(typeDescription: String, isMultiple: Boolean)
   private val optionLocator = UntypedLocator(TagNameQuery("option"),
     DefaultPageReference(Some(this))(factory.webDriver))
 
-  val isMulti = !attribute("multiple").contains("false")
+  val isMulti = attribute("multiple") != Option("false")
 
   protected def select = retry() {
     new Select(underlying)
