@@ -18,7 +18,6 @@
 set -e
 
 basedir=$(dirname $(readlink -f $0))
-vncdir=$basedir/$(uname -s)-$(uname -m)
 
 function mute() {
 	$@ >/dev/zero 2>&1
@@ -114,10 +113,10 @@ function cmd_start() {
 	require "$SELENIUM_COMMAND" "SELENIUM_COMMAND not set!"
 
 	isexec $(echo $SELENIUM_COMMAND | cut -d ' ' -f 1)
-	isexec $vncdir/Xvnc
+	isexec $basedir/Xvnc
 	isexec xterm
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-		isexec $vncdir/vncviewer
+		isexec $basedir/vncviewer
 	fi
 
 	export WAIT_FOR_PID=$PPID
@@ -126,7 +125,7 @@ function cmd_start() {
 
 	islocked $DISPLAY && fatal "display $DISPLAY is already in use!"
 
-	$vncdir/Xvnc $DISPLAY -fp "" -rfbport $(vncport $id) -nopn -geometry 1920x1080 PasswordFile=$basedir/.vncpasswd 2>&1 &
+	$basedir/Xvnc $DISPLAY -fp "" -rfbport $(vncport $id) -nopn -geometry 1920x1080 PasswordFile=$basedir/.vncpasswd 2>&1 &
 	vncPid=$!
 
 	echo "waiting for vnc server"
@@ -142,7 +141,7 @@ function cmd_start() {
 	terminalPid=$!
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-		DISPLAY=$CLIENT_DISPLAY_PORT $vncdir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd &
+		DISPLAY=$CLIENT_DISPLAY_PORT $basedir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd &
 		viewerPid=$!
 		waitCount=3
 	fi
