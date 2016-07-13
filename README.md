@@ -116,9 +116,15 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 ### Prerequisites
 The followings are recommended for building PageObject:
 (other versions may work but are currently untested)
-* JDK 8
+* openjdk7 (not supported by scala 2.12.x), openjdk8 or oraclejdk8
 * [SBT 0.13.11](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
-* [Scala 2.11.8](http://www.scala-lang.org/documentation/getting-started.html)
+* [Scala](http://www.scala-lang.org/documentation/getting-started.html)
+ * 2.10.6
+ * 2.11.8
+ * 2.12.0-M5
+
+Because Selenium requires at least Java 7 it is not possible to use PageObject with Java 6.
+maven builds of PageObject for scala 2.10 and 2.11 are using openjdk7 and openjdk8 for scala 2.12.
 
 ### Building and Running Tests
 This command will build and run the regular tests:
