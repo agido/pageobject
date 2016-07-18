@@ -78,11 +78,11 @@ lazy val core = (project in file("core"))
     name := "core",
     libraryDependencies ++= Seq(
       "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
-      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20",
-      "net.sourceforge.htmlunit" % "htmlunit" % "2.21" exclude("org.eclipse.jetty.websocket", "websocket-client"),
+      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
+      "net.sourceforge.htmlunit" % "htmlunit" % "2.21" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
 
       // Warning: Class javax.annotation.Nullable not found
-      "com.google.code.findbugs" % "jsr305" % "3.0.1"
+      "com.google.code.findbugs" % "jsr305" % "3.0.1" % Optional
     )
   )
 
@@ -105,9 +105,9 @@ lazy val test = (project in file("test"))
   .settings(
     name := "test",
     libraryDependencies ++= Seq(
-      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion % "test",
-      "org.eclipse.jetty" % "jetty-server" % jettyVersion % "test",
-      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "test"
+      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion % Test,
+      "org.eclipse.jetty" % "jetty-server" % jettyVersion % Test,
+      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % Test
     )
   )
   .dependsOn(scalatest)
