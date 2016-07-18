@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/agido/pageobject.svg?branch=master)](https://travis-ci.org/agido/pageobject)
+[ ![Build Status] [travis-image] ] [travis]  [ ![License] [license-image] ] [license]
+
 # PageObject
 A Page Object Pattern implementation written in Scala.
 
@@ -142,3 +143,8 @@ If you are using Linux and want to run all Browsers inside of VNC Servers, (reco
 Before first run you need to download VNC and selenium files:
 
   `$ travis/setup.sh`
+
+[travis]: https://travis-ci.org/agido/pageobject
+[travis-image]: https://travis-ci.org/agido/pageobject.svg?branch=master
+[license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
+[license]: http://www.apache.org/licenses/LICENSE-2.0
