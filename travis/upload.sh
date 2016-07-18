@@ -21,15 +21,24 @@ function decrypt() {
 	openssl aes-256-cbc -pass env:ENCRYPTION_PASSWORD -in $1.bin -out $1 -d
 }
 
+sbtCommands=""
+
 if [ -z "$ENCRYPTION_PASSWORD" ]; then
-	echo 'missing $ENCRYPTION_PASSWORD'
-	exit 1
+	echo 'Warning: missing $ENCRYPTION_PASSWORD'
+else
+    decrypt .gnupg/pubring.gpg
+    decrypt .gnupg/secring.gpg
+    decrypt .gnupg/credentials.sbt
+
+    mv .gnupg/credentials.sbt project
+
+    sbtCommands="$sbtCommands core/publishSigned scalatest/publishSigned"
 fi
 
-decrypt .gnupg/pubring.gpg
-decrypt .gnupg/secring.gpg
-decrypt .gnupg/credentials.sbt
+if [ -z "$UPDATEIMPACT_API_KEY" ]; then
+	echo 'Warning: missing $UPDATEIMPACT_API_KEY'
+else
+	sbtCommands="$sbtCommands updateImpactSubmit"
+fi
 
-mv .gnupg/credentials.sbt project
-
-sbt $@ core/publishSigned scalatest/publishSigned
+sbt $@ $sbtCommands

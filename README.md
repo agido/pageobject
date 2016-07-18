@@ -1,4 +1,6 @@
-[ ![Build Status] [travis-image] ] [travis]  [ ![License] [license-image] ] [license]
+[ ![Build Status] [travis-image] ] [travis]
+[ ![License] [license-image] ] [license]
+[ ![Dependencies] [dependencies-image] ] [dependencies]
 
 # PageObject
 A Page Object Pattern implementation written in Scala.
@@ -148,3 +150,5 @@ Before first run you need to download VNC and selenium files:
 [travis-image]: https://travis-ci.org/agido/pageobject.svg?branch=master
 [license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
 [license]: http://www.apache.org/licenses/LICENSE-2.0
+[dependencies]: https://app.updateimpact.com/latest/755117671372165120/pageobject
+[dependencies-image]: https://app.updateimpact.com/badge/755117671372165120/pageobject.svg?config=compile

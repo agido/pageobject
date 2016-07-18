@@ -31,7 +31,7 @@ notifications:
 
 script:
   - "travis/build.sh ++$TRAVIS_SCALA_VERSION"
-  - "[ \"$TRAVIS_BRANCH\" = \"master\" -a \"PUBLISH\" = \"true\" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION || true"
+  - "[ \"$TRAVIS_BRANCH\" = \"master\" -a \"$PUBLISH\" = \"true\" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION || true"
 
 before_install:
   - sudo hostname "$(hostname | cut -c1-63)"
