@@ -2,6 +2,7 @@
   <configuration default="false" name="scalastyle" type="SbtRunConfiguration" factoryName="SBT Task" singleton="true">
     <setting name="tasks" value="scalastyle test:scalastyle" />
     <setting name="vmparams" value="" />
+    <setting name="workingDir" value="$PROJECT_DIR$" />
     <envs />
     <method />
   </configuration>
