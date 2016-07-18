@@ -96,11 +96,15 @@ function stop() {
 	fi
 }
 
+function isrunning() {
+	local pid=$1
+	mute kill -0 $pid
+}
+
 function cmd_start() {
-	local vncPid
-	local terminalPid
-	local viewerPid
-	local waitCount=2
+	local xtermPid
+	local vncViewerPid
+	local vncServerPid
 
 	local id=$1
 	local display=$2
@@ -126,39 +130,42 @@ function cmd_start() {
 	islocked $DISPLAY && fatal "display $DISPLAY is already in use!"
 
 	$basedir/Xvnc $DISPLAY -fp "" -rfbport $(vncport $id) -nopn -geometry 1920x1080 PasswordFile=$basedir/.vncpasswd 2>&1 &
-	vncPid=$!
+	vncServerPid=$!
 
 	echo "waiting for vnc server"
 	for((i=0;i<100;i++)); do
 		islocked $DISPLAY && break
-		mute kill -0 $vncPid || break
+		isrunning $vncServerPid || break
 		sleep 0.1
 	done
 	islocked $DISPLAY || fatal "vnc server $DISPLAY could not be started!"
 	echo "vnc server is ready!"
 
 	xterm -maximized -fa 'Monospace' -fs 14 -e $SELENIUM_COMMAND &
-	terminalPid=$!
+	xtermPid=$!
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
 		DISPLAY=$CLIENT_DISPLAY_PORT $basedir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd &
-		viewerPid=$!
-		waitCount=3
+		vncViewerPid=$!
 	fi
 
 	echo "waiting for pid $WAIT_FOR_PID"
 
-	while [ "$(jobs | wc -l)" -eq $waitCount ]; do
-		mute kill -0 $WAIT_FOR_PID || break
+	while true ; do
+		isrunning $vncServerPid || break
+		isrunning $xtermPid || break
+		isrunning $WAIT_FOR_PID || break
+		if [ -n "$CLIENT_DISPLAY_PORT" ]; then
+			isrunning $vncViewerPid || break
+		fi
 		sleep 0.5
-		mute jobs
 	done
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-		stop $viewerPid vncviewer
+		stop $vncViewerPid vncviewer
 	fi
-	stop $terminalPid xterm
-	stop $vncPid vncserver
+	stop $xtermPid xterm
+	stop $vncServerPid vncserver
 }
 
 function cmd_check() {
@@ -180,6 +187,5 @@ function main() {
 	call "cmd_$cmd" "Syntax: $0 <start|check>" $@
 }
 
-main $@ 2>&1
-
-exit 0
+main $@ 2>&1 | tee /dev/zero
+exit ${PIPESTATUS[0]}
