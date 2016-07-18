@@ -74,14 +74,42 @@ lazy val root = (project in file("."))
 
 lazy val core = (project in file("core"))
   .settings(commonSettings: _*)
+  .settings(
+    name := "core",
+    libraryDependencies ++= Seq(
+      "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
+      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20",
+      "net.sourceforge.htmlunit" % "htmlunit" % "2.21" exclude("org.eclipse.jetty.websocket", "websocket-client"),
+
+      // Warning: Class javax.annotation.Nullable not found
+      "com.google.code.findbugs" % "jsr305" % "3.0.1"
+    )
+  )
 
 lazy val scalatest = (project in file("scalatest"))
   .settings(commonSettings: _*)
+  .settings(
+    name := "scalatest",
+    libraryDependencies ++= Seq(
+      "org.scalactic" %% "scalactic" % "3.0.0-RC4",
+      "org.pageobject.patch.org.scalatest" %% "scalatest" % "3.0.0-SNAPSHOT" exclude("org.eclipse.jetty.orbit", "javax.servlet")
+    )
+  )
   .dependsOn(core)
+
+val jettyVersion = "9.3.9.v20160517"
 
 lazy val test = (project in file("test"))
   .settings(commonSettings: _*)
   .settings(noPublishSettings: _*)
+  .settings(
+    name := "test",
+    libraryDependencies ++= Seq(
+      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion % "test",
+      "org.eclipse.jetty" % "jetty-server" % jettyVersion % "test",
+      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % "test"
+    )
+  )
   .dependsOn(scalatest)
 
 pgpPassphrase := sys.env.get("ENCRYPTION_PASSWORD").map(_.toArray)
