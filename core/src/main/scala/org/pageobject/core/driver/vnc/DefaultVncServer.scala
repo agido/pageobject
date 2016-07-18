@@ -28,7 +28,9 @@ package org.pageobject.core.driver.vnc
  * Because you can easly stop the java process using the debugger no additional cleanup is required
  * to terminate the VNC server cleanly when watching the PPID
  */
-case class DefaultVncServer(onTerminated: Boolean => Unit) extends SeleniumVncServer with CountedId with FixedSeleniumPort {
+case class DefaultVncServer(onTerminated: Boolean => Unit)
+  extends SeleniumVncServer with CountedId with FindFreeSeleniumPort {
+
   private val display = sys.env.getOrElse("DISPLAY", "")
 
   protected val script: String = sys.env.getOrElse("PAGEOBJECT_VNC_SCRIPT", "vnc/vnc.sh")

@@ -115,6 +115,13 @@ trait FindFreeSeleniumPort {
 
 /**
  * The default selenium port is just a fixed offset added to the display id
+ *
+ * This can cause problems when running multiple tests in different VMs.
+ * The selenium server started by another process using the same port may be used because
+ * there is no way to detect if selenium is already running or to decide if it was started by another VM
+ * trying to use the same port.
+ *
+ * This can be fixed by monitoring the output stream of vnc.sh but it is easier to just use random port numbers.
  */
 trait FixedSeleniumPort {
   this: SeleniumVncServer =>
