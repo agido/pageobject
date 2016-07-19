@@ -113,6 +113,7 @@ lazy val test = (project in file("test"))
   .dependsOn(scalatest)
 
 updateImpactOpenBrowser in ThisBuild := false
+coverageEnabled := true
 
 pgpPassphrase := sys.env.get("ENCRYPTION_PASSWORD").map(_.toArray)
 pgpSecretRing := baseDirectory.value / ".gnupg" / "secring.gpg"

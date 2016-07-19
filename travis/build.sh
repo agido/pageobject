@@ -15,4 +15,17 @@
 # limitations under the License.
 #
 
-RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList FIREFOX_LIMIT=0 sbt "$@ test"
+export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
+export FIREFOX_LIMIT=0
+
+sbtCommands="test"
+
+if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+	sbtCommands="coverage $sbtCommands coverageReport"
+fi
+
+sbt $@ $sbtCommands
+
+if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+	sbt $@ coverageAggregate
+fi

@@ -42,3 +42,7 @@ else
 fi
 
 sbt $@ $sbtCommands
+
+if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+	sbt $@ coveralls
+fi
