@@ -21,8 +21,6 @@ import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.webapp.WebAppContext
 import org.pageobject.core.page.DomainPage
 import org.pageobject.core.page.PageObject
-import org.scalatest.Args
-import org.scalatest.Status
 import org.scalatest.Suite
 
 object JettySuite {
@@ -33,39 +31,29 @@ object JettySuite {
     final val domain = jettyUrl.domain
   }
 
+  private def startJettyServer(webAppContext: String): Int = {
+    val server = new Server(0)
+    val context = new WebAppContext(webAppContext, "/")
+    server.setHandler(context)
+    server.start()
+
+    while (!server.isStarted) // scalastyle:ignore while
+      Thread.sleep(10) // scalastyle:ignore magic.number
+
+    server.getConnectors()(0).asInstanceOf[ServerConnector].getLocalPort
+  }
+
+  private val instances = collection.concurrent.TrieMap[String, Int]()
+
+  def getJettyServerPort(webAppContext: String): Int = {
+    instances.getOrElseUpdate(webAppContext, startJettyServer(webAppContext))
+  }
 }
 
 trait JettySuite extends Suite {
-  protected val webAppContext = "webapp"
+  protected def webAppContext = "webapp"
 
-  private object serverThread extends Thread {
-    private val server = new Server(0)
+  private def port = JettySuite.getJettyServerPort(webAppContext)
 
-    override def run(): Unit = {
-      val webapp = new WebAppContext(webAppContext, "/")
-      server.setHandler(webapp)
-      server.setStopAtShutdown(true)
-      server.start()
-      server.join()
-    }
-
-    def done(): Unit = {
-      server.stop()
-    }
-
-    def isStarted: Boolean = server.isStarted
-
-    def port: Int = serverThread.server.getConnectors()(0).asInstanceOf[ServerConnector].getLocalPort
-  }
-
-  implicit def jettyUrl: JettySuite.JettyUrl = JettySuite.JettyUrl(s"http://localhost:${serverThread.port}")
-
-  override def run(testName: Option[String], args: Args): Status = {
-    serverThread.start()
-    while (!serverThread.isStarted) // scalastyle:ignore while
-      Thread.sleep(10) // scalastyle:ignore magic.number
-
-    try super.run(testName, args)
-    finally serverThread.done()
-  }
+  implicit def jettyUrl: JettySuite.JettyUrl = JettySuite.JettyUrl(s"http://localhost:$port")
 }
