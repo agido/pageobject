@@ -1,46 +1,43 @@
 dist: trusty
-
 language: scala
-
 matrix:
   include:
-    - scala: 2.10.6
-      jdk: openjdk7
-      env: PUBLISH=true
-    - scala: 2.10.6
-      jdk: openjdk8
-    - scala: 2.10.6
-      jdk: oraclejdk8
-
-    - scala: 2.11.8
-      jdk: openjdk7
-      env: PUBLISH=true
-    - scala: 2.11.8
-      jdk: openjdk8
-    - scala: 2.11.8
-      jdk: oraclejdk8
-
-    - scala: 2.12.0-M5
-      jdk: openjdk8
-      env: PUBLISH=true
-    - scala: 2.12.0-M5
-      jdk: oraclejdk8
-
+  - scala: 2.10.6
+    jdk: openjdk7
+    env:
+    - PUBLISH=true
+  - scala: 2.10.6
+    jdk: openjdk8
+  - scala: 2.10.6
+    jdk: oraclejdk8
+  - scala: 2.11.8
+    jdk: openjdk7
+    env:
+    - PUBLISH=true
+  - scala: 2.11.8
+    jdk: openjdk8
+  - scala: 2.11.8
+    jdk: oraclejdk8
+  - scala: 2.12.0-M5
+    jdk: openjdk8
+    env:
+    - PUBLISH=true
+  - scala: 2.12.0-M5
+    jdk: oraclejdk8
 notifications:
   email: support@pageobject.org
-
 script:
-  - "travis/build.sh ++$TRAVIS_SCALA_VERSION"
-  - "[ \"$TRAVIS_BRANCH\" = \"master\" -a \"$PUBLISH\" = \"true\" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION || true"
-
+- travis/build.sh ++$TRAVIS_SCALA_VERSION
+- '[ "$TRAVIS_BRANCH" = "master" -a "$PUBLISH" = "true" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION
+  || true'
 before_install:
-  - sudo hostname "$(hostname | cut -c1-63)"
-  - (cat /etc/hosts ; echo 127.0.0.1 $(hostname)) | sudo tee /etc/hosts
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  - sudo apt-get update
-  - sudo apt-get install -y google-chrome-stable
-  - travis/setup.sh
-
+- sudo hostname "$(hostname | cut -c1-63)"
+- "(cat /etc/hosts ; echo 127.0.0.1 $(hostname)) | sudo tee /etc/hosts"
+- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key
+  add -
+- sudo apt-get update
+- sudo apt-get install -y google-chrome-stable
+- travis/setup.sh
 env:
   global:
   - secure: sxuVgv1CiScqcjKIcEBvEbtuFQBimUL+uNX9s7AUqJkTBC9cPIsImmKVhlt9fkFDvz5rLPqvBmDQhpOgZmHXI8eTuWoJjpfobimqaMLnTmTF6LMEdJ+hZdRjESVDq84COBq5f2UFBIaeT/t9ZXVy7576qPzeHcvveiVKy4OWIi9Z3/h0xqA+0WqSbMoJ9VfKJXyYTzMIvtqeiPNbnH8XWi2Djsub1T3YTJsDxD8YTDPPdw2w008l2PUaSa4K1dFUwZrfuLDde+WSvvJzbyZ84fVvvGywd4zEr/18cyphoJx93BTGnDKLm2FkLjJkanj96xHu+SG9R91rlzpu/N3oXLX39KtrTJdK8UWUBNKyiua7i9ss0QxUXK7J0pQNEzhoAFlTyZCG7Ad7eHXiXRaciKHlezK75AeHcjsRTX6seu8MglsxQhna6m3+k19d64cKhe3ZX+G6nOubVytYHzoOV+KH0ZJHBfep2XmqdykeSgznKsGuy0Z5HJV8CvPCOWznwPRaEuHryC/139RdrH/ACVrB/eiIHE4MDD5kHAIEI5JpRXrZVQbrFevflEymODrgVJ/EPgNneZZ2PyJgLWitIIk5/RdyakpI7XtV/rvAilJMchcXOGevns235lqcGNFFohM3JpIqA5Rhh+kye13cF6o/iR0Xe4cE36Jc3I/guBM=
