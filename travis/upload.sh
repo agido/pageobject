@@ -34,20 +34,20 @@ else
 
 	mv .gnupg/credentials.sbt project
 
-	sbt "$@ core/publishSigned" "$@ scalatest/publishSigned"
+	sbt core/publishSigned scalatest/publishSigned
 fi
 
 if [ -z "$UPDATEIMPACT_API_KEY" ]; then
 	echo 'Warning: missing UPDATEIMPACT_API_KEY'
 else
-	sbt "$@ updateImpactSubmit"
+	sbt updateImpactSubmit
 fi
 
 if [ -z "$SCOVER" ]; then
-    # skip
-    true
+	# skip
+	true
 elif [ -z "$COVERALLS_REPO_TOKEN" ]; then
 	echo 'Warning: missing COVERALLS_REPO_TOKEN'
 else
-	sbt "$@ coveralls"
+	sbt coveralls
 fi

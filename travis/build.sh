@@ -21,8 +21,8 @@ export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryLi
 export FIREFOX_LIMIT=0
 
 if [ -z "$SCOVER" ]; then
-	sbt "$@ test"
+	sbt test
 else
-	sbt "$@ coverage" "$@ test" "$@ coverageReport"
-    sbt "$@ coverageAggregate"
+	sbt coverage test coverageReport
+	sbt coverageAggregate
 fi

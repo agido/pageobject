@@ -29,8 +29,8 @@ matrix:
 notifications:
   email: support@pageobject.org
 script:
-- travis/build.sh ++$TRAVIS_SCALA_VERSION
-- travis/upload.sh ++$TRAVIS_SCALA_VERSION
+- travis/build.sh
+- travis/upload.sh
 before_install:
 - sudo hostname "$(hostname | cut -c1-63)"
 - "(cat /etc/hosts ; echo 127.0.0.1 $(hostname)) | sudo tee /etc/hosts"
