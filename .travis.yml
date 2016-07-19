@@ -6,6 +6,7 @@ matrix:
     jdk: openjdk7
     env:
     - PUBLISH=true
+    - SCOVER=true
   - scala: 2.10.6
     jdk: openjdk8
   - scala: 2.10.6
@@ -14,6 +15,7 @@ matrix:
     jdk: openjdk7
     env:
     - PUBLISH=true
+    - SCOVER=true
   - scala: 2.11.8
     jdk: openjdk8
   - scala: 2.11.8
@@ -28,8 +30,7 @@ notifications:
   email: support@pageobject.org
 script:
 - travis/build.sh ++$TRAVIS_SCALA_VERSION
-- '[ "$TRAVIS_BRANCH" = "master" -a "$PUBLISH" = "true" ] && travis/upload.sh ++$TRAVIS_SCALA_VERSION
-  || true'
+- travis/upload.sh ++$TRAVIS_SCALA_VERSION
 before_install:
 - sudo hostname "$(hostname | cut -c1-63)"
 - "(cat /etc/hosts ; echo 127.0.0.1 $(hostname)) | sudo tee /etc/hosts"

@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	 http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,28 +21,33 @@ function decrypt() {
 	openssl aes-256-cbc -pass env:ENCRYPTION_PASSWORD -in $1.bin -out $1 -d
 }
 
-sbtCommands=""
+if [ "$TRAVIS_BRANCH" != "master" -o "$PUBLISH" != "true" ]; then
+	exit 0
+fi
 
 if [ -z "$ENCRYPTION_PASSWORD" ]; then
-	echo 'Warning: missing $ENCRYPTION_PASSWORD'
+	echo 'Warning: missing ENCRYPTION_PASSWORD'
 else
-    decrypt .gnupg/pubring.gpg
-    decrypt .gnupg/secring.gpg
-    decrypt .gnupg/credentials.sbt
+	decrypt .gnupg/pubring.gpg
+	decrypt .gnupg/secring.gpg
+	decrypt .gnupg/credentials.sbt
 
-    mv .gnupg/credentials.sbt project
+	mv .gnupg/credentials.sbt project
 
-    sbtCommands="$sbtCommands core/publishSigned scalatest/publishSigned"
+	sbt "$@ core/publishSigned" "$@ scalatest/publishSigned"
 fi
 
 if [ -z "$UPDATEIMPACT_API_KEY" ]; then
-	echo 'Warning: missing $UPDATEIMPACT_API_KEY'
+	echo 'Warning: missing UPDATEIMPACT_API_KEY'
 else
-	sbtCommands="$sbtCommands updateImpactSubmit"
+	sbt "$@ updateImpactSubmit"
 fi
 
-sbt $@ $sbtCommands
-
-if [ -n "$COVERALLS_REPO_TOKEN" ]; then
-	sbt $@ coveralls
+if [ -z "$SCOVER" ]; then
+    # skip
+    true
+elif [ -z "$COVERALLS_REPO_TOKEN" ]; then
+	echo 'Warning: missing COVERALLS_REPO_TOKEN'
+else
+	sbt "$@ coveralls"
 fi
