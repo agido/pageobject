@@ -148,7 +148,7 @@ Before first run you need to download VNC and selenium files:
 
 [travis]: https://travis-ci.org/agido/pageobject
 [travis-image]: https://travis-ci.org/agido/pageobject.svg?branch=master
-[license-image]: http://img.shields.io/badge/license-Apache--2-blue.svg?style=flat
+[license-image]: http://img.shields.io/badge/license-Apache--2-brightgreen.svg?style=flat
 [license]: http://www.apache.org/licenses/LICENSE-2.0
 [dependencies]: https://app.updateimpact.com/latest/755117671372165120/pageobject
 [dependencies-image]: https://app.updateimpact.com/badge/755117671372165120/pageobject.svg?config=compile
