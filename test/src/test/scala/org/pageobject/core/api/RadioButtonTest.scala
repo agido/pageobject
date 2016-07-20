@@ -17,11 +17,11 @@ package org.pageobject.core.api
 
 import org.openqa.selenium.By
 import org.pageobject.core.JettySuite.JettyPage
+import org.pageobject.core.TestSpec
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule
-import org.pageobject.examples.ExampleJettyPageObjectSpec
 
-class RadioButtonTest extends ExampleJettyPageObjectSpec with BrowserPageDsl {
+class RadioButtonTest extends TestSpec with BrowserPageDsl {
 
   case class RadioButtonTestPage() extends JettyPage {
     val path = "/radio.html"

@@ -111,7 +111,8 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 ## Project Structure
 * **core** All Test Runner independent files of PageObject
 * **scalatest** Classes needed to use PageObject with ScalaTest 3 
-* **test** Unit Tests and examples for PageObject, tested with ScalaTest 3
+* **test** Unit Tests for PageObject, tested with ScalaTest 3 using Jetty
+* **examples** examples how to use PageObject with ScalaTest 3
 * **selenium** Selenium Scripts and chrome driver, used for building pageobject
 * **vnc** A VNC server and control script reference implementation, used for building pageobject
 * **travis** Scripts used by travis to build and upload PageObject to sonatype

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.examples
+package org.pageobject.core
 
 import org.pageobject.scalatest.PageObjectSuite
 import org.scalatest.DiagrammedAssertions
 import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 
-abstract class ExamplePageObjectSpec extends FunSpec with PageObjectSuite with GivenWhenThen with DiagrammedAssertions
+abstract class PageObjectTestSpec extends FunSpec with PageObjectSuite with GivenWhenThen with DiagrammedAssertions
+  with JettySuite

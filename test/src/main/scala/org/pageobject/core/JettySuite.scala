@@ -51,7 +51,7 @@ object JettySuite {
 }
 
 trait JettySuite extends Suite {
-  protected def webAppContext = "webapp"
+  protected def webAppContext: String
 
   private def port = JettySuite.getJettyServerPort(webAppContext)
 

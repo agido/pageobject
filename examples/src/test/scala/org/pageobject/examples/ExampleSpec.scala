@@ -15,8 +15,8 @@
  */
 package org.pageobject.examples
 
-import org.pageobject.core.JettySuite
+import org.pageobject.core.PageObjectTestSpec
 
-abstract class ExampleJettyPageObjectSpec extends ExamplePageObjectSpec with JettySuite {
-  override val webAppContext = "test/src/test/webapp"
+abstract class ExampleSpec extends PageObjectTestSpec {
+  override val webAppContext = "examples/src/test/webapp"
 }

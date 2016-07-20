@@ -69,7 +69,8 @@ lazy val root = (project in file("."))
   .aggregate(
     core,
     scalatest,
-    test
+    test,
+    examples
   )
 
 lazy val core = (project in file("core"))
@@ -105,12 +106,17 @@ lazy val test = (project in file("test"))
   .settings(
     name := "test",
     libraryDependencies ++= Seq(
-      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion % Test,
-      "org.eclipse.jetty" % "jetty-server" % jettyVersion % Test,
-      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion % Test
+      "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
+      "org.eclipse.jetty" % "jetty-server" % jettyVersion,
+      "org.eclipse.jetty" % "jetty-webapp" % jettyVersion
     )
   )
   .dependsOn(scalatest)
+
+lazy val examples = (project in file("examples"))
+  .settings(commonSettings: _*)
+  .settings(noPublishSettings: _*)
+  .dependsOn(test)
 
 updateImpactOpenBrowser in ThisBuild := false
 

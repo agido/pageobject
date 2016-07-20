@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All Tests" type="ScalaTestRunConfiguration" factoryName="ScalaTest" singleton="true">
-    <module name="test" />
+    <module name="examples" />
     <setting name="path" value="" />
     <setting name="package" value="" />
     <setting name="vmparams" value="" />

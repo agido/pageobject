@@ -21,9 +21,8 @@ import org.pageobject.core.api.MultiSelLocator
 import org.pageobject.core.api.SingleSelLocator
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule
-import org.pageobject.examples.ExampleJettyPageObjectSpec
 
-class SelectTest extends ExampleJettyPageObjectSpec with BrowserPageDsl {
+class SelectTest extends TestSpec with BrowserPageDsl {
 
   case class SelectTestPage() extends JettyPage {
     val path = "/select.html"
