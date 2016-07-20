@@ -43,6 +43,7 @@ object UnexpectedPages {
 
   val defaultCancelTestPages: Seq[AtCheckerProvider] = Seq(() => BrowserErrorPage())
   val defaultFailTestPages: Seq[AtCheckerProvider] = Seq()
+  val defaultWaitPages: Seq[AtCheckerProvider] = Seq()
 }
 
 /**
@@ -67,6 +68,13 @@ trait BaseUnexpectedPages[T] {
    * @return a list of pages
    */
   def cancelTestPages: Seq[T]
+
+  /**
+   * A list of pages that will force the test to wait until the page was disappeared or a timeout occured.
+   *
+   * @return a list of pages
+   */
+  def waitPages: Seq[T]
 }
 
 /**
@@ -119,13 +127,14 @@ object UnexpectedPagesFactory {
   }
 
   def createUnexpectedPages(factory: UnexpectedPagesFactory = UnexpectedPagesFactoryHolder.value): UnexpectedPages = {
-    DefaultUnexpectedPages(factory.cancelTestPages.map(_ ()), factory.failTestPages.map(_ ()))
+    DefaultUnexpectedPages(factory.cancelTestPages.map(_ ()), factory.failTestPages.map(_ ()), factory.waitPages.map(_ ()))
   }
 
   def apply(cancelTestPages: Seq[UnexpectedPages.AtCheckerProvider] = UnexpectedPages.defaultCancelTestPages,
-            failTestPages: Seq[UnexpectedPages.AtCheckerProvider] = UnexpectedPages.defaultFailTestPages
+            failTestPages: Seq[UnexpectedPages.AtCheckerProvider] = UnexpectedPages.defaultFailTestPages,
+            waitPages: Seq[UnexpectedPages.AtCheckerProvider] = UnexpectedPages.defaultWaitPages
            ): UnexpectedPagesFactory = {
-    DefaultUnexpectedPagesFactory(cancelTestPages, failTestPages)
+    DefaultUnexpectedPagesFactory(cancelTestPages, failTestPages, waitPages)
   }
 
   private object UnexpectedPagesFactoryHolder
@@ -141,7 +150,8 @@ object UnexpectedPagesFactory {
  * @param failTestPages list of pages that should fail a test when detected
  */
 case class DefaultUnexpectedPages(cancelTestPages: Seq[AtChecker] = UnexpectedPages.defaultCancelTestPages.map(_ ()),
-                                  failTestPages: Seq[AtChecker] = UnexpectedPages.defaultFailTestPages.map(_ ()))
+                                  failTestPages: Seq[AtChecker] = UnexpectedPages.defaultFailTestPages.map(_ ()),
+                                  waitPages: Seq[AtChecker] = UnexpectedPages.defaultWaitPages.map(_ ()))
   extends UnexpectedPages
 
 /**
@@ -150,6 +160,7 @@ case class DefaultUnexpectedPages(cancelTestPages: Seq[AtChecker] = UnexpectedPa
 case class EmptyUnexpectedPagesFactory() extends UnexpectedPagesFactory {
   val cancelTestPages = Seq()
   val failTestPages = Seq()
+  val waitPages = Seq()
 }
 
 /**
@@ -158,7 +169,9 @@ case class EmptyUnexpectedPagesFactory() extends UnexpectedPagesFactory {
 case class DefaultUnexpectedPagesFactory(cancelTestPages: Seq[UnexpectedPages.AtCheckerProvider] =
                                          UnexpectedPages.defaultCancelTestPages,
                                          failTestPages: Seq[UnexpectedPages.AtCheckerProvider] =
-                                         UnexpectedPages.defaultFailTestPages)
+                                         UnexpectedPages.defaultFailTestPages,
+                                         waitPages: Seq[UnexpectedPages.AtCheckerProvider] =
+                                         UnexpectedPages.defaultWaitPages)
   extends UnexpectedPagesFactory
 
 /**

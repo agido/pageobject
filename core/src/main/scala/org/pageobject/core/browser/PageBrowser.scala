@@ -80,6 +80,8 @@ trait PageBrowser extends WaitFor with PageHolder {
 
     val unexpectedPages = defer(UnexpectedPagesFactory.createUnexpectedPages())
     waitFor(PageBrowser.At) {
+      unexpectedPages.waitPages.find(isAt(_)).foreach(unexpectedPage =>
+        new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!"))
       unexpectedPages.cancelTestPages.find(isAt(_)).foreach(unexpectedPage =>
         TestHelper.cancelTest(s"browser is at unexpected page $unexpectedPage, test canceled!"))
       unexpectedPages.failTestPages.find(isAt(_)).foreach(unexpectedPage =>
