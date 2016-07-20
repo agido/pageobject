@@ -12,6 +12,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/project" />
+            <option value="$PROJECT_DIR$/examples" />
+            <option value="$PROJECT_DIR$/examples/project" />
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/scalatest" />
             <option value="$PROJECT_DIR$/scalatest/project" />

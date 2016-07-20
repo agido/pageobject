@@ -4,7 +4,7 @@
     <option name="deprecationWarnings" value="true" />
     <option name="uncheckedWarnings" value="true" />
     <option name="featureWarnings" value="true" />
-    <profile name="SBT 1" modules="root,core,scalatest,test">
+    <profile name="SBT 1" modules="root,core,examples,scalatest,test">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <option name="featureWarnings" value="true" />
