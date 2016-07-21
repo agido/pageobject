@@ -64,15 +64,15 @@ trait DriverFactory {
 
   def timeouts: Set[PatienceConfig] = Set()
 
-  protected def createWebDriver(): WebDriver
+  protected def createRealWebDriver(): WebDriver
 }
 
 /**
  * When using this trait the browser started by this driver will be switched into fullscreen mode.
  */
 trait Fullscreen extends DriverFactory {
-  abstract override def createWebDriver(): WebDriver = {
-    val driver: WebDriver = super.createWebDriver()
+  abstract override def createRealWebDriver(): WebDriver = {
+    val driver: WebDriver = super.createRealWebDriver()
     def window = driver.manage().window()
     window.fullscreen()
     driver
@@ -83,8 +83,8 @@ trait Fullscreen extends DriverFactory {
  * When using this trait the browser started by this driver will be maximized.
  */
 trait Maximized extends DriverFactory {
-  abstract override def createWebDriver(): WebDriver = {
-    val driver: WebDriver = super.createWebDriver()
+  abstract override def createRealWebDriver(): WebDriver = {
+    val driver: WebDriver = super.createRealWebDriver()
     def window = driver.manage().window()
     window.maximize()
     driver
@@ -98,8 +98,8 @@ trait FixedLocation extends DriverFactory {
   val position = Some(new Point(0, 0))
   val size = Some(new Dimension(1920, 1080)) // scalastyle:ignore magic.number
 
-  abstract override def createWebDriver(): WebDriver = {
-    val driver: WebDriver = super.createWebDriver()
+  abstract override def createRealWebDriver(): WebDriver = {
+    val driver: WebDriver = super.createRealWebDriver()
     def window = driver.manage().window()
     position.foreach(window.setPosition(_))
     size.foreach(window.setSize(_))
@@ -119,7 +119,7 @@ trait DynamicDriverFactory extends DriverFactory {
   def webDriver: WebDriver = webDriverHolder.value.get
 
   override def runTest[T](testName: String, fn: => T): T = {
-    webDriverHolder.withValue(Some(createWebDriver())) {
+    webDriverHolder.withValue(Some(createRealWebDriver())) {
       try {
         super.runTest(testName, fn)
       } finally {

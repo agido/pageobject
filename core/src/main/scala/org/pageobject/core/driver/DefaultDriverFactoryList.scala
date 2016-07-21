@@ -33,7 +33,7 @@ import org.pageobject.core.tools.OS
  * @param create used to create a webDriver for each test
  */
 abstract class DefaultCreateDriverFactory(val name: String, val create: () => WebDriver) extends DynamicDriverFactory {
-  protected def createWebDriver(): WebDriver = create()
+  protected def createRealWebDriver(): WebDriver = create()
 }
 
 /**

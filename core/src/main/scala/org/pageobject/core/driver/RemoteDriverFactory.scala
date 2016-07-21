@@ -72,7 +72,7 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
   // default is 3 hours in HttpClientFactory, this is too long for this use case
   protected val socketTimeout: FiniteDuration = 2.minutes
 
-  protected def createWebDriver(): WebDriver = {
+  protected def createRealWebDriver(): WebDriver = {
     // we need to override the very long default socketTimeout...
     val factory = new HttpClientFactory(connectionTimeout.toMillis.toInt, socketTimeout.toMillis.toInt)
     val executor = new HttpCommandExecutor(ImmutableMap.of[String, CommandInfo](), new URL(url()),
