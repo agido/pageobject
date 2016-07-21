@@ -36,9 +36,12 @@ import org.scalatest.tools.AnnotationHelper
  */
 object DriverLaunchWrapper {
   def getDriverFactories(clazz: Class[_]): DriverFactories = {
-    sys.env.get("RUN_WITH_DRIVERS")
-      .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
-      .orElse(AnnotationHelper.find(classOf[RunWithDrivers], clazz).map(_.value()))
+    AnnotationHelper.find(classOf[RunWithDrivers], clazz)
+      .map(_.value())
+      .orElse(
+        sys.env.get("RUN_WITH_DRIVERS")
+          .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
+      )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
         case None | Some("0") | Some("false") => Some(classOf[DefaultDriverFactoryList])
         case Some(_) => None
