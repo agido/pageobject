@@ -16,7 +16,7 @@
 package org.pageobject.core.api
 
 import org.openqa.selenium.StaleElementReferenceException
-import org.pageobject.core.JettySuite.JettyPage
+import org.pageobject.scalatest.JettySuite.JettyPage
 import org.pageobject.core.TestSpec
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule

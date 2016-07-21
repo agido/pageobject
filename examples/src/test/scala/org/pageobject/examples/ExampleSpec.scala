@@ -15,7 +15,7 @@
  */
 package org.pageobject.examples
 
-import org.pageobject.core.PageObjectTestSpec
+import org.pageobject.scalatest.PageObjectTestSpec
 
 abstract class ExampleSpec extends PageObjectTestSpec {
   override val webAppContext = "examples/src/test/webapp"
