@@ -34,7 +34,7 @@ trait DriverFactory {
 
   val compatible: Boolean = true
 
-  val selected: Boolean = Limit.getLimit(name) != 0
+  def selected: Boolean = Limit.getLimit(name) != 0
 
   def takeScreenshot(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {}
 
@@ -62,7 +62,7 @@ trait DriverFactory {
     }
   }
 
-  val timeouts: Set[PatienceConfig] = Set()
+  def timeouts: Set[PatienceConfig] = Set()
 
   protected def createWebDriver(): WebDriver
 }
