@@ -106,6 +106,7 @@ lazy val test = (project in file("test"))
   .settings(
     name := "test",
     libraryDependencies ++= Seq(
+      "org.easymock" % "easymock" % "3.4",
       "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
       "org.eclipse.jetty" % "jetty-server" % jettyVersion,
       "org.eclipse.jetty" % "jetty-webapp" % jettyVersion

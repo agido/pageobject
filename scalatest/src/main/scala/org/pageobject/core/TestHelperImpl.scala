@@ -61,6 +61,7 @@ class TestHelperImpl extends TestHelper {
   }
 
   def isTestAbortError(th: Throwable): Boolean = th match {
+    case ae: AssertionError if ae.getStackTrace.head.getClassName.startsWith("org.easymock") => true
     case th: Throwable if isAssertionError(th) => false
     case tce: TestCanceledException => true
     case tfe: TestFailedException => true
