@@ -26,6 +26,23 @@ import org.pageobject.core.tools.Limit
 import scala.util.DynamicVariable
 import scala.util.control.NonFatal
 
+private[pageobject] object DriverFactory {
+
+  private object mock extends DynamicVariable[Option[() => WebDriver]](None)
+
+  def currentMock: Option[() => WebDriver] = mock.value
+
+  def withWebDriverMock[S](webDriverFactory: () => WebDriver)(thunk: => S): S = {
+    withWebDriverMock(Some(webDriverFactory))(thunk)
+  }
+
+  def withWebDriverMock[S](webDriverFactory: Option[() => WebDriver])(thunk: => S): S = {
+    mock.withValue(webDriverFactory) {
+      thunk
+    }
+  }
+}
+
 /**
  * This trait is used to configure a test run and create a WebDriver used by the test.
  */
@@ -63,6 +80,13 @@ trait DriverFactory {
   }
 
   def timeouts: Set[PatienceConfig] = Set()
+
+  protected def createWebDriver(): WebDriver = DriverFactory.currentMock match {
+    case Some(create) =>
+      create()
+    case None =>
+      createRealWebDriver()
+  }
 
   protected def createRealWebDriver(): WebDriver
 }
@@ -119,7 +143,7 @@ trait DynamicDriverFactory extends DriverFactory {
   def webDriver: WebDriver = webDriverHolder.value.get
 
   override def runTest[T](testName: String, fn: => T): T = {
-    webDriverHolder.withValue(Some(createRealWebDriver())) {
+    webDriverHolder.withValue(Some(createWebDriver())) {
       try {
         super.runTest(testName, fn)
       } finally {

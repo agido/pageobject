@@ -15,6 +15,7 @@
  */
 package org.pageobject.scalatest
 
+import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.scalatest.Args
 import org.scalatest.PageObjectHelper
@@ -38,6 +39,8 @@ import scala.util.Try
 trait DriverLauncher extends SuiteMixin {
   this: Suite =>
 
+  private val currentMock = DriverFactory.currentMock
+
   private val driverFactory = DriverFactoryHolder.value.get
 
   abstract override val suiteName = driverFactory.name
@@ -47,7 +50,9 @@ trait DriverLauncher extends SuiteMixin {
   abstract override protected def runTests(testName: Option[String], args: Args): Status = {
     DriverFactoryHolder.withValue(Some(driverFactory)) {
       Try {
-        driverFactory.runTests(super.runTests(testName, args))
+        DriverFactory.withWebDriverMock(currentMock) {
+          driverFactory.runTests(super.runTests(testName, args))
+        }
       } match {
         case Success(result) => result
         case Failure(ex) => PageObjectHelper.failedStatus(ex)
@@ -58,7 +63,9 @@ trait DriverLauncher extends SuiteMixin {
   abstract override protected def runTest(testName: String, args: Args): Status = {
     DriverFactoryHolder.withValue(Some(driverFactory)) {
       Try {
-        driverFactory.runTest(testName, super.runTest(testName, args))
+        DriverFactory.withWebDriverMock(currentMock) {
+          driverFactory.runTest(testName, super.runTest(testName, args))
+        }
       } match {
         case Success(result) => result
         case Failure(ex) => PageObjectHelper.failedStatus(ex)

@@ -59,11 +59,15 @@ object DriverLaunchWrapper {
 class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
   extends Suites with ParallelTestExecution with ConfigureableParallelTestLimit {
 
+  private val currentMock = DriverFactory.currentMock
+
   private val runWith = DriverLaunchWrapper.getDriverFactories(clazz)
 
   private def createBrowserSuiteInstance(driverFactory: DriverFactory) = {
     DriverFactoryHolder.withValue(Some(driverFactory)) {
-      clazz.getConstructor().newInstance()
+      DriverFactory.withWebDriverMock(currentMock) {
+        clazz.getConstructor().newInstance()
+      }
     }
   }
 
