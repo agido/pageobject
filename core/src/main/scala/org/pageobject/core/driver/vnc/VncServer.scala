@@ -58,16 +58,18 @@ trait VncServer {
     checkCommand.forall(execute(_).exitValue == 0)
   }
 
-  def start(): Unit = {
-    val process = execute(startCommand.get, extraEnv: _*)
-    val thread = new Thread(VncServer.threadGroup, new Runnable {
-      override def run(): Unit = {
-        onTerminated(process.exitValue() != 127)
-      }
-    })
-    thread.setName(s"VncServerThread-$id")
-    thread.setDaemon(true)
-    thread.start()
+  def start(): Unit = startCommand match {
+    case Some(command) =>
+      val process = execute(command, extraEnv: _*)
+      val thread = new Thread(VncServer.threadGroup, new Runnable {
+        override def run(): Unit = {
+          onTerminated(process.exitValue() != 127)
+        }
+      })
+      thread.setName(s"VncServerThread-$id")
+      thread.setDaemon(true)
+      thread.start()
+    case _ =>
   }
 }
 
