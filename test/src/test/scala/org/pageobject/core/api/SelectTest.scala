@@ -41,7 +41,7 @@ class SelectTest extends TestSpec with BrowserPageDsl {
   }
 
   it("should return the correct query") {
-    val (select1, select2) = createSelects() // scalastyle:ignore field.name
+    val (select1, select2) = createSelects()
     assert(select1.query == id("select1"))
     assert(select2.query == name("select2"))
     assert(select1.query.by == By.id("select1"))
@@ -49,13 +49,13 @@ class SelectTest extends TestSpec with BrowserPageDsl {
   }
 
   it("should detect the correct elements count") {
-    val (select1, select2) = createSelects() // scalastyle:ignore field.name
+    val (select1, select2) = createSelects()
     assert(select1.elements.length == 1)
     assert(select2.elements.length == 1)
   }
 
   it("should detect the correct options count") {
-    val (select1, select2) = createSelects() // scalastyle:ignore field.name
+    val (select1, select2) = createSelects()
     assert(select1.options.size == 3)
     assert(select1.options.keySet == Set("option1", "option2", "option3"))
     assert(select2.options.size == 3)
@@ -63,7 +63,7 @@ class SelectTest extends TestSpec with BrowserPageDsl {
   }
 
   it("should be able to single select") {
-    val (select1, _) = createSelects() // scalastyle:ignore field.name
+    val (select1, _) = createSelects()
 
     assert(select1.value == "option1")
     select1.value = "option2"
@@ -73,7 +73,7 @@ class SelectTest extends TestSpec with BrowserPageDsl {
   }
 
   it("should be able to multi select") {
-    val (_, select2) = createSelects() // scalastyle:ignore field.name
+    val (_, select2) = createSelects()
 
     assert(select2.values == Seq())
     select2.values = Seq("option4")

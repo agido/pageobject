@@ -26,7 +26,6 @@ trait DurationDsl {
   protected final val span = duration.span
   protected final val fromNow = duration.fromNow
   protected type TimeUnit = duration.TimeUnit
-  // scalastyle:off field.name
   protected final val DAYS = duration.DAYS
   protected final val HOURS = duration.HOURS
   protected final val MICROSECONDS = duration.MICROSECONDS
@@ -34,7 +33,6 @@ trait DurationDsl {
   protected final val MINUTES = duration.MINUTES
   protected final val NANOSECONDS = duration.NANOSECONDS
   protected final val SECONDS = duration.SECONDS
-  // scalastyle:on field.name
 
   protected implicit def pairIntToDuration(p: (Int, TimeUnit)): Duration = duration.pairIntToDuration(p)
 

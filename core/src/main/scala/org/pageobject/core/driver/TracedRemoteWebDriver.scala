@@ -87,9 +87,7 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
   private val elementIdsToShow = 10
 
   private def formatElementIds(result: Response): String = {
-    // scalastyle:off field.name
     val (show, hide) = result.getValue.asInstanceOf[util.ArrayList[RemoteWebElement]].asScala.splitAt(elementIdsToShow)
-    // scalastyle:on field.name
     val ids = show.map(_.getId).mkString(", ")
     val dots = hide.headOption.fold("")(_ => "...")
     s"${show.size + hide.size} [$ids$dots]"

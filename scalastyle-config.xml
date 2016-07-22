@@ -44,7 +44,7 @@ package org\.pageobject)]]></parameter>
     <check level="error" class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" enabled="true"/>
     <check level="error" class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" enabled="true"/>
     <check level="error" class="org.scalastyle.scalariform.EqualsHashCodeChecker" enabled="true"/>
-    <check level="error" class="org.scalastyle.scalariform.FieldNamesChecker" enabled="true"/>
+    <check level="error" class="org.scalastyle.scalariform.FieldNamesChecker"/><!-- disabled -->
     <check level="error" class="org.scalastyle.scalariform.ForBraceChecker" enabled="true"/>
     <check level="error" class="org.scalastyle.scalariform.IfBraceChecker" enabled="true"/>
     <check level="error" class="org.scalastyle.scalariform.IllegalImportsChecker" enabled="true"/>

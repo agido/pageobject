@@ -56,9 +56,7 @@ private object TakeScreenshot {
   }
 
   def writeFiles(testName: String, png: Array[Byte], html: Array[Byte]): Unit = {
-    // scalastyle:off field.name
     val (pngFile, htmlFile) = createScreenshotFiles(testName)
-    // scalastyle:on field.name
     writeToFile(pngFile, png)
     writeToFile(htmlFile, html)
   }

@@ -41,25 +41,25 @@ class RadioButtonTest extends TestSpec with BrowserPageDsl {
   }
 
   it("should return the correct query") {
-    val (buttons, _) = createRadioButton() // scalastyle:ignore field.name
+    val (buttons, _) = createRadioButton()
     assert(buttons.query == name("group1"))
     assert(buttons.query.by == By.name("group1"))
   }
 
   it("should detect the correct elements count") {
-    val (buttons, _) = createRadioButton() // scalastyle:ignore field.name
+    val (buttons, _) = createRadioButton()
     assert(buttons.elements.length == 3)
   }
 
   it("should detect the correct options count") {
-    val (_, group) = createRadioButton() // scalastyle:ignore field.name
+    val (_, group) = createRadioButton()
     val options = group.options
     assert(options.size == 3)
     assert(options.keySet == Set("Option 1", "Option 2", "Option 3"))
   }
 
   it("should be able to select") {
-    val (_, group) = createRadioButton() // scalastyle:ignore field.name
+    val (_, group) = createRadioButton()
     val options = group.options
 
     assert(group.selection.isEmpty)
