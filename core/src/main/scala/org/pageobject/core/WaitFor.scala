@@ -24,7 +24,7 @@ import org.pageobject.core.WaitFor.WaitForHolder
 import org.pageobject.core.dsl.DurationDsl
 
 import scala.annotation.tailrec
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 import scala.util.control.NonFatal
 
 /**
@@ -86,7 +86,7 @@ trait WaitFor extends DurationDsl {
   }
 
   protected def waitFor[T](config: PatienceConfig)(fun: => T): T = {
-    val mapped = WaitForHolder.value.flatMap(_.get(config)).getOrElse(config)
+    val mapped = WaitForHolder.option.flatMap(_.get(config)).getOrElse(config)
     val timeout = mapped.timeout
     val interval = mapped.interval
     val startNanos = System.nanoTime
@@ -115,8 +115,8 @@ trait WaitFor extends DurationDsl {
   }
 
   protected def withPatience[T](map: PatienceMap)(fun: => T): T = {
-    val merged = WaitForHolder.value.fold(map)(_ ++ map)
-    WaitForHolder.withValue(Some(merged)) {
+    val merged = WaitForHolder.option.fold(map)(_ ++ map)
+    WaitForHolder.withValue(merged) {
       fun
     }
   }
@@ -144,7 +144,7 @@ object WaitFor extends DurationDsl {
 
   type PatienceMap = Map[PatienceConfig, PatienceConfig]
 
-  private object WaitForHolder extends DynamicVariable[Option[PatienceMap]](None)
+  private object WaitForHolder extends DynamicOptionVariable[PatienceMap]()
 
   def waitFor[T](duration: FiniteDuration)(fun: => T): T = {
     waitForDelegate.waitFor(duration)(fun)

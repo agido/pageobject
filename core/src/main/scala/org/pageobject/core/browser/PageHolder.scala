@@ -22,7 +22,7 @@ import org.pageobject.core.driver.DriverProvider
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.PageObject
 
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 
 /**
  * While instantiating a Page the PageHolder will be stored here.
@@ -40,9 +40,9 @@ import scala.util.DynamicVariable
  **/
 object PageHolder {
 
-  private object PageHolder extends DynamicVariable[Option[PageHolder]](None)
+  private object PageHolder extends DynamicOptionVariable[PageHolder]()
 
-  def apply(): PageHolder = PageHolder.value.getOrElse(throw new RuntimeException(
+  def apply(): PageHolder = PageHolder.option.getOrElse(throw new RuntimeException(
     "No PageHolder is active! Page creation is only allowed in PageBrowser.to/via/at/isat or for UnexpectedPages"))
 
   def withPageHolder[S](pageHolder: PageHolder)(thunk: => S): S = PageHolder.withValue(Some(pageHolder))(thunk)

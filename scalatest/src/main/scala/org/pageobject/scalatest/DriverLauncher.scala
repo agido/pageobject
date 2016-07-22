@@ -41,7 +41,7 @@ trait DriverLauncher extends SuiteMixin {
 
   private val currentMock = DriverFactory.currentMock
 
-  private val driverFactory = DriverFactoryHolder.value.get
+  private val driverFactory = DriverFactoryHolder.value
 
   abstract override val suiteName = driverFactory.name
 

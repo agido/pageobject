@@ -24,14 +24,14 @@ import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.tools.Limit
 
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 import scala.util.control.NonFatal
 
 private[pageobject] object DriverFactory {
 
-  private object mock extends DynamicVariable[Option[() => WebDriver]](None)
+  private object mock extends DynamicOptionVariable[() => WebDriver]()
 
-  def currentMock: Option[() => WebDriver] = mock.value
+  def currentMock: Option[() => WebDriver] = mock.option
 
   def withWebDriverMock[S](webDriverFactory: () => WebDriver)(thunk: => S): S = {
     withWebDriverMock(Some(webDriverFactory))(thunk)
@@ -134,14 +134,14 @@ trait FixedLocation extends DriverFactory {
 
 /**
  * A default implementation for DriverFactory.webDriver,
- * using a DynamicVariable to store the active webDriver on the stack.
+ * using a DynamicOptionVariable to store the active webDriver on the stack.
  * A new webDriver will be created for every test.
  */
 trait DynamicDriverFactory extends DriverFactory {
 
-  private object webDriverHolder extends DynamicVariable[Option[WebDriver]](None)
+  private object webDriverHolder extends DynamicOptionVariable[WebDriver]()
 
-  def webDriver: WebDriver = webDriverHolder.value.get
+  def webDriver: WebDriver = webDriverHolder.value
 
   override def runTest[T](testName: String, fn: => T): T = {
     webDriverHolder.withValue(Some(createWebDriver())) {

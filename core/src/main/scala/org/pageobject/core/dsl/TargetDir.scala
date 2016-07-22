@@ -18,11 +18,11 @@ package org.pageobject.core.dsl
 
 import java.io.File
 
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 
 /**
  * This object stores the current active target dir used for screenshots.
  *
  * Use <code>CaptureDsl.setCaptureDir()</code> to modify this variable.
  */
-private object TargetDir extends DynamicVariable(new File(System.getProperty("java.io.tmpdir")))
+private object TargetDir extends DynamicOptionVariable(new File(System.getProperty("java.io.tmpdir")))

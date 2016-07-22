@@ -18,7 +18,7 @@ package org.pageobject.core.driver
 import org.openqa.selenium.WebDriver
 import org.pageobject.core.TestHelper
 
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 
 /**
  * To implicit access the webDriver, mainly needed by <code>LocatorDsl</code>
@@ -41,7 +41,7 @@ trait DriverProvider {
 trait DefaultDriverProvider extends DriverProvider {
   protected[pageobject] implicit def webDriver: WebDriver = {
     val err = "No WebDriver found. Forgot to extend your test with DriverLauncher?"
-    DriverFactoryHolder.value.getOrElse(TestHelper.notAllowed(err)).webDriver
+    DriverFactoryHolder.option.getOrElse(TestHelper.notAllowed(err)).webDriver
   }
 }
 
@@ -57,4 +57,4 @@ trait DefaultDriverProvider extends DriverProvider {
  * When <code>runTest</code> and <code>runTests</code> of the suite are launched,
  * the previous saved driver factory will be stored here again.
  */
-private[pageobject] object DriverFactoryHolder extends DynamicVariable[Option[DriverFactory]](None)
+private[pageobject] object DriverFactoryHolder extends DynamicOptionVariable[DriverFactory]()

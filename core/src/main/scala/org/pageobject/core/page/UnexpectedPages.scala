@@ -16,9 +16,9 @@
 package org.pageobject.core.page
 
 import org.pageobject.core.BrowserErrorPage
+import org.pageobject.core.tools.DynamicOptionVariable
 
 import scala.collection.Seq
-import scala.util.DynamicVariable
 
 /**
  * UnexpectedPages will be checked by <code>PageBrowser.at()</code> to prevent
@@ -138,7 +138,7 @@ object UnexpectedPagesFactory {
   }
 
   private object UnexpectedPagesFactoryHolder
-    extends DynamicVariable[UnexpectedPagesFactory](DefaultUnexpectedPagesFactory())
+    extends DynamicOptionVariable[UnexpectedPagesFactory](DefaultUnexpectedPagesFactory())
 
 }
 

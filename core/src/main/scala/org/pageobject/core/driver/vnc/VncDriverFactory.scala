@@ -24,7 +24,7 @@ import org.pageobject.core.driver.RemoteDriverFactory
 
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
-import scala.util.DynamicVariable
+import org.pageobject.core.tools.DynamicOptionVariable
 
 /**
  * A WebDriverFactory used to connect to a selenium server running inside of a VNC Server.
@@ -40,9 +40,9 @@ import scala.util.DynamicVariable
 abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncServerManager: VncServerManager[V])
   extends RemoteDriverFactory {
 
-  private object vncServer extends DynamicVariable[Option[V]](None)
+  private object vncServer extends DynamicOptionVariable[V]()
 
-  protected def url(): String = vncServer.value.get.url
+  protected def url(): String = vncServer.value.url
 
   protected def vncServerDuration() = FiniteDuration(1, TimeUnit.MINUTES)
 
