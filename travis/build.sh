@@ -19,6 +19,7 @@ set -e
 
 export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 export FIREFOX_LIMIT=0
+export TEST_LIMIT=1
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
     # fix for scala 2.10.x only
