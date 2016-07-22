@@ -17,6 +17,7 @@ package org.pageobject.scalatest
 
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
+import org.pageobject.core.page.UnexpectedPagesFactory
 import org.scalatest.Args
 import org.scalatest.PageObjectHelper
 import org.scalatest.Status
@@ -43,33 +44,39 @@ trait DriverLauncher extends SuiteMixin {
 
   private val driverFactory = DriverFactoryHolder.value
 
+  private val unexpectedPagesFactory = UnexpectedPagesFactory.option
+
   abstract override val suiteName = driverFactory.name
 
   abstract override val suiteId = s"${super.suiteId}$$${driverFactory.name}"
 
   abstract override protected def runTests(testName: Option[String], args: Args): Status = {
-    DriverFactoryHolder.withValue(Some(driverFactory)) {
-      Try {
-        DriverFactory.withWebDriverMock(currentMock) {
-          driverFactory.runTests(super.runTests(testName, args))
+    Try {
+      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+        DriverFactoryHolder.withValue(Some(driverFactory)) {
+          DriverFactory.withWebDriverMock(currentMock) {
+            driverFactory.runTests(super.runTests(testName, args))
+          }
         }
-      } match {
-        case Success(result) => result
-        case Failure(ex) => PageObjectHelper.failedStatus(ex)
       }
+    } match {
+      case Success(result) => result
+      case Failure(ex) => PageObjectHelper.failedStatus(ex)
     }
   }
 
   abstract override protected def runTest(testName: String, args: Args): Status = {
-    DriverFactoryHolder.withValue(Some(driverFactory)) {
-      Try {
-        DriverFactory.withWebDriverMock(currentMock) {
-          driverFactory.runTest(testName, super.runTest(testName, args))
+    Try {
+      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+        DriverFactoryHolder.withValue(Some(driverFactory)) {
+          DriverFactory.withWebDriverMock(currentMock) {
+            driverFactory.runTest(testName, super.runTest(testName, args))
+          }
         }
-      } match {
-        case Success(result) => result
-        case Failure(ex) => PageObjectHelper.failedStatus(ex)
       }
+    } match {
+      case Success(result) => result
+      case Failure(ex) => PageObjectHelper.failedStatus(ex)
     }
   }
 }

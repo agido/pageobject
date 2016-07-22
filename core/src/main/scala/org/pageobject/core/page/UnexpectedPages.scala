@@ -108,8 +108,16 @@ trait UnexpectedPagesFactory extends BaseUnexpectedPages[UnexpectedPages.AtCheck
  * </code>
  */
 object UnexpectedPagesFactory {
+  private[pageobject] def option = UnexpectedPagesFactoryHolder.option
+
   def withUnexpectedPages[R](provider: UnexpectedPagesFactoryProvider)(fn: => R): R = {
     UnexpectedPagesFactoryHolder.withValue(provider.unexpectedPagesFactory) {
+      fn
+    }
+  }
+
+  def withUnexpectedPages[R](factory: Option[UnexpectedPagesFactory])(fn: => R): R = {
+    UnexpectedPagesFactoryHolder.withValue(factory) {
       fn
     }
   }
