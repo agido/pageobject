@@ -19,6 +19,7 @@ import org.openqa.selenium.Dimension
 import org.openqa.selenium.Point
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
+import org.pageobject.core.SeleniumException
 import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.tools.Limit
@@ -145,9 +146,17 @@ trait DynamicDriverFactory extends DriverFactory {
   override def runTest[T](testName: String, fn: => T): T = {
     webDriverHolder.withValue(Some(createWebDriver())) {
       try {
-        super.runTest(testName, fn)
-      } finally {
-        webDriver.close()
+        val result = super.runTest(testName, fn)
+        try {
+          webDriver.close()
+        } catch {
+          case NonFatal(ex) => // ignore
+        }
+        result
+      } catch {
+        case NonFatal(nf) if !SeleniumException(nf) =>
+          webDriver.close()
+          throw nf
       }
     }
   }
