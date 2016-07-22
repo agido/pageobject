@@ -6,7 +6,6 @@ matrix:
     jdk: openjdk7
     env:
     - PUBLISH=true
-    - SCOVER=true
   - scala: 2.10.6
     jdk: openjdk8
   - scala: 2.10.6
