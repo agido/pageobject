@@ -19,8 +19,11 @@ set -e
 
 export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 export FIREFOX_LIMIT=0
-# for scala 2.10
-export SBT_OPTS="-Dscalac.patmat.analysisBudget=off"
+
+if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
+    # fix for scala 2.10.x only
+    export SBT_OPTS="-Dscalac.patmat.analysisBudget=off"
+fi
 
 sbt scalastyle
 
