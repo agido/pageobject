@@ -16,6 +16,7 @@
 package org.pageobject.core
 
 import org.scalatest.FailedStatus
+import org.scalatest.Status
 import org.scalatest.exceptions.NotAllowedException
 import org.scalatest.exceptions.StackDepthException
 import org.scalatest.exceptions.TestCanceledException
@@ -51,8 +52,9 @@ class TestHelperImpl extends TestHelper {
     throw new NotAllowedException(message, 1)
   }
 
-  def isFailedResult[T](result: T): Boolean = {
-    result == FailedStatus
+  def isFailedResult[T](result: T): Boolean = result match {
+    case status: Status => !status.succeeds()
+    case _ => false
   }
 
   def isAssertionError(th: Throwable): Boolean = th match {
