@@ -18,11 +18,8 @@ package org.pageobject.scalatest
 
 import java.util.concurrent.TimeUnit
 
-import org.eclipse.jetty.server.Connector
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
-import org.eclipse.jetty.util.thread.QueuedThreadPool
-import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler
 import org.eclipse.jetty.webapp.WebAppContext
 import org.pageobject.core.page.DomainPage
 import org.pageobject.core.page.PageObject
@@ -52,13 +49,7 @@ object JettySuite {
     val thread = new Thread(new Runnable {
       override def run(): Unit = {
         ret.complete(Try {
-          val pool = new QueuedThreadPool(200, 8, 60000, None.orNull, group) // scalastyle:ignore magic.number
-          val scheduler = new ScheduledExecutorScheduler(None.orNull, false, None.orNull, group)
-          val server = new Server(pool)
-          server.addBean(scheduler)
-          val connector = new ServerConnector(server)
-          connector.setPort(0)
-          server.setConnectors(Array[Connector](connector))
+          val server = new Server(0)
           val context = new WebAppContext(webAppContext, "/")
           server.setHandler(context)
           server.start()
