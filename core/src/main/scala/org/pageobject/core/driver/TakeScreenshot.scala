@@ -24,11 +24,12 @@ import java.util.concurrent.atomic.AtomicInteger
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
+import org.pageobject.core.tools.Logging
 
 /**
  * Helper object to capture screenshots on test failure and store them into the local filesystem
  */
-private object TakeScreenshot {
+private object TakeScreenshot extends Logging {
   private val screenshotCounter = new AtomicInteger
   private val screenshotDate = new SimpleDateFormat("yyyy-MM-dd_HHmm").format(new Date())
   private val screenshotsDir = new File("screenshots", screenshotDate)
@@ -44,8 +45,8 @@ private object TakeScreenshot {
     val base = replaceInvalidChars(s"$screenshotId-$testName")
     val png = s"$base.png"
     val html = s"$base.html"
-    System.err.println(s"Screenshot Image: file:///screenshots/$screenshotDate/$png")
-    System.err.println(s"Screenshot HTML: file:///screenshots/$screenshotDate/$html")
+    error(s"Screenshot Image: file:///screenshots/$screenshotDate/$png")
+    error(s"Screenshot HTML: file:///screenshots/$screenshotDate/$html")
     (new File(screenshotsDir, png), new File(screenshotsDir, html))
   }
 

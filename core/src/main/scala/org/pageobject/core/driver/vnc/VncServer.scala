@@ -18,6 +18,7 @@ package org.pageobject.core.driver.vnc
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.openqa.selenium.net.PortProber
+import org.pageobject.core.tools.Logging
 import org.pageobject.core.tools.OS
 
 import scala.sys.process.BasicIO
@@ -31,7 +32,7 @@ private object VncServer {
 /**
  * trait to start and stop a VNC Server instance.
  */
-trait VncServer {
+trait VncServer extends Logging {
   protected def startCommand: Option[String]
 
   protected def checkCommand: Option[String]
@@ -42,10 +43,10 @@ trait VncServer {
 
   protected def id: Int
 
-  protected val logger: ProcessLogger = ProcessLogger(message => println(s"VNC $id $message"))
+  protected val processLogger: ProcessLogger = ProcessLogger(message => info(s"VNC $id $message"))
 
   protected def execute(cmd: String, extraEnv: (String, String)*): Process = {
-    Process(cmd, None, extraEnv: _*).run(BasicIO(withIn = false, logger).daemonized)
+    Process(cmd, None, extraEnv: _*).run(BasicIO(withIn = false, processLogger).daemonized)
   }
 
   protected def extraEnv: Seq[(String, String)] = Seq()

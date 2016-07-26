@@ -20,15 +20,15 @@ import scala.util.Try
 /**
  * Helper object to check how long a code block needs to execute
  */
-object Perf {
+object Perf extends Logging {
   def printlnResult[R](message: Try[R] => String, limit: Long = 0)(block: => R): R = {
-    Perf.apply[R]((ms: Long, result: Try[R]) => Predef.println(s"${message(result)} has taken ${ms}ms"), limit) {
+    Perf.apply[R]((ms: Long, result: Try[R]) => debug(s"${message(result)} has taken ${ms}ms"), limit) {
       block
     }
   }
 
   def println[R](message: String, limit: Long = 0)(block: => R): R = {
-    Perf.apply((ms: Long, _: Try[R]) => Predef.println(s"$message has taken ${ms}ms"), limit) {
+    Perf.apply((ms: Long, _: Try[R]) => debug(s"$message has taken ${ms}ms"), limit) {
       block
     }
   }

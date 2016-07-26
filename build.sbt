@@ -78,6 +78,8 @@ lazy val core = (project in file("core"))
   .settings(
     name := "core",
     libraryDependencies ++= Seq(
+      "org.clapper" %% "grizzled-slf4j" % "1.0.4",
+      "org.slf4j" % "slf4j-api" % "1.7.21",
       "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
       "net.sourceforge.htmlunit" % "htmlunit" % "2.21" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
@@ -106,6 +108,7 @@ lazy val test = (project in file("test"))
   .settings(
     name := "test",
     libraryDependencies ++= Seq(
+      "ch.qos.logback" % "logback-classic" % "1.1.7",
       "org.easymock" % "easymock" % "3.4",
       "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
       "org.eclipse.jetty" % "jetty-server" % jettyVersion,
