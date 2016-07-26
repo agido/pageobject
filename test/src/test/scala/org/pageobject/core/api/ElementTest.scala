@@ -16,10 +16,10 @@
 package org.pageobject.core.api
 
 import org.pageobject.core.TestSpec
-import org.pageobject.scalatest.JettySuite.JettyPage
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.OwnPageReference
 import org.pageobject.core.page.PageModule
+import org.pageobject.scalatest.JettySuite.JettyPage
 
 class ElementTest extends TestSpec with BrowserPageDsl {
 

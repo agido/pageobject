@@ -28,6 +28,7 @@ case class BrowserErrorPage() extends PageObject {
 
   object content extends PageModule with BrowserControlDsl {
     private def isFirefoxErrorPage = $(cssSelector("link[href=\"chrome://browser/skin/aboutNetError.css\"]"))
+
     private def isChromeErrorPage = $(id("main-frame-error"))
 
     def isBrowserErrorPage: Boolean = {

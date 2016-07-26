@@ -164,12 +164,12 @@ object SwitchTarget {
      * @param driver the <code>WebDriver</code> with which to perform the switch
      */
     def switch(implicit driver: WebDriver): WebDriver =
-      try {
-        driver.switchTo.frame(index)
-      } catch {
-        case e: org.openqa.selenium.NoSuchFrameException =>
-          TestHelper.failTest(s"Frame at index '$index' not found.")
-      }
+    try {
+      driver.switchTo.frame(index)
+    } catch {
+      case e: org.openqa.selenium.NoSuchFrameException =>
+        TestHelper.failTest(s"Frame at index '$index' not found.")
+    }
   }
 
   /**
@@ -191,12 +191,12 @@ object SwitchTarget {
      * @param driver the <code>WebDriver</code> with which to perform the switch
      */
     def switch(implicit driver: WebDriver): WebDriver =
-      try {
-        driver.switchTo.frame(nameOrId)
-      } catch {
-        case e: org.openqa.selenium.NoSuchFrameException =>
-          TestHelper.failTest(s"Frame with name or ID '$nameOrId' not found.")
-      }
+    try {
+      driver.switchTo.frame(nameOrId)
+    } catch {
+      case e: org.openqa.selenium.NoSuchFrameException =>
+        TestHelper.failTest(s"Frame with name or ID '$nameOrId' not found.")
+    }
   }
 
   /**
@@ -209,12 +209,12 @@ object SwitchTarget {
      * @param driver the <code>WebDriver</code> with which to perform the switch
      */
     def switch(implicit driver: WebDriver): WebDriver =
-      try {
-        driver.switchTo.frame(webElement)
-      } catch {
-        case e: org.openqa.selenium.NoSuchFrameException =>
-          TestHelper.failTest(s"Frame element '$webElement' not found.")
-      }
+    try {
+      driver.switchTo.frame(webElement)
+    } catch {
+      case e: org.openqa.selenium.NoSuchFrameException =>
+        TestHelper.failTest(s"Frame element '$webElement' not found.")
+    }
   }
 
   /**
@@ -227,12 +227,12 @@ object SwitchTarget {
      * @param driver the <code>WebDriver</code> with which to perform the switch
      */
     def switch(implicit driver: WebDriver): WebDriver =
-      try {
-        driver.switchTo.frame(element.underlying)
-      } catch {
-        case e: org.openqa.selenium.NoSuchFrameException =>
-          TestHelper.failTest(s"Frame element '$element' not found.")
-      }
+    try {
+      driver.switchTo.frame(element.underlying)
+    } catch {
+      case e: org.openqa.selenium.NoSuchFrameException =>
+        TestHelper.failTest(s"Frame element '$element' not found.")
+    }
   }
 
   /**
@@ -254,12 +254,12 @@ object SwitchTarget {
      * @param driver the <code>WebDriver</code> with which to perform the switch
      */
     def switch(implicit driver: WebDriver): WebDriver =
-      try {
-        driver.switchTo.window(nameOrHandle)
-      } catch {
-        case e: org.openqa.selenium.NoSuchWindowException =>
-          TestHelper.failTest(s"Window with nameOrHandle '$nameOrHandle' not found.")
-      }
+    try {
+      driver.switchTo.window(nameOrHandle)
+    } catch {
+      case e: org.openqa.selenium.NoSuchWindowException =>
+        TestHelper.failTest(s"Window with nameOrHandle '$nameOrHandle' not found.")
+    }
   }
 
 }

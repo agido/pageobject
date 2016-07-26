@@ -17,7 +17,6 @@ package org.pageobject.core.driver
 
 import org.openqa.selenium.WebDriver
 import org.pageobject.core.TestHelper
-
 import org.pageobject.core.tools.DynamicOptionVariable
 
 /**

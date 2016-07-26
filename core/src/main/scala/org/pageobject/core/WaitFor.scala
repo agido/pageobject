@@ -22,9 +22,9 @@ import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.WaitFor.PatienceMap
 import org.pageobject.core.WaitFor.WaitForHolder
 import org.pageobject.core.dsl.DurationDsl
+import org.pageobject.core.tools.DynamicOptionVariable
 
 import scala.annotation.tailrec
-import org.pageobject.core.tools.DynamicOptionVariable
 import scala.util.control.NonFatal
 
 /**

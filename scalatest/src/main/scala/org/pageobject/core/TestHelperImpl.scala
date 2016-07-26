@@ -15,7 +15,6 @@
  */
 package org.pageobject.core
 
-import org.scalatest.FailedStatus
 import org.scalatest.Status
 import org.scalatest.exceptions.NotAllowedException
 import org.scalatest.exceptions.StackDepthException

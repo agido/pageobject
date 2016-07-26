@@ -22,9 +22,9 @@ import org.openqa.selenium.WebDriver
 import org.pageobject.core.SeleniumException
 import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor.PatienceConfig
+import org.pageobject.core.tools.DynamicOptionVariable
 import org.pageobject.core.tools.Limit
 
-import org.pageobject.core.tools.DynamicOptionVariable
 import scala.util.control.NonFatal
 
 private[pageobject] object DriverFactory {

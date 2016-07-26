@@ -21,10 +21,10 @@ import org.openqa.selenium.Capabilities
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
+import org.pageobject.core.tools.DynamicOptionVariable
 
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
-import org.pageobject.core.tools.DynamicOptionVariable
 
 /**
  * A WebDriverFactory used to connect to a selenium server running inside of a VNC Server.

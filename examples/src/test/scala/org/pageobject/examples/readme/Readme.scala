@@ -15,9 +15,9 @@
  */
 package org.pageobject.examples.readme
 
-import org.pageobject.scalatest.JettySuite.JettyPage
 import org.pageobject.core.page.PageModule
 import org.pageobject.examples.ExampleSpec
+import org.pageobject.scalatest.JettySuite.JettyPage
 
 /**
  * The is a PageObjectSuite for the ReadmePage example.

@@ -21,7 +21,6 @@ import org.pageobject.core.TestHelper
 import org.pageobject.core.driver.DriverProvider
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.PageObject
-
 import org.pageobject.core.tools.DynamicOptionVariable
 
 /**

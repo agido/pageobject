@@ -16,10 +16,10 @@
 package org.pageobject.core.api
 
 import org.openqa.selenium.By
-import org.pageobject.scalatest.JettySuite.JettyPage
 import org.pageobject.core.TestSpec
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule
+import org.pageobject.scalatest.JettySuite.JettyPage
 
 class SelectTest extends TestSpec with BrowserPageDsl {
 
