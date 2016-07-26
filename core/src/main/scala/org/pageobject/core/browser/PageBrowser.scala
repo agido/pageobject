@@ -20,6 +20,7 @@ import org.pageobject.core.WaitFor
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.page.UrlPage
+import org.pageobject.core.tools.Logging
 
 /**
  * Patience configuration for PageBrowser
@@ -36,7 +37,7 @@ object PageBrowser extends WaitFor {
  *
  * It should be used by your tests, not by page objects.
  */
-trait PageBrowser extends WaitFor with PageHolder {
+trait PageBrowser extends WaitFor with PageHolder with Logging {
   /**
    * Starts navigation to the given page.
    *
@@ -80,14 +81,21 @@ trait PageBrowser extends WaitFor with PageHolder {
 
     val unexpectedPages = defer(UnexpectedPagesFactory.createUnexpectedPages())
     waitFor(PageBrowser.At) {
-      unexpectedPages.waitPages.find(isAt(_)).foreach(unexpectedPage =>
-        new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!"))
-      unexpectedPages.cancelTestPages.find(isAt(_)).foreach(unexpectedPage =>
-        TestHelper.cancelTest(s"browser is at unexpected page $unexpectedPage, test canceled!"))
-      unexpectedPages.failTestPages.find(isAt(_)).foreach(unexpectedPage =>
-        TestHelper.failTest(s"browser is at unexpected page $unexpectedPage, test failed!"))
+      unexpectedPages.waitPages.find(isAt(_)).foreach(unexpectedPage => {
+        info(s"browser is at unexpected wait page $unexpectedPage!")
+        new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!")
+      })
+      unexpectedPages.cancelTestPages.find(isAt(_)).foreach(unexpectedPage => {
+        error(s"browser is at unexpected wait page $unexpectedPage!")
+        TestHelper.cancelTest(s"browser is at unexpected page $unexpectedPage, test canceled!")
+      })
+      unexpectedPages.failTestPages.find(isAt(_)).foreach(unexpectedPage => {
+        error(s"browser is at unexpected wait page $unexpectedPage!")
+        TestHelper.failTest(s"browser is at unexpected page $unexpectedPage, test failed!")
+      })
       assert(isAt(pageDeferred), s"Browser is not at expected page $pageDeferred!")
     }
+    info(s"browser is now at page $pageDeferred!")
     activePage = pageDeferred
     pageDeferred
   }
@@ -99,9 +107,14 @@ trait PageBrowser extends WaitFor with PageHolder {
    */
   def isAt(page: => AtChecker): Boolean = {
     val pageDeferred = defer(page)
-    withActivePage(pageDeferred) {
+    debug(s"running at checker for page $pageDeferred")
+    val at = withActivePage(pageDeferred) {
       pageDeferred.atChecker()
     }
+    if (at) {
+      debug(s"browser is at page $pageDeferred!")
+    }
+    at
   }
 
   private def defer[T](page: => T): T = {
