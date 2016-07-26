@@ -17,8 +17,8 @@ package org.pageobject.core.tools
 
 import org.slf4j.MDC
 
-import scala.collection.JavaConversions.mapAsJavaMap
-import scala.collection.JavaConversions.mapAsScalaMap
+import scala.collection.JavaConverters.mapAsJavaMapConverter
+import scala.collection.JavaConverters.mapAsScalaMapConverter
 
 object LogContext {
   val suiteName = "suiteName"
@@ -32,11 +32,11 @@ object LogContext {
 
   def apply[S](mdcMap: collection.immutable.Map[String, String])(thunk: => S): S = {
     val old = Option(MDC.getCopyOfContextMap)
-    MDC.setContextMap(old.map(_.toMap).toSeq.fold(mdcMap)(_ ++ _))
+    MDC.setContextMap(old.map(_.asScala.toMap).toSeq.fold(mdcMap)(_ ++ _).asJava)
     try {
       thunk
     } finally {
-      MDC.setContextMap(old.getOrElse(collection.immutable.Map.empty[String, String]))
+      MDC.setContextMap(old.getOrElse(collection.immutable.Map.empty[String, String].asJava))
     }
   }
 }
