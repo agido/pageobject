@@ -78,7 +78,6 @@ lazy val core = (project in file("core"))
   .settings(
     name := "core",
     libraryDependencies ++= Seq(
-      "org.clapper" %% "grizzled-slf4j" % "1.0.4",
       "org.slf4j" % "slf4j-api" % "1.7.21",
       "org.seleniumhq.selenium" % "selenium-java" % "2.53.0",
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
