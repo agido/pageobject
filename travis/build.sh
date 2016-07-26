@@ -28,8 +28,8 @@ fi
 sbt scalastyle
 
 if [ -z "$SCOVER" ]; then
-	sbt test
+	sbt test/test examples/test
 else
-	sbt coverage test coverageReport
+	sbt coverage test/test examples/test coverageReport
 	sbt coverageAggregate
 fi
