@@ -100,7 +100,8 @@ lazy val scalatest = (project in file("scalatest"))
   )
   .dependsOn(core)
 
-val jettyVersion = "9.3.9.v20160517"
+// jetty 9.2.x is the last version with support java 7
+val jettyVersion = "9.2.17.v20160517"
 
 lazy val test = (project in file("test"))
   .settings(commonSettings: _*)
