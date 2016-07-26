@@ -17,14 +17,18 @@ package org.pageobject.core.driver.vnc
 
 import org.pageobject.core.driver.DriverFactoryList
 import org.pageobject.core.driver.FixedLocation
+import org.pageobject.core.driver.LoggingDriverFactory
 import org.pageobject.core.driver.RemoteDriverFactory
 import org.pageobject.core.driver.TakeScreenshot
+import org.pageobject.core.driver.ThreadNameNumberingDriverFactory
 import org.pageobject.core.driver.TracedRemoteDriverFactory
 
 /**
  * Traits used by all VncDriverFactories
  */
-trait DefaultVncDriverTraits extends FixedLocation with TakeScreenshot with TracedRemoteDriverFactory {
+trait DefaultVncDriverTraits extends FixedLocation with TakeScreenshot with TracedRemoteDriverFactory
+  with LoggingDriverFactory with ThreadNameNumberingDriverFactory {
+
   this: RemoteDriverFactory =>
 }
 

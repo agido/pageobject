@@ -51,6 +51,8 @@ trait VncServer extends Logging {
 
   protected def extraEnv: Seq[(String, String)] = Seq()
 
+  def name: String = s"VNC :$id"
+
   def shutdown(): Unit = {
     stopCommand.foreach(execute(_))
   }

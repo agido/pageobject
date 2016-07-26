@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
 import org.pageobject.core.tools.DynamicOptionVariable
 import org.pageobject.core.tools.LogContext
+import org.pageobject.core.tools.Logging
 
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
@@ -39,7 +40,7 @@ import scala.concurrent.duration.FiniteDuration
  * @tparam V type of the VncServer to use, normally DefaultVncServer
  */
 abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncServerManager: VncServerManager[V])
-  extends RemoteDriverFactory {
+  extends RemoteDriverFactory with Logging {
 
   private object vncServer extends DynamicOptionVariable[V]()
 
@@ -52,7 +53,9 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncSer
   }
 
   override def runTest[T](testName: String, fn: => T): T = {
+    debug(s"starting vnc server")
     val vnc: V = awaitVncServer()
+    debug(s"started vnc server")
     try vncServer.withValue(Some(vnc)) {
       LogContext(Map(
         LogContext.vnc -> vnc.name

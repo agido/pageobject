@@ -15,6 +15,8 @@
  */
 package org.pageobject.core.driver
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.Point
 import org.openqa.selenium.TakesScreenshot
@@ -24,6 +26,8 @@ import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.tools.DynamicOptionVariable
 import org.pageobject.core.tools.Limit
+import org.pageobject.core.tools.LogContext
+import org.pageobject.core.tools.Logging
 
 import scala.util.control.NonFatal
 
@@ -90,6 +94,66 @@ trait DriverFactory {
   }
 
   protected def createRealWebDriver(): WebDriver
+}
+
+private object LoggingDriverFactory extends Logging {
+  def separator(): Unit = {
+    debug("\n")
+  }
+}
+
+trait LoggingDriverFactory extends DriverFactory with Logging {
+  private def space(string: String): String = {
+    if (string.contains(" ")) {
+      s"'$string'"
+    } else {
+      string
+    }
+  }
+
+  override def runTest[T](testName: String, fn: => T): T = {
+    val suiteName = LogContext(LogContext.suiteName)
+    val testName = LogContext(LogContext.testName)
+    val browser = LogContext(LogContext.browser)
+    val name = s"${space(suiteName)} ${space(testName)} on ${space(browser)}"
+    debug(s"preparing $name")
+    try {
+      super.runTest(testName, {
+        info(s"running $name")
+        try {
+          val ret = fn
+          if (TestHelper.isFailedResult(ret)) {
+            error(s"failed running $name")
+          } else {
+            info(s"finished $name")
+          }
+          ret
+        } catch {
+          case NonFatal(th) =>
+            error(s"failed running $name", th)
+            throw th
+        }
+      })
+    } finally {
+      LoggingDriverFactory.separator()
+    }
+  }
+}
+
+private object TestNumbering extends AtomicInteger
+
+trait ThreadNameNumberingDriverFactory extends DriverFactory with Logging {
+  override def runTest[T](testName: String, fn: => T): T = {
+    val thread = Thread.currentThread()
+    val oldName = thread.getName
+    val id = TestNumbering.incrementAndGet()
+    thread.setName(f"#$id%04d")
+    try {
+      super.runTest(testName, fn)
+    } finally {
+      thread.setName(oldName)
+    }
+  }
 }
 
 /**
