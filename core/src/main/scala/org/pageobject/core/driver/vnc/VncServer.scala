@@ -15,6 +15,7 @@
  */
 package org.pageobject.core.driver.vnc
 
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.openqa.selenium.net.PortProber
@@ -27,6 +28,29 @@ import scala.sys.process.ProcessLogger
 
 private object VncServer {
   val threadGroup = new ThreadGroup("VncServer")
+
+  def createProcessLogger(stdoutName: String, stderrName: String,
+                          stdout: String => Unit, stderr: String => Unit): ProcessLogger = {
+    val outNamed = new AtomicBoolean
+    val errNamed = new AtomicBoolean
+    new ProcessLogger {
+      def out(s: => String): Unit = {
+        if (!outNamed.getAndSet(true)) {
+          Thread.currentThread().setName(stdoutName)
+        }
+        stdout(s)
+      }
+
+      def err(s: => String): Unit = {
+        if (!errNamed.getAndSet(true)) {
+          Thread.currentThread().setName(stderrName)
+        }
+        stderr(s)
+      }
+
+      def buffer[T](f: => T): T = f
+    }
+  }
 }
 
 /**
@@ -43,7 +67,8 @@ trait VncServer extends Logging {
 
   protected def id: Int
 
-  protected val processLogger: ProcessLogger = ProcessLogger(message => info(s"VNC $id $message"))
+  protected val processLogger: ProcessLogger =
+    VncServer.createProcessLogger(stdoutName, stderrName, message => info(message), message => error(message))
 
   protected def execute(cmd: String, extraEnv: (String, String)*): Process = {
     Process(cmd, None, extraEnv: _*).run(BasicIO(withIn = false, processLogger).daemonized)
@@ -52,6 +77,10 @@ trait VncServer extends Logging {
   protected def extraEnv: Seq[(String, String)] = Seq()
 
   def name: String = s"VNC :$id"
+
+  def stdoutName: String = s"$name STDOUT"
+
+  def stderrName: String = s"$name STDERR"
 
   def shutdown(): Unit = {
     stopCommand.foreach(execute(_))
