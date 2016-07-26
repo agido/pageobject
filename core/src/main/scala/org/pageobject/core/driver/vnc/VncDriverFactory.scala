@@ -22,6 +22,7 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
 import org.pageobject.core.tools.DynamicOptionVariable
+import org.pageobject.core.tools.LogContext
 
 import scala.concurrent.Await
 import scala.concurrent.duration.FiniteDuration
@@ -53,7 +54,11 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncSer
   override def runTest[T](testName: String, fn: => T): T = {
     val vnc: V = awaitVncServer()
     try vncServer.withValue(Some(vnc)) {
-      super.runTest(testName, fn)
+      LogContext(Map(
+        LogContext.vnc -> vnc.name
+      )) {
+        super.runTest(testName, fn)
+      }
     } finally {
       vncServerManager.release(vnc)
     }

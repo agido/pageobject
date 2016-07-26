@@ -18,6 +18,7 @@ package org.pageobject.scalatest
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.page.UnexpectedPagesFactory
+import org.pageobject.core.tools.LogContext
 import org.scalatest.Args
 import org.scalatest.PageObjectHelper
 import org.scalatest.Status
@@ -46,16 +47,23 @@ trait DriverLauncher extends SuiteMixin {
 
   private val unexpectedPagesFactory = UnexpectedPagesFactory.option
 
+  private val wrapperSuiteName = super.suiteName
+
   abstract override val suiteName = driverFactory.name
 
   abstract override val suiteId = s"${super.suiteId}$$${driverFactory.name}"
 
   abstract override protected def runTests(testName: Option[String], args: Args): Status = {
     Try {
-      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
-        DriverFactoryHolder.withValue(Some(driverFactory)) {
-          DriverFactory.withWebDriverMock(currentMock) {
-            driverFactory.runTests(super.runTests(testName, args))
+      LogContext.apply(Map(
+        LogContext.suiteName -> wrapperSuiteName,
+        LogContext.browser -> suiteName
+      )) {
+        UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+          DriverFactoryHolder.withValue(Some(driverFactory)) {
+            DriverFactory.withWebDriverMock(currentMock) {
+              driverFactory.runTests(super.runTests(testName, args))
+            }
           }
         }
       }
@@ -67,10 +75,16 @@ trait DriverLauncher extends SuiteMixin {
 
   abstract override protected def runTest(testName: String, args: Args): Status = {
     Try {
-      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
-        DriverFactoryHolder.withValue(Some(driverFactory)) {
-          DriverFactory.withWebDriverMock(currentMock) {
-            driverFactory.runTest(testName, super.runTest(testName, args))
+      LogContext(Map(
+        LogContext.suiteName -> wrapperSuiteName,
+        LogContext.browser -> suiteName,
+        LogContext.testName -> testName
+      )) {
+        UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+          DriverFactoryHolder.withValue(Some(driverFactory)) {
+            DriverFactory.withWebDriverMock(currentMock) {
+              driverFactory.runTest(testName, super.runTest(testName, args))
+            }
           }
         }
       }
