@@ -20,20 +20,20 @@ import scala.util.Try
 /**
  * Helper object to check how long a code block needs to execute
  */
-object Perf extends Logging {
-  def printlnResult[R](message: Try[R] => String, limit: Long = 0)(block: => R): R = {
-    Perf.apply[R]((ms: Long, result: Try[R]) => debug(s"${message(result)} has taken ${ms}ms"), limit) {
+object Perf {
+  def logResult[R](logger: String => Unit, mapResult: Try[R] => String, limit: Long = 0)(block: => R): R = {
+    Perf.apply[R]((ms: Long, result: Try[R]) => logger(s"${mapResult(result)} has taken ${ms}ms"), limit) {
       block
     }
   }
 
-  def println[R](message: String, limit: Long = 0)(block: => R): R = {
-    Perf.apply((ms: Long, _: Try[R]) => debug(s"$message has taken ${ms}ms"), limit) {
+  def log[R](logger: String => Unit, message: String, limit: Long = 0)(block: => R): R = {
+    Perf.apply((ms: Long, _: Try[R]) => logger(s"$message has taken ${ms}ms"), limit) {
       block
     }
   }
 
-  def apply[R](callback: (Long, Try[R]) => Unit, limit: Long)(block: => R): R = {
+  def apply[R](callback: (Long, Try[R]) => Unit, limit: Long = 0)(block: => R): R = {
     val t0 = System.nanoTime()
     val result: Try[R] = Try {
       block

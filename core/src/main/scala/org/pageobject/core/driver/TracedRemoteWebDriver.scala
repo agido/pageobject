@@ -22,6 +22,7 @@ import org.openqa.selenium.remote.CommandExecutor
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.remote.Response
+import org.pageobject.core.tools.Logging
 import org.pageobject.core.tools.Perf
 
 import scala.collection.JavaConverters.asScalaBufferConverter
@@ -69,7 +70,7 @@ private object TracedRemoteWebDriver {
 class TracedRemoteWebDriver(executor: CommandExecutor,
                             desiredCapabilities: Capabilities,
                             requiredCapabilities: Capabilities)
-  extends RemoteWebDriver(executor, desiredCapabilities, requiredCapabilities) {
+  extends RemoteWebDriver(executor, desiredCapabilities, requiredCapabilities) with Logging {
 
   private def prettyPrint(what: Any): String = what match {
     case str: String => s""""$str""""
@@ -134,7 +135,7 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
   }
 
   override def execute(driverCommand: String, parameters: java.util.Map[String, _]): Response = {
-    Perf.printlnResult((result: Try[Response]) => format(driverCommand, parameters.asScala, result)) {
+    Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
       super.execute(driverCommand, parameters)
     }
   }

@@ -28,7 +28,9 @@ import org.pageobject.core.tools.DynamicOptionVariable
 import org.pageobject.core.tools.Limit
 import org.pageobject.core.tools.LogContext
 import org.pageobject.core.tools.Logging
+import org.pageobject.core.tools.Perf
 
+import scala.util.Try
 import scala.util.control.NonFatal
 
 private[pageobject] object DriverFactory {
@@ -96,13 +98,9 @@ trait DriverFactory {
   protected def createRealWebDriver(): WebDriver
 }
 
-private object LoggingDriverFactory extends Logging {
-  def separator(): Unit = {
-    debug("\n")
-  }
-}
+private object LoggingDriverFactory extends Logging
 
-trait LoggingDriverFactory extends DriverFactory with Logging {
+trait LoggingDriverFactory extends DriverFactory {
   private def space(string: String): String = {
     if (string.contains(" ")) {
       s"'$string'"
@@ -116,26 +114,24 @@ trait LoggingDriverFactory extends DriverFactory with Logging {
     val testName = LogContext(LogContext.testName)
     val browser = LogContext(LogContext.browser)
     val name = s"${space(suiteName)} ${space(testName)} on ${space(browser)}"
-    debug(s"preparing $name")
-    try {
+    LoggingDriverFactory.debug(s"preparing $name")
+    Perf((ms: Long, _: Try[T]) => LoggingDriverFactory.debug(s"$name has taken ${ms}ms\n")) {
       super.runTest(testName, {
-        info(s"running $name")
+        LoggingDriverFactory.info(s"running $name")
         try {
           val ret = fn
           if (TestHelper.isFailedResult(ret)) {
-            error(s"failed running $name")
+            LoggingDriverFactory.error(s"failed running $name")
           } else {
-            info(s"finished $name")
+            LoggingDriverFactory.info(s"finished $name")
           }
           ret
         } catch {
           case NonFatal(th) =>
-            error(s"failed running $name", th)
+            LoggingDriverFactory.error(s"failed running $name", th)
             throw th
         }
       })
-    } finally {
-      LoggingDriverFactory.separator()
     }
   }
 }
