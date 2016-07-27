@@ -24,6 +24,8 @@ import org.pageobject.core.driver.RunWithDrivers
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.scalatest.Args
 import org.scalatest.DoNotDiscover
+import org.scalatest.DynaTags
+import org.scalatest.Filter
 import org.scalatest.PageObjectHelper
 import org.scalatest.ParallelTestExecution
 import org.scalatest.Status
@@ -78,13 +80,25 @@ class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
     runWith.drivers().map(config => createBrowserSuiteInstance(config)).toIndexedSeq
   }
 
+  private def patchFilter(filter: Filter): Filter = {
+    val suiteTags = filter.dynaTags.suiteTags
+    val testTags = filter.dynaTags.testTags.flatMap {
+      case (_, tags) => nestedSuites.map(suite => (suite.suiteId, tags))
+    }
+    Filter(filter.tagsToInclude, filter.tagsToExclude, excludeNestedSuites = false, DynaTags(suiteTags, testTags))
+  }
+
+  override def expectedTestCount(filter: Filter): Int = {
+    super.expectedTestCount(patchFilter(filter))
+  }
+
   override def suiteName = PageObjectHelper.suiteName(clazz)
 
   override def suiteId = clazz.getName
 
   override def run(testName: Option[String], args: Args): Status = {
     UnexpectedPagesFactory.withMaybeUnexpectedPages(runWith) {
-      super.run(testName, args)
+      super.run(testName, args.copy(filter = patchFilter(args.filter)))
     }
   }
 }
