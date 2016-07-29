@@ -83,7 +83,7 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
     waitFor(PageBrowser.At) {
       unexpectedPages.waitPages.find(isAt(_)).foreach(unexpectedPage => {
         info(s"browser is at unexpected wait page $unexpectedPage!")
-        new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!")
+        throw new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!")
       })
       unexpectedPages.cancelTestPages.find(isAt(_)).foreach(unexpectedPage => {
         error(s"browser is at unexpected wait page $unexpectedPage!")
