@@ -109,6 +109,7 @@ lazy val test = (project in file("test"))
     name := "test",
     libraryDependencies ++= Seq(
       "ch.qos.logback" % "logback-classic" % "1.1.7",
+      "org.slf4j" % "jcl-over-slf4j" % "1.7.21",
       "org.easymock" % "easymock" % "3.4",
       "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
       "org.eclipse.jetty" % "jetty-server" % jettyVersion,

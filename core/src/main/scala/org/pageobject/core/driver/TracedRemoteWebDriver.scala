@@ -18,6 +18,7 @@ package org.pageobject.core.driver
 import java.util
 
 import org.openqa.selenium.Capabilities
+import org.openqa.selenium.logging.LogType
 import org.openqa.selenium.remote.CommandExecutor
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
@@ -135,8 +136,17 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
   }
 
   override def execute(driverCommand: String, parameters: java.util.Map[String, _]): Response = {
-    Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
+    if (driverCommand == "getLog") {
       super.execute(driverCommand, parameters)
+    } else {
+      if (Option(getSessionId).isDefined) {
+        manage.logs.get(LogType.BROWSER).getAll.asScala.foreach(log => {
+          info(s"${log.getLevel} ${log.getMessage}")
+        })
+      }
+      Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
+        super.execute(driverCommand, parameters)
+      }
     }
   }
 }

@@ -68,7 +68,14 @@ trait VncServer extends Logging {
   protected def id: Int
 
   protected val processLogger: ProcessLogger =
-    VncServer.createProcessLogger(stdoutName, stderrName, message => info(message), message => error(message))
+    VncServer.createProcessLogger(stdoutName, stderrName,
+      message => if (log(message)) {
+        info(message)
+      }, message => if (log(message)) {
+        error(message)
+      })
+
+  protected def log(message: String): Boolean = true
 
   protected def execute(cmd: String, extraEnv: (String, String)*): Process = {
     Process(cmd, None, extraEnv: _*).run(BasicIO(withIn = false, processLogger).daemonized)

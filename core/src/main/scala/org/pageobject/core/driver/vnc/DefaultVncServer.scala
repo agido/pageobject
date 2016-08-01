@@ -40,6 +40,8 @@ case class DefaultVncServer(onTerminated: Boolean => Unit)
   protected val checkCommand: Option[String] = Some(s"$script check :$id $seleniumPort")
 
   protected val stopCommand: Option[String] = None
+
+  protected override def log(message: String): Boolean = !message.contains("[fetching logs for: browser]")
 }
 
 /**
