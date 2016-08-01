@@ -102,7 +102,6 @@ function isrunning() {
 }
 
 function cmd_start() {
-	local xtermPid
 	local vncViewerPid
 	local vncServerPid
 
@@ -118,10 +117,11 @@ function cmd_start() {
 
 	isexec $(echo $SELENIUM_COMMAND | cut -d ' ' -f 1)
 	isexec $basedir/Xvnc
-	isexec xterm
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
 		isexec $basedir/vncviewer
 	fi
+
+	trap '[ -n "$(jobs -pr)" ] && kill $(jobs -pr)' INT QUIT TERM EXIT
 
 	export WAIT_FOR_PID=$PPID
 	export CLIENT_DISPLAY_PORT=$display
@@ -141,8 +141,8 @@ function cmd_start() {
 	islocked $DISPLAY || fatal "vnc server $DISPLAY could not be started!"
 	echo "vnc server is ready!"
 
-	xterm -maximized -fa 'Monospace' -fs 14 -e $SELENIUM_COMMAND &
-	xtermPid=$!
+	$SELENIUM_COMMAND 2>&1 &
+	seleniumPid=$!
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
 		DISPLAY=$CLIENT_DISPLAY_PORT $basedir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd &
@@ -153,7 +153,7 @@ function cmd_start() {
 
 	while true ; do
 		isrunning $vncServerPid || break
-		isrunning $xtermPid || break
+		isrunning $seleniumPid || break
 		isrunning $WAIT_FOR_PID || break
 		if [ -n "$CLIENT_DISPLAY_PORT" ]; then
 			isrunning $vncViewerPid || break
@@ -164,7 +164,7 @@ function cmd_start() {
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
 		stop $vncViewerPid vncviewer
 	fi
-	stop $xtermPid xterm
+	stop $seleniumPid selenium
 	stop $vncServerPid vncserver
 }
 
@@ -187,5 +187,4 @@ function main() {
 	call "cmd_$cmd" "Syntax: $0 <start|check>" $@
 }
 
-main $@ 2>&1 | tee /dev/zero
-exit ${PIPESTATUS[0]}
+main $@
