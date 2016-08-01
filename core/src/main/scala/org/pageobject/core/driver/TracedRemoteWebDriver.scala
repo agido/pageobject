@@ -141,7 +141,15 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
     } else {
       if (Option(getSessionId).isDefined) {
         manage.logs.get(LogType.BROWSER).getAll.asScala.foreach(log => {
-          info(s"${log.getLevel} ${log.getMessage}")
+          def withoutNewLine: String = {
+            val message = log.getMessage
+            if (message.endsWith("\n")) {
+              message.substring(0, message.length - 1)
+            } else {
+              message
+            }
+          }
+          info(s"${log.getLevel} $withoutNewLine")
         })
       }
       Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
