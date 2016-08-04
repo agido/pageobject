@@ -76,7 +76,11 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
    * @return the activated page.
    */
   def at[P <: AtChecker](page: => P): P = {
-    val pageDeferred = defer(page)
+    at(() => page)
+  }
+
+  def at[P <: AtChecker](pages: (() => _ <: P)*): P = {
+    val pageDeferred = pages.map(page => defer(page()))
     clearActivePage()
 
     val unexpectedPages = defer(UnexpectedPagesFactory.createUnexpectedPages())
@@ -93,11 +97,16 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
         error(s"browser is at unexpected wait page $unexpectedPage!")
         TestHelper.failTest(s"browser is at unexpected page $unexpectedPage, test failed!")
       })
-      assert(isAt(pageDeferred), s"Browser is not at expected page $pageDeferred!")
+      pageDeferred.find(page => isAt(page)) match {
+        case Some(pageFound) =>
+          info(s"browser is now at page $pageFound!")
+          activePage = pageFound
+          pageFound
+        case None =>
+          throw new java.lang.AssertionError(
+            s"assumption failed: Browser is not at expected page ${pageDeferred.mkString(" or ")}!")
+      }
     }
-    info(s"browser is now at page $pageDeferred!")
-    activePage = pageDeferred
-    pageDeferred
   }
 
   /**
