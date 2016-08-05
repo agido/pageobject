@@ -208,14 +208,14 @@ trait DynamicDriverFactory extends DriverFactory {
       try {
         val result = super.runTest(testName, fn)
         try {
-          webDriver.close()
+          webDriver.quit()
         } catch {
           case NonFatal(ex) => // ignore
         }
         result
       } catch {
         case NonFatal(nf) if !SeleniumException(nf) =>
-          webDriver.close()
+          webDriver.quit()
           throw nf
       }
     }
