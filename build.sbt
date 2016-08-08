@@ -16,7 +16,7 @@
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
-  version := "0.1.0-SNAPSHOT",
+  version := "0.1.0",
   scalaVersion := sys.env.getOrElse("TRAVIS_SCALA_VERSION", "2.11.8"),
 
   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
@@ -93,8 +93,8 @@ lazy val scalatest = (project in file("scalatest"))
   .settings(
     name := "scalatest",
     libraryDependencies ++= Seq(
-      "org.scalactic" %% "scalactic" % "3.0.0-RC4",
-      "org.pageobject.patch.org.scalatest" %% "scalatest" % "3.0.0-SNAPSHOT" exclude("org.eclipse.jetty.orbit", "javax.servlet")
+      "org.scalactic" %% "scalactic" % "3.0.0",
+      "org.pageobject.patch.org.scalatest" %% "scalatest" % "3.0.0" exclude("org.eclipse.jetty.orbit", "javax.servlet")
     )
   )
   .dependsOn(core)
