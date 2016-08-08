@@ -5,6 +5,11 @@ permalink: /
 order: 0
 ---
 
+[ ![Build Status] [travis-image] ] [travis]
+[ ![License] [license-image] ] [license]
+[ ![Dependencies] [dependencies-image] ] [dependencies]
+[ ![Coverage Status] [coverage-image] ] [coverage]
+
 # PageObject
 PageObject is a Page Object Pattern implementation written in Scala.
 
@@ -31,17 +36,24 @@ We created an overview presentation showing you how to use PageObject to create 
 * [Download as PDF](/downloads/PageObjectTour.pdf) (download hosted on pageobject.org).
 
 ## Using PageObject
-Currently no stable release of PageObject is available, current version is 0.1.0-SNAPSHOT.
+The current version of PageObject is 0.1.0.
 
-Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
+Scala versions 2.10.x, 2.11.x and 2.12.0-M5 are supported.
 
 To use PageObject, add this lines to yours build.sbt:
 
 ```
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0-SNAPSHOT"
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0"
 ```
 
 ## Download PageObject
 The code is hosted and developed in the [PageObject GitHub repository](https://github.com/agido/pageobject/).
+
+[travis]: https://travis-ci.org/agido/pageobject
+[travis-image]: https://travis-ci.org/agido/pageobject.svg?branch=master
+[license-image]: http://img.shields.io/badge/license-Apache--2-brightgreen.svg?style=flat
+[license]: http://www.apache.org/licenses/LICENSE-2.0
+[dependencies]: https://app.updateimpact.com/latest/755117671372165120/pageobject
+[dependencies-image]: https://app.updateimpact.com/badge/755117671372165120/pageobject.svg?config=compile
+[coverage]: https://coveralls.io/github/agido/pageobject?branch=master
+[coverage-image]: https://coveralls.io/repos/github/agido/pageobject/badge.svg?branch=master
