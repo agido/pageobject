@@ -177,6 +177,7 @@ function cmd_check() {
 	require "$id" "$message"
 	require "$seleniumPort" "$message"
 
+	isexec curl
 	mute curl http://127.0.0.1:$seleniumPort/wd/hub/status || exit 1
 }
 
