@@ -8,17 +8,11 @@
  * model.
  */
 angular.module('todomvc')
-	.factory('todoStorage', function ($http, $injector) {
+	.factory('todoStorage', function ($q, $injector) {
 		'use strict';
-
-		// Detect if an API backend is present. If so, return the API module, else
-		// hand off the localStorage adapter
-		return $http.get('/api')
-			.then(function () {
-				return $injector.get('api');
-			}, function () {
-				return $injector.get('localStorage');
-			});
+            var deferred = $q.defer();
+            deferred.resolve($injector.get('localStorage'));
+            return deferred.promise;
 	})
 
 	.factory('api', function ($resource) {
