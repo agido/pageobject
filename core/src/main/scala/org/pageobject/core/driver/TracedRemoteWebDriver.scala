@@ -28,6 +28,7 @@ import org.pageobject.core.tools.Perf
 
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.JavaConverters.mapAsScalaMapConverter
+import scala.collection.concurrent.TrieMap
 import scala.collection.immutable
 import scala.collection.mutable
 import scala.util.Failure
@@ -55,6 +56,7 @@ private object TracedRemoteWebDriver {
     "clearElement" -> Seq("id"),
     "getTitle" -> Seq(),
     "getCurrentUrl" -> Seq(),
+    "quit" -> Seq(),
     "close" -> Seq()
   )
 }
@@ -73,6 +75,8 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
                             requiredCapabilities: Capabilities)
   extends RemoteWebDriver(executor, desiredCapabilities, requiredCapabilities) with Logging {
 
+  val idFoundBy: mutable.Map[String, String] = new TrieMap[String, String]()
+
   private def prettyPrint(what: Any): String = what match {
     case str: String => s""""$str""""
     // this is needed by sendKeysToElement
@@ -81,18 +85,40 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
     case _ => what.toString
   }
 
-  private def formatCommand(driverCommand: String, map: mutable.Map[String, _ <: Any]): String = {
+  private def formatCommand(driverCommand: String, parameters: mutable.Map[String, _ <: Any]): String = {
     val arguments = TracedRemoteWebDriver.commandArguments.get(driverCommand)
+    val map: mutable.Map[String, _ <: Any] = if (parameters.contains("id")) {
+      val id = parameters("id").toString
+      parameters + ("id" -> idFoundBy.getOrElse(id, id))
+    } else {
+      parameters
+    }
     s"$driverCommand(${arguments.fold(map.toString)(_.map(map(_)).map(prettyPrint).mkString(", "))})"
   }
 
   private val elementIdsToShow = 10
 
-  private def formatElementIds(result: Response): String = {
-    val (show, hide) = result.getValue.asInstanceOf[util.ArrayList[RemoteWebElement]].asScala.splitAt(elementIdsToShow)
-    val ids = show.map(_.getId).mkString(", ")
+  private def formatElementIds(driverCommand: String, parameters: mutable.Map[String, _ <: Any], result: Response):
+  String = {
+    val all = result.getValue.asInstanceOf[util.ArrayList[RemoteWebElement]].asScala.map(_.getId)
+    val (show, hide) = all.splitAt(elementIdsToShow)
+    val ids = show.mkString(", ")
     val dots = hide.headOption.fold("")(_ => "...")
-    s"${show.size + hide.size} [$ids$dots]"
+
+    val value = parameters.getOrElse("value", "")
+    val using = parameters.getOrElse("using", "")
+    val prefix = parameters.get("id")
+      .map(_.toString)
+      .map(id => idFoundBy.get(id).map(_ + " ").getOrElse(id))
+      .getOrElse("")
+    all.foreach(id => idFoundBy.put(id, prefix + using match {
+      case "id" => s"$id <#$value>"
+      case "class name" => s"$id <.$value>"
+      case "css selector" => s"$id <$value>"
+      case "name" => s"$id <[name = '$value']>"
+      case _ => s"$id <$using($value)>"
+    }))
+    s"${show.size + hide.size} Elements: [$ids$dots]"
   }
 
   class CommandGroup(commands: String*) {
@@ -117,21 +143,21 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
     "getCurrentUrl"
   )
 
-  private def formatResult(driverCommand: String, result: Response): String = {
+  private def formatResult(driverCommand: String, parameters: mutable.Map[String, _ <: Any], result: Response): String = {
     driverCommand match {
-      case FormatResultElementIds() => formatElementIds(result)
+      case FormatResultElementIds() => formatElementIds(driverCommand, parameters, result)
       case PrettyPrintResultValue() => prettyPrint(result.getValue)
       case _ => ""
     }
   }
 
-  private def format(driverCommand: String, map: mutable.Map[String, _ <: Any], result: Try[Response]): String = {
+  private def format(driverCommand: String, parameters: mutable.Map[String, _ <: Any], result: Try[Response]): String = {
     result match {
       case Success(success) =>
-        val formatted = formatResult(driverCommand, success)
-        s"execute ${formatCommand(driverCommand, map)}${if (!formatted.isEmpty) s" = $formatted" else ""}"
+        val formatted = formatResult(driverCommand, parameters, success)
+        s"execute ${formatCommand(driverCommand, parameters)}${if (!formatted.isEmpty) s" = $formatted" else ""}"
 
-      case Failure(th) => s"execute ${formatCommand(driverCommand, map)} exception ${th.getMessage}"
+      case Failure(th) => s"execute ${formatCommand(driverCommand, parameters)} exception ${th.getMessage}"
     }
   }
 

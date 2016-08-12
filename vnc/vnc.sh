@@ -145,7 +145,7 @@ function cmd_start() {
 	seleniumPid=$!
 
 	if [ -n "$CLIENT_DISPLAY_PORT" ]; then
-		DISPLAY=$CLIENT_DISPLAY_PORT $basedir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd &
+		DISPLAY=$CLIENT_DISPLAY_PORT $basedir/vncviewer ::$(vncport $DISPLAY) PasswordFile=$basedir/.vncpasswd 2>&1 &
 		vncViewerPid=$!
 	fi
 
