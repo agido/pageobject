@@ -119,7 +119,9 @@ trait LoggingDriverFactory extends DriverFactory {
       super.runTest(testName, {
         LoggingDriverFactory.info(s"running $name")
         try {
-          val ret = fn
+          val ret = LogContext(Map(LogContext.activePage -> "")) {
+            fn
+          }
           if (TestHelper.isFailedResult(ret)) {
             LoggingDriverFactory.error(s"failed running $name")
           } else {

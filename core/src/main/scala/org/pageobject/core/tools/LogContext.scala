@@ -21,10 +21,16 @@ import scala.collection.JavaConverters.mapAsJavaMapConverter
 import scala.collection.JavaConverters.mapAsScalaMapConverter
 
 object LogContext {
+  val activePage = "activePage"
   val suiteName = "suiteName"
   val testName = "testName"
   val browser = "browser"
   val vnc = "vnc"
+
+  def set(key: String, value: Option[String]): Unit = value match {
+    case Some(v) => MDC.put(key, v)
+    case None => MDC.remove(key)
+  }
 
   def apply[S](key: String): String = {
     Option(MDC.get(key)).getOrElse("")

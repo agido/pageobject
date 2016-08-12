@@ -22,6 +22,7 @@ import org.pageobject.core.driver.DriverProvider
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.PageObject
 import org.pageobject.core.tools.DynamicOptionVariable
+import org.pageobject.core.tools.LogContext
 
 /**
  * While instantiating a Page the PageHolder will be stored here.
@@ -53,6 +54,12 @@ object PageHolder {
 trait PageHolder extends DriverProvider {
   private val activePageReference = new AtomicReference[Option[AtChecker]]()
 
+  protected def ndcKey = LogContext.activePage
+
+  protected def updateNdc(): Unit = {
+    LogContext.set(ndcKey, activePageReference.get().map(_.getClass.getCanonicalName.split("\\.").last))
+  }
+
   /**
    * Marks the active page as inactive.
    */
@@ -65,6 +72,7 @@ trait PageHolder extends DriverProvider {
    */
   protected def activePage_=(page: AtChecker): Unit = {
     activePageReference.set(Some(page))
+    updateNdc()
   }
 
   /**
@@ -72,6 +80,7 @@ trait PageHolder extends DriverProvider {
    */
   protected def activePage_=(page: Option[AtChecker]): Unit = {
     activePageReference.set(page)
+    updateNdc()
   }
 
   /**
@@ -115,6 +124,7 @@ trait PageHolder extends DriverProvider {
    */
   protected[pageobject] def invalidateActivePage(): Unit = {
     activePageReference.set(None)
+    updateNdc()
   }
 
   /**
