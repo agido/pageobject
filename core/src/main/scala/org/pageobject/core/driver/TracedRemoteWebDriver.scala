@@ -16,6 +16,7 @@
 package org.pageobject.core.driver
 
 import java.util
+import java.util.logging.Level
 
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.logging.LogType
@@ -175,7 +176,12 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
               message
             }
           }
-          info(s"${log.getLevel} $withoutNewLine")
+          val msg = s"Console: ${log.getLevel} $withoutNewLine"
+          if (log.getLevel == Level.SEVERE) {
+            warn(msg)
+          } else {
+            info(msg)
+          }
         })
       }
       Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {

@@ -70,10 +70,29 @@ trait VncServer extends Logging {
   protected val processLogger: ProcessLogger =
     VncServer.createProcessLogger(stdoutName, stderrName,
       message => if (log(message)) {
-        info(message)
+        logStdOut(message)
       }, message => if (log(message)) {
-        error(message)
+        logStdErr(message)
       })
+
+  private val traceMessages = Set(
+    "Executing: ",
+    "Done: "
+  )
+
+  protected def isTraceMessage(message: String): Boolean = {
+    traceMessages.exists(m => message.contains(m))
+  }
+
+  protected def logStdOut(message: String): Unit = {
+    if (isTraceMessage(message)) {
+      trace(message)
+    } else {
+      debug(message)
+    }
+  }
+
+  protected def logStdErr(message: String): Unit = error(message)
 
   protected def log(message: String): Boolean = true
 
