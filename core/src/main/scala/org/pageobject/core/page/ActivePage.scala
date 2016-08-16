@@ -21,7 +21,7 @@ import org.pageobject.core.browser.PageHolder
  * A Page can implement this trait to get notified when the page gets activated and deactivated.
  */
 trait ActivePage {
-  def onActivated(pageHolder: PageHolder): Unit
+  def onActivated(pageHolder: PageHolder): Unit = {}
 
-  def onDeactivated(pageHolder: PageHolder): Unit
+  def onDeactivated(pageHolder: PageHolder): Unit = {}
 }
