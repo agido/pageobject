@@ -15,8 +15,42 @@
  */
 package org.pageobject.core.tools
 
+sealed trait LogLevel
+
+object LogLevel {
+
+  case object Trace extends LogLevel
+
+  case object Debug extends LogLevel
+
+  case object Info extends LogLevel
+
+  case object Warn extends LogLevel
+
+  case object Error extends LogLevel
+
+}
+
 trait Logging {
   private lazy val logger = org.slf4j.LoggerFactory.getLogger(getClass.getName)
+
+  def log(level: LogLevel, msg: => String): Unit = level match {
+    case LogLevel.Trace => trace(msg)
+    case LogLevel.Debug => debug(msg)
+    case LogLevel.Info => info(msg)
+    case LogLevel.Warn => warn(msg)
+    case LogLevel.Error => error(msg)
+    case _ =>
+  }
+
+  def log(level: LogLevel, msg: => String, throwable: => Throwable): Unit = level match {
+    case LogLevel.Trace => trace(msg, throwable)
+    case LogLevel.Debug => debug(msg, throwable)
+    case LogLevel.Info => info(msg, throwable)
+    case LogLevel.Warn => warn(msg, throwable)
+    case LogLevel.Error => error(msg, throwable)
+    case _ =>
+  }
 
   def trace(msg: => String): Unit = {
     if (logger.isTraceEnabled) {
