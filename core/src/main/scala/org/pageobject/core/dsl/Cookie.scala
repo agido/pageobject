@@ -164,6 +164,10 @@ object Cookie {
     def addCookie(cookie: SeleniumCookie)(implicit driver: WebDriver): Unit = {
       driver.manage.addCookie(cookie)
     }
+
+    def allCookies(implicit driver: WebDriver): Seq[WrappedCookie] = {
+      driver.manage.getCookies.asScala.toSeq.map(new WrappedCookie(_))
+    }
   }
 
   /**
@@ -252,4 +256,6 @@ object Cookie {
   }
 
   def getCookie(name: String)(implicit driver: WebDriver): WrappedCookie = CookieHelper.getCookie(name)
+
+  def allCookies(implicit driver: WebDriver): Seq[WrappedCookie] = CookieHelper.allCookies
 }

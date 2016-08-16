@@ -19,11 +19,16 @@ package org.pageobject.core.dsl
 import java.util.Date
 
 import org.openqa.selenium.WebDriver
+import org.pageobject.core.dsl.Cookie.WrappedCookie
 
 trait CookieDsl {
   protected val add = Cookie.AddCookie
   protected val delete = Cookie.DeleteCookie
   protected val cookies = Cookie.Cookies
+
+  protected object all {
+    def cookies(implicit driver: WebDriver): Seq[WrappedCookie] = Cookie.allCookies
+  }
 
   /**
    * Get a saved cookie from web browser, throws TestFailedException if the cookie does not exist.
