@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 import org.pageobject.core.TestHelper
 import org.pageobject.core.driver.DriverProvider
+import org.pageobject.core.page.ActivePage
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.PageObject
 import org.pageobject.core.tools.DynamicOptionVariable
@@ -52,12 +53,37 @@ object PageHolder {
  * Manages the currently active page, used by PageBrowser
  */
 trait PageHolder extends DriverProvider {
-  private val activePageReference = new AtomicReference[Option[AtChecker]]()
+  private val activePageReference = new AtomicReference[Option[AtChecker]](None)
+  private val notifiedPageReference = new AtomicReference[Option[AtChecker]](None)
 
   protected def ndcKey = LogContext.activePage
 
   protected def updateNdc(): Unit = {
     LogContext.set(ndcKey, activePageReference.get().map(_.getClass.getCanonicalName.split("\\.").last))
+  }
+
+  final protected def notifyActivated(): Unit = {
+    activePage match {
+      case Some(page: AtChecker) =>
+        notifyDeactivated()
+        notifiedPageReference.set(Some(page))
+        onActivated(page)
+      case _ =>
+    }
+  }
+
+  final protected def notifyDeactivated(): Unit = {
+    notifiedPageReference.getAndSet(None).foreach(onDeactivated)
+  }
+
+  protected def onActivated(page: AtChecker): Unit = page match {
+    case page: ActivePage => page.onActivated(this)
+    case _ =>
+  }
+
+  protected def onDeactivated(page: AtChecker): Unit = page match {
+    case page: ActivePage => page.onDeactivated(this)
+    case _ =>
   }
 
   /**
@@ -71,6 +97,7 @@ trait PageHolder extends DriverProvider {
    * Marks the given page as active.
    */
   protected def activePage_=(page: AtChecker): Unit = {
+    notifyDeactivated()
     activePageReference.set(Some(page))
     updateNdc()
   }
@@ -79,6 +106,7 @@ trait PageHolder extends DriverProvider {
    * Marks the given page as active.
    */
   protected def activePage_=(page: Option[AtChecker]): Unit = {
+    notifyDeactivated()
     activePageReference.set(page)
     updateNdc()
   }
@@ -123,8 +151,11 @@ trait PageHolder extends DriverProvider {
    * Marks the active page as inactive.
    */
   protected[pageobject] def invalidateActivePage(): Unit = {
-    activePageReference.set(None)
-    updateNdc()
+    if (activePage.isEmpty) {
+      TestHelper.failTest("page object is not active!")
+    } else {
+      clearActivePage()
+    }
   }
 
   /**

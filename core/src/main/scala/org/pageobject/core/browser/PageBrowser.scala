@@ -101,6 +101,7 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
         case Some(pageFound) =>
           info(s"browser is now at page $pageFound!")
           activePage = pageFound
+          notifyActivated()
           pageFound
         case None =>
           throw new java.lang.AssertionError(
