@@ -18,6 +18,7 @@ package org.pageobject.core.driver.vnc
 import java.util.concurrent.atomic.AtomicReference
 
 import org.pageobject.core.WaitFor
+import org.pageobject.core.tools.Logging
 
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -32,7 +33,7 @@ import scala.concurrent.blocking
  * Because it is not safe to releay on shutdownAll,
  * the VncServer should shutdown itself then the parent process has gone.
  */
-case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) => V) extends WaitFor {
+case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) => V) extends WaitFor with Logging {
   // VNC servers currently in use
   private val running = mutable.Set[V]()
 
@@ -55,6 +56,7 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
   private def start(retryCount: Int = 10, seconds: Int = 5000, each: Int = 1000, step: Int = 100): V = // scalastyle:ignore magic.number
   {
     if (retryCount <= 0) {
+      error("failed to start vnc server, have a look at VncServer's logging above!")
       throw new RuntimeException("failed to start vnc server!")
     }
     val vncServerRef = tryStart()

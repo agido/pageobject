@@ -51,7 +51,7 @@ function isfn() {
 function fatal() {
 	local message="$1"
 	local code="$2"
-	echo $message
+	echo $message >&2
 	if [ -z "$code" ]; then
 		exit 1
 	else
