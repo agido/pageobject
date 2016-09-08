@@ -20,6 +20,7 @@ import org.pageobject.core.WaitFor
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.page.UrlPage
+import org.pageobject.core.page.WaitPage
 import org.pageobject.core.tools.Logging
 
 /**
@@ -79,24 +80,40 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
     at(() => page)
   }
 
+  protected def atWaitPage(unexpectedPage: AtChecker) = {
+    val message = s"browser is at unexpected wait page $unexpectedPage!"
+    info(message)
+    val waitTimeMillis = unexpectedPage match {
+      case waitPage: WaitPage =>
+        waitPage.waitTimeMillis()
+      case _ =>
+        500 // scalastyle:ignore magic.number
+    }
+    Thread.sleep(waitTimeMillis)
+    throw new RuntimeException(message)
+  }
+
+  protected def atCancelTestPage(unexpectedPage: AtChecker) = {
+    val message = s"browser is at unexpected page $unexpectedPage, test canceled!"
+    error(message)
+    TestHelper.cancelTest(message)
+  }
+
+  protected def atFailTestPage(unexpectedPage: AtChecker) = {
+    val message = s"browser is at unexpected page $unexpectedPage, test failed!"
+    error(message)
+    TestHelper.failTest(message)
+  }
+
   def at[P <: AtChecker](pages: (() => _ <: P)*): P = {
     val pageDeferred = pages.map(page => defer(page()))
     clearActivePage()
 
     val unexpectedPages = defer(UnexpectedPagesFactory.createUnexpectedPages())
     waitFor(PageBrowser.At) {
-      unexpectedPages.waitPages.find(isAt(_)).foreach(unexpectedPage => {
-        info(s"browser is at unexpected wait page $unexpectedPage!")
-        throw new RuntimeException(s"browser is at unexpected wait page $unexpectedPage!")
-      })
-      unexpectedPages.cancelTestPages.find(isAt(_)).foreach(unexpectedPage => {
-        error(s"browser is at unexpected wait page $unexpectedPage!")
-        TestHelper.cancelTest(s"browser is at unexpected page $unexpectedPage, test canceled!")
-      })
-      unexpectedPages.failTestPages.find(isAt(_)).foreach(unexpectedPage => {
-        error(s"browser is at unexpected wait page $unexpectedPage!")
-        TestHelper.failTest(s"browser is at unexpected page $unexpectedPage, test failed!")
-      })
+      unexpectedPages.waitPages.find(isAt(_)).foreach(atWaitPage)
+      unexpectedPages.cancelTestPages.find(isAt(_)).foreach(atCancelTestPage)
+      unexpectedPages.failTestPages.find(isAt(_)).foreach(atFailTestPage)
       pageDeferred.find(page => isAt(page)) match {
         case Some(pageFound) =>
           info(s"browser is now at page $pageFound!")
