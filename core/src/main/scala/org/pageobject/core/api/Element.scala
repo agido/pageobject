@@ -75,6 +75,13 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
   }
 
   /**
+   * webElement can be used to access the underlying selenium WebElement.
+   *
+   * @return the underlying WebElement
+   */
+  def webElement: WebElement = underlying
+
+  /**
    * The XY location of the top-left corner of this <code>Element</code>.
    *
    * <p>
