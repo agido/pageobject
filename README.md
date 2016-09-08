@@ -126,7 +126,7 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 The followings are recommended for building PageObject:
 (other versions may work but are currently untested)
 * openjdk7 (not supported by scala 2.12.x), openjdk8 or oraclejdk8
-* [SBT 0.13.11](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
+* [SBT 0.13.x](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
 * [Scala](http://www.scala-lang.org/documentation/getting-started.html)
  * 2.10.6
  * 2.11.8
