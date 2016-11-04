@@ -19,11 +19,11 @@ matrix:
     jdk: openjdk8
   - scala: 2.11.8
     jdk: oraclejdk8
-  - scala: 2.12.0-M5
+  - scala: 2.12.0
     jdk: openjdk8
     env:
     - PUBLISH=true
-  - scala: 2.12.0-M5
+  - scala: 2.12.0
     jdk: oraclejdk8
 notifications:
   email: support@pageobject.org
