@@ -16,4 +16,4 @@
 package org.pageobject.examples.wikipedia
 
 case class WikipediaEnPage(entry: String)
-  extends WikipediaPage("en", "Wikipedia, the free encyclopedia")(entry)
+  extends WikipediaPage("en", "Wikipedia")(entry)
