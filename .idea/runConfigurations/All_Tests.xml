@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All Tests" type="ScalaTestRunConfiguration" factoryName="ScalaTest" singleton="true">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <module name="examples" />
     <setting name="path" value="" />
     <setting name="package" value="" />
@@ -12,9 +13,6 @@
     <setting name="showProgressMessages" value="true" />
     <envs>
       <envVar name="FIREFOX_LIMIT" value="0" />
-      <envVar name="RUN_WITH_DRIVERS" value="org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList" />
-      <envVar name="TEST_LIMIT" value="1" />
-      <envVar name="TRACE_REMOTE_WEB_DRIVER" value="1" />
     </envs>
     <method />
   </configuration>

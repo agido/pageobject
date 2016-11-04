@@ -4,7 +4,6 @@
     <setting name="vmparams" value="" />
     <setting name="workingDir" value="$PROJECT_DIR$" />
     <envs>
-      <env name="RUN_WITH_DRIVERS" value="org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList" />
       <env name="FIREFOX_LIMIT" value="0" />
     </envs>
     <method />
