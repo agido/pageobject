@@ -100,13 +100,14 @@ lazy val scalatest = (project in file("scalatest"))
   .dependsOn(core)
 
 // jetty 9.2.x is the last version with support java 7
-val jettyVersion = "9.2.17.v20160517"
+val jettyVersion = "9.2.19.v20160908"
 
 lazy val test = (project in file("test"))
   .settings(commonSettings: _*)
   .settings(noPublishSettings: _*)
   .settings(
     name := "test",
+    dependencyOverrides += "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
     libraryDependencies ++= Seq(
       "ch.qos.logback" % "logback-classic" % "1.1.7",
       "org.slf4j" % "jcl-over-slf4j" % "1.7.21",
