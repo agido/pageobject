@@ -130,7 +130,7 @@ The followings are recommended for building PageObject:
 * [Scala](http://www.scala-lang.org/documentation/getting-started.html)
  * 2.10.6
  * 2.11.8
- * 2.12.0-M5
+ * 2.12.0
 
 Because Selenium requires at least Java 7 it is not possible to use PageObject with Java 6.
 maven builds of PageObject for scala 2.10 and 2.11 are using openjdk7 and openjdk8 for scala 2.12.
