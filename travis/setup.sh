@@ -53,8 +53,9 @@ function download() {
 		fi
 	fi
 
-	if [ "$(_md5sum $file)" != "$sum" ]; then
-		echo "Downloading $file failed!"
+	local checksum=$(_md5sum $file)
+	if [ "$checksum" != "$sum" ]; then
+		echo "Downloading $file failed! checksum is $checksum, expected was $sum"
 		exit 1
 	fi
 }
@@ -73,9 +74,10 @@ function unpack() {
 			tar xf $from --transform "s:$what:$file:" $what
 		fi
 	fi
-	if [ "$(_md5sum $file)" != "$sum" ]; then
+	local checksum=$(_md5sum $file)
+	if [ "$checksum" != "$sum" ]; then
 		rm -f $file || true
-		echo "unpacking $file failed!"
+		echo "unpacking $file failed! checksum is $checksum, expected was $sum"
 		exit 1
 	fi
 }
