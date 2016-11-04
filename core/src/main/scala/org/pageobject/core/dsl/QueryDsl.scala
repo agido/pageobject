@@ -29,6 +29,25 @@ import org.pageobject.core.api.XPathQuery
  * This trait is part of the PageObject DSL.
  *
  * This trait implements helper functions to create Query instances.
+ *
+ * <code>
+ * trait ExampleModule extends PageModule {
+ *   // $ -> UntypedLocator, we expect a div or something
+ *   // linkText -> we select elements by linkText
+ *   private val foo = $(linkText("foo"))
+ *
+ *   def click(): Unit = {
+ *     // foo.element is invoked here,
+ *     // the test will fail if no element (or more then one) is found
+ *     click on foo
+ *   }
+ *
+ *   // other example
+ *   // singleSel -> we expect a single selection dropdown form element
+ *   // cssSelector -> we select Elements by using a css query
+ *   private val foo2 = singleSel(cssSelector("#someid .foo"))
+ * }
+ * </code>
  */
 trait QueryDsl {
   /**
@@ -38,10 +57,12 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on id("q")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(id("foo"))
+   * </code>
+   *
+   * id("someid") will select the same elements like cssSelector("#someid").
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param elementId the query string for this query.
@@ -55,10 +76,11 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on name("q")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(name("foo"))
+   * </code>
+   *
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param elementName the query string for this query.
@@ -72,10 +94,11 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on xpath("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(xpath("foo"))
+   * </code>
+   *
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param xpath the query string for this query.
@@ -89,10 +112,12 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on className("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(className("foo"))
+   * </code>
+   *
+   * className("class") will select the same elements like cssSelector(".class").
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param className the query string for this query.
@@ -106,10 +131,11 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on cssSelector("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(cssSelector("foo"))
+   * </code>
+   *
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param cssSelector the query string for this query.
@@ -123,10 +149,11 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on linkText("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(linkText("foo"))
+   * </code>
+   *
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param linkText the query string for this query.
@@ -140,10 +167,11 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on partialLinkText("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(partialLinkText("foo"))
+   * </code>
+   *
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param partialLinkText the query string for this query.
@@ -157,10 +185,12 @@ trait QueryDsl {
    * This method enables syntax such as the following:
    * </p>
    *
-   * <pre class="stHighlight">
-   * click on tagName("???")
-   * &#94;
-   * </pre>
+   * <code>
+   * private val foo = $(tagName("foo"))
+   * </code>
+   *
+   * tagName("div") will select the same elements like cssSelector("div").
+   * See also the example in documentation of trait QueryDsl.
    *
    *
    * @param tagName the query string for this query.
