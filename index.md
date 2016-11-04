@@ -38,7 +38,7 @@ We created an overview presentation showing you how to use PageObject to create 
 ## Using PageObject
 The current version of PageObject is 0.1.0.
 
-Scala versions 2.10.x, 2.11.x and 2.12.0-M5 are supported.
+Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
 
 To use PageObject, add this lines to yours build.sbt:
 
