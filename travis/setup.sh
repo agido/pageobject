@@ -60,54 +60,54 @@ function download() {
 }
 
 function unpack() {
-    local from=$1
-    local what=$2
-    local file=$3
-    local sum=$4
+	local from=$1
+	local what=$2
+	local file=$3
+	local sum=$4
 
-    if [ "$(_md5sum $file)" != "$sum" ]; then
-        if [[ "$from" == *.zip ]]; then
-            unzip $from $what -d $(dirname $file)
-        else
-            rm -f $file || true
-            tar xf $from --transform "s:$what:$file:" $what
-        fi
-    fi
 	if [ "$(_md5sum $file)" != "$sum" ]; then
-	    rm -f $file || true
+		if [[ "$from" == *.zip ]]; then
+			unzip $from $what -d $(dirname $file)
+		else
+			rm -f $file || true
+			tar xf $from --transform "s:$what:$file:" $what
+		fi
+	fi
+	if [ "$(_md5sum $file)" != "$sum" ]; then
+		rm -f $file || true
 		echo "unpacking $file failed!"
 		exit 1
 	fi
 }
 
 function setup_vnc() {
-    if [ $ARCH = "linux" ]; then
-        local tigervnc=tigervnc-Linux-x86_64-1.6.0.tar.gz
-        download vnc/$tigervnc https://bintray.com/tigervnc/stable/download_file?file_path=$tigervnc 7379a5b507db2a490fbe05b4c9447efb
-        unpack vnc/$tigervnc ./usr/bin/Xvnc vnc/Xvnc 500f4926f0967086d3360cd45b9f6b8c
-        unpack vnc/$tigervnc ./usr/bin/vncviewer vnc/vncviewer 091e8e64094da4993b75a2838475187d
-    else
-        echo "skipping.. vnc currently not tested on OSX!"
-    fi
+	if [ $ARCH = "linux" ]; then
+		local tigervnc=tigervnc-Linux-x86_64-1.6.0.tar.gz
+		download vnc/$tigervnc https://bintray.com/tigervnc/stable/download_file?file_path=$tigervnc 7379a5b507db2a490fbe05b4c9447efb
+		unpack vnc/$tigervnc ./usr/bin/Xvnc vnc/Xvnc 500f4926f0967086d3360cd45b9f6b8c
+		unpack vnc/$tigervnc ./usr/bin/vncviewer vnc/vncviewer 091e8e64094da4993b75a2838475187d
+	else
+		echo "skipping.. vnc currently not tested on OSX!"
+	fi
 }
 
 function setup_seleniumserver() {
-    download selenium/selenium-server-standalone.jar https://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar 63a0b96eab18f8420b9bba2f0f5d380c
+	download selenium/selenium-server-standalone.jar https://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar 63a0b96eab18f8420b9bba2f0f5d380c
 }
 
 function setup_chromedriver() {
-    if [ $ARCH = "linux" ]; then
-        download selenium/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.22/chromedriver_linux64.zip 2a5e6ccbceb9f498788dc257334dfaa3
-        unpack selenium/chromedriver_linux64.zip chromedriver selenium/chromedriver e74acdb8d4723f4d330f3ff5d846d204
-    else
-        echo "skipping.. chromedriver currently not tested on OSX!"
-    fi
+	if [ $ARCH = "linux" ]; then
+		download selenium/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.22/chromedriver_linux64.zip 2a5e6ccbceb9f498788dc257334dfaa3
+		unpack selenium/chromedriver_linux64.zip chromedriver selenium/chromedriver e74acdb8d4723f4d330f3ff5d846d204
+	else
+		echo "skipping.. chromedriver currently not tested on OSX!"
+	fi
 }
 
 function setup() {
-    setup_vnc
-    setup_seleniumserver
-    setup_chromedriver
+	setup_vnc
+	setup_seleniumserver
+	setup_chromedriver
 }
 
 setup
