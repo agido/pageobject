@@ -99,8 +99,8 @@ function setup_seleniumserver() {
 
 function setup_chromedriver() {
 	if [ $ARCH = "linux" ]; then
-		download selenium/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.22/chromedriver_linux64.zip 2a5e6ccbceb9f498788dc257334dfaa3
-		unpack selenium/chromedriver_linux64.zip chromedriver selenium/chromedriver e74acdb8d4723f4d330f3ff5d846d204
+		download selenium/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/2.25/chromedriver_linux64.zip 16673c4a4262d0f4c01836b5b3b2b110
+		unpack selenium/chromedriver_linux64.zip chromedriver selenium/chromedriver e1eea1403d36b8e50622c5a82123396f
 	else
 		echo "skipping.. chromedriver currently not tested on OSX!"
 	fi
