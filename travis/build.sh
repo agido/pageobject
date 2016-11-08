@@ -18,7 +18,6 @@
 set -e
 
 export TRACE_REMOTE_WEB_DRIVER=1
-export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 export FIREFOX_LIMIT=0
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then

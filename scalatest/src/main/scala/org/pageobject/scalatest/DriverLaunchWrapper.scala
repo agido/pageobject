@@ -21,6 +21,7 @@ import org.pageobject.core.driver.DriverFactories
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.driver.RunWithDrivers
+import org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.scalatest.Args
 import org.scalatest.DoNotDiscover
@@ -45,7 +46,12 @@ object DriverLaunchWrapper {
           .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
       )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
-        case None | Some("0") | Some("false") => Some(classOf[DefaultDriverFactoryList])
+        case None | Some("0") | Some("false") =>
+          if (sys.props.getOrElse("os.name", "unknown") == "Linux") {
+            Some(classOf[DefaultVncDriverFactoryList])
+          } else {
+            Some(classOf[DefaultDriverFactoryList])
+          }
         case Some(_) => None
       })
       .getOrElse(TestHelper.notAllowed("Missing RUN_WITH_DRIVERS environment variable!"))
