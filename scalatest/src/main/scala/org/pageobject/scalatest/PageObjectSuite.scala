@@ -32,6 +32,7 @@ import org.scalatest.Suite
  * If you want to customize some parts you can extend your Suite
  * with some of the trais listed here and replace others by a custom implementation.
  */
-trait PageObjectSuite extends PageBrowser with DriverLauncher with DefaultDriverProvider with BrowserLimitSuite {
+trait PageObjectSuite extends PageBrowser with DriverLauncher with DefaultDriverProvider
+  with ConfigureableParallelTestLimit {
   this: Suite =>
 }

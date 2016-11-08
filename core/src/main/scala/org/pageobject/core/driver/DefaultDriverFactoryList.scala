@@ -21,48 +21,54 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.safari.SafariDriver
+import org.pageobject.core.tools.Limit.ChromeLimit
+import org.pageobject.core.tools.Limit.FirefoxLimit
+import org.pageobject.core.tools.Limit.HtmlUnitLimit
+import org.pageobject.core.tools.Limit.InternetExplorerLimit
+import org.pageobject.core.tools.Limit.Limit
+import org.pageobject.core.tools.Limit.SafariLimit
 import org.pageobject.core.tools.OS
 
 /**
  * A abstract class to simply create a local DriverFactory.
  *
- * Only the browser name (used for the test name) and a webDriver create function is needed.
+ * Only the browser limit and a webDriver create function is needed.
  *
- * @param name used as test group name
+ * @param limit used as test group name and to detect how many instances should be started
  *
  * @param create used to create a webDriver for each test
  */
-abstract class DefaultCreateDriverFactory(val name: String, val create: () => WebDriver) extends DynamicDriverFactory {
+abstract class DefaultCreateDriverFactory(val limit: Limit, val create: () => WebDriver) extends DynamicDriverFactory {
   protected def createRealWebDriver(): WebDriver = create()
 }
 
 /**
  * A DriverFactory creating a local HtmlUnit browser
  */
-case class HtmlUnitDriverFactory() extends DefaultCreateDriverFactory("HtmlUnit", () => new HtmlUnitDriver())
+case class HtmlUnitDriverFactory() extends DefaultCreateDriverFactory(HtmlUnitLimit, () => new HtmlUnitDriver())
 
 /**
  * A DriverFactory creating a local Firefox browser
  */
-case class FirefoxDriverFactory() extends DefaultCreateDriverFactory("Firefox", () => new FirefoxDriver())
+case class FirefoxDriverFactory() extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver())
 
 /**
  * A DriverFactory creating a local Safari browser
  */
-case class SafariDriverFactory() extends DefaultCreateDriverFactory("Safari", () => new SafariDriver()) {
+case class SafariDriverFactory() extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver()) {
   override val compatible = OS.isOSX
 }
 
 /**
  * A DriverFactory creating a local Chrome browser
  */
-case class ChromeDriverFactory() extends DefaultCreateDriverFactory("Chrome", () => new ChromeDriver())
+case class ChromeDriverFactory() extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver())
 
 /**
  * A DriverFactory creating a local Internet Explorer browser
  */
 case class InternetExplorerDriverFactory()
-  extends DefaultCreateDriverFactory("InternetExplorer", () => new InternetExplorerDriver()) {
+  extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver()) {
 
   override val compatible = OS.isWindows
 }

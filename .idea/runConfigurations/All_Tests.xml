@@ -12,7 +12,7 @@
     <setting name="testKind" value="All in package" />
     <setting name="showProgressMessages" value="true" />
     <envs>
-      <envVar name="FIREFOX_LIMIT" value="0" />
+      <envVar name="CHROME_LIMIT" value="1" />
     </envs>
     <method />
   </configuration>

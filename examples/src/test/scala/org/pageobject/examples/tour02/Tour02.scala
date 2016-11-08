@@ -20,7 +20,6 @@ import org.pageobject.core.WaitFor
 import org.pageobject.core.api.ImplicitNameQuery
 import org.pageobject.core.dsl.BrowserDsl
 import org.pageobject.core.page.PageReferenceProvider
-import org.pageobject.scalatest.BrowserLimitSuite
 import org.pageobject.scalatest.PageObjectSuite
 import org.scalatest.FunSpec
 
@@ -31,7 +30,7 @@ import org.scalatest.FunSpec
  * See next example for a simple page object example
  */
 class Tour02 extends FunSpec with PageObjectSuite with BrowserDsl with WaitFor with ImplicitNameQuery
-  with PageReferenceProvider with BrowserLimitSuite {
+  with PageReferenceProvider {
 
   describe("google.com") {
 

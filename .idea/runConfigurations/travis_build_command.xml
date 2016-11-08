@@ -4,7 +4,7 @@
     <setting name="vmparams" value="" />
     <setting name="workingDir" value="$PROJECT_DIR$" />
     <envs>
-      <env name="FIREFOX_LIMIT" value="0" />
+      <env name="CHROME_LIMIT" value="1" />
     </envs>
     <method />
   </configuration>

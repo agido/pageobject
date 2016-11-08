@@ -25,7 +25,7 @@ import org.pageobject.core.SeleniumException
 import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.tools.DynamicOptionVariable
-import org.pageobject.core.tools.Limit
+import org.pageobject.core.tools.Limit.Limit
 import org.pageobject.core.tools.LogContext
 import org.pageobject.core.tools.Logging
 import org.pageobject.core.tools.Perf
@@ -56,11 +56,9 @@ private[pageobject] object DriverFactory {
  * This trait is used to configure a test run and create a WebDriver used by the test.
  */
 trait DriverFactory {
-  def name: String
+  def limit: Limit
 
-  val compatible: Boolean = true
-
-  def selected: Boolean = Limit.getLimit(name) != 0
+  def compatible: Boolean = true
 
   def takeScreenshot(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {}
 
@@ -168,7 +166,9 @@ trait ThreadNameNumberingDriverFactory extends DriverFactory with Logging {
 trait Fullscreen extends DriverFactory {
   abstract override def createRealWebDriver(): WebDriver = {
     val driver: WebDriver = super.createRealWebDriver()
+
     def window = driver.manage().window()
+
     window.fullscreen()
     driver
   }
@@ -180,7 +180,9 @@ trait Fullscreen extends DriverFactory {
 trait Maximized extends DriverFactory {
   abstract override def createRealWebDriver(): WebDriver = {
     val driver: WebDriver = super.createRealWebDriver()
+
     def window = driver.manage().window()
+
     window.maximize()
     driver
   }
@@ -195,7 +197,9 @@ trait FixedLocation extends DriverFactory {
 
   abstract override def createRealWebDriver(): WebDriver = {
     val driver: WebDriver = super.createRealWebDriver()
+
     def window = driver.manage().window()
+
     position.foreach(window.setPosition(_))
     size.foreach(window.setSize(_))
     driver

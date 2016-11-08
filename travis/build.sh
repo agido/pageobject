@@ -17,7 +17,7 @@
 
 set -e
 
-export FIREFOX_LIMIT=0
+export CHROME_LIMIT=1
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
 	# fix for scala 2.10.x only
