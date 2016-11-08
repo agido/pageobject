@@ -17,7 +17,6 @@
 
 set -e
 
-export TRACE_REMOTE_WEB_DRIVER=1
 export FIREFOX_LIMIT=0
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
