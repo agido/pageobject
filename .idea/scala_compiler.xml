@@ -4,7 +4,8 @@
     <option name="deprecationWarnings" value="true" />
     <option name="uncheckedWarnings" value="true" />
     <option name="featureWarnings" value="true" />
-    <profile name="SBT 1" modules="root,core,examples,scalatest,test">
+    <option name="incrementalityType" value="SBT" />
+    <profile name="SBT 1" modules="root,core,examples,scalatest,testBase,testSelenium2,testSelenium3,testSeleniumShared">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <option name="featureWarnings" value="true" />

@@ -15,8 +15,11 @@
  */
 package org.pageobject.core
 
-import org.pageobject.scalatest.PageObjectTestSpec
+import org.openqa.selenium.internal.BuildInfo
+import org.scalatest.FunSpec
 
-abstract class TestSpec extends PageObjectTestSpec {
-  override val webAppContext = "test/selenium/shared/src/main/webapp"
+class Selenium2Test extends FunSpec {
+  it("must use selenium 2 api") {
+    assert(new BuildInfo().getReleaseLabel.startsWith("2"))
+  }
 }
