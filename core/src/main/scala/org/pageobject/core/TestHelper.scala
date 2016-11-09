@@ -18,17 +18,17 @@ package org.pageobject.core
 import scala.concurrent.duration.FiniteDuration
 
 trait TestHelper {
-  def failTest[T](message: String): T
+  def failTest(message: String): Nothing
 
-  def failTest[T](throwable: Throwable): T
+  def failTest(throwable: Throwable): Nothing
 
-  def cancelTest[T](message: String): T
+  def cancelTest(message: String): Nothing
 
-  def cancelTest[T](throwable: Throwable): T
+  def cancelTest(throwable: Throwable): Nothing
 
-  def timeoutTest[T](message: String, timeout: FiniteDuration): T
+  def timeoutTest(message: String, timeout: FiniteDuration): Nothing
 
-  def notAllowed[T](message: String): T
+  def notAllowed(message: String): Nothing
 
   def isFailedResult[T](result: T): Boolean
 
@@ -42,17 +42,17 @@ object TestHelper extends TestHelper {
   private val delegate = TestHelper.getClass.getClassLoader
     .loadClass("org.pageobject.core.TestHelperImpl").newInstance().asInstanceOf[TestHelper]
 
-  def failTest[T](message: String): T = delegate.failTest(message)
+  def failTest(message: String): Nothing = delegate.failTest(message)
 
-  def failTest[T](throwable: Throwable): T = delegate.failTest(throwable)
+  def failTest(throwable: Throwable): Nothing = delegate.failTest(throwable)
 
-  def cancelTest[T](message: String): T = delegate.cancelTest(message)
+  def cancelTest(message: String): Nothing = delegate.cancelTest(message)
 
-  def cancelTest[T](throwable: Throwable): T = delegate.cancelTest(throwable)
+  def cancelTest(throwable: Throwable): Nothing = delegate.cancelTest(throwable)
 
-  def timeoutTest[T](message: String, timeout: FiniteDuration): T = delegate.timeoutTest(message, timeout)
+  def timeoutTest(message: String, timeout: FiniteDuration): Nothing = delegate.timeoutTest(message, timeout)
 
-  def notAllowed[T](message: String): T = delegate.notAllowed(message)
+  def notAllowed(message: String): Nothing = delegate.notAllowed(message)
 
   def isFailedResult[T](result: T): Boolean = delegate.isFailedResult(result)
 
