@@ -42,8 +42,8 @@ lazy val commonSettings = Seq(
 
   pomExtra := // scalastyle:off xml.literal
     <scm>
-      <url>https://github.com/implydata/wikiticker.git</url>
-      <connection>scm:git:git@github.com:implydata/wikiticker.git</connection>
+      <url>https://github.com/agido/pageobject.git</url>
+      <connection>scm:git:git@github.com:agido/pageobject.git</connection>
     </scm>
       <developers>
         <developer>
