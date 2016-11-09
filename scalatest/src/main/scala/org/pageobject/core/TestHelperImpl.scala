@@ -15,6 +15,7 @@
  */
 package org.pageobject.core
 
+import org.scalatest.PageObjectHelper
 import org.scalatest.Status
 import org.scalatest.exceptions.NotAllowedException
 import org.scalatest.exceptions.StackDepthException
@@ -26,6 +27,10 @@ import org.scalatest.time.Span.convertDurationToSpan
 import scala.concurrent.duration.FiniteDuration
 
 class TestHelperImpl extends TestHelper {
+  def failedResult[T](throwable: Throwable): T = {
+    PageObjectHelper.failedStatus(throwable).asInstanceOf[T]
+  }
+
   def failTest(message: String): Nothing = {
     throw new TestFailedException(message, 1)
   }

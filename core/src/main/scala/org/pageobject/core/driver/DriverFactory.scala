@@ -30,6 +30,8 @@ import org.pageobject.core.tools.LogContext
 import org.pageobject.core.tools.Logging
 import org.pageobject.core.tools.Perf
 
+import scala.util.Failure
+import scala.util.Success
 import scala.util.Try
 import scala.util.control.NonFatal
 
@@ -115,7 +117,13 @@ trait LoggingDriverFactory extends DriverFactory {
     val browser = LogContext(LogContext.browser)
     val name = s"${space(suiteName)} ${space(testName)} on ${space(browser)}"
     LoggingDriverFactory.debug(s"preparing $name")
-    Perf((ms: Long, _: Try[T]) => LoggingDriverFactory.debug(s"$name has taken ${ms}ms\n")) {
+    Perf((ms: Long, t: Try[T]) => t match {
+      case Success(_) =>
+        LoggingDriverFactory.debug(s"$name has taken ${ms}ms\n")
+      case Failure(exception) =>
+        LoggingDriverFactory.error(s"$name has failed after ${ms}ms\n")
+        TestHelper.failedResult(exception)
+    }) {
       super.runTest(testName, {
         LoggingDriverFactory.info(s"running $name")
         try {

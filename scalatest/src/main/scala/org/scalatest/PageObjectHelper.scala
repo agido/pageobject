@@ -23,14 +23,17 @@ import org.scalatest.tools.ConcurrentDistributor
 object PageObjectHelper {
   def failedStatus(throwable: Throwable): Status = {
     // TODO not reported?
+    throw throwable
     // see scalatest issue #940
     // scalatest will ignore this exception...
     // see this comment in org.scalatest.tools.SuiteRunner line 61:
     // Don't forward the unreportedException to the returned status, because reporting it here in this SuiteAborted
+    /*
     val result = new StatefulStatus
     result.setFailedWith(throwable)
     result.setCompleted()
     result
+    */
   }
 
   def suiteName(clazz: Class[_]): String = {

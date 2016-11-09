@@ -18,6 +18,8 @@ package org.pageobject.core
 import scala.concurrent.duration.FiniteDuration
 
 trait TestHelper {
+  def failedResult[T](throwable: Throwable): T
+
   def failTest(message: String): Nothing
 
   def failTest(throwable: Throwable): Nothing
@@ -41,6 +43,8 @@ object TestHelper extends TestHelper {
 
   private val delegate = TestHelper.getClass.getClassLoader
     .loadClass("org.pageobject.core.TestHelperImpl").newInstance().asInstanceOf[TestHelper]
+
+  def failedResult[T](throwable: Throwable): T = delegate.failedResult(throwable)
 
   def failTest(message: String): Nothing = delegate.failTest(message)
 
