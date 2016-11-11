@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+logBuffered in Test := false
+
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
   version := "0.2.0-SNAPSHOT",
