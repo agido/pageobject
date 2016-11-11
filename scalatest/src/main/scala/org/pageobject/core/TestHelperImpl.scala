@@ -15,6 +15,7 @@
  */
 package org.pageobject.core
 
+import org.scalatest.PageObjectHelper
 import org.scalatest.Status
 import org.scalatest.exceptions.NotAllowedException
 import org.scalatest.exceptions.StackDepthException
@@ -26,28 +27,32 @@ import org.scalatest.time.Span.convertDurationToSpan
 import scala.concurrent.duration.FiniteDuration
 
 class TestHelperImpl extends TestHelper {
-  def failTest[T](message: String): T = {
+  def failedResult[T](throwable: Throwable): T = {
+    PageObjectHelper.failedStatus(throwable).asInstanceOf[T]
+  }
+
+  def failTest(message: String): Nothing = {
     throw new TestFailedException(message, 1)
   }
 
-  def failTest[T](throwable: Throwable): T = {
+  def failTest(throwable: Throwable): Nothing = {
     throw new TestFailedException(throwable, 1)
   }
 
-  def cancelTest[T](message: String): T = {
+  def cancelTest(message: String): Nothing = {
     throw new TestCanceledException(message, 1)
   }
 
-  def cancelTest[T](throwable: Throwable): T = {
+  def cancelTest(throwable: Throwable): Nothing = {
     throw new TestFailedException(throwable, 1)
   }
 
-  def timeoutTest[T](message: String, timeout: FiniteDuration): T = {
+  def timeoutTest(message: String, timeout: FiniteDuration): Nothing = {
     throw new TestFailedDueToTimeoutException((_: StackDepthException) => Some(message), None,
       Right((_: StackDepthException) => 1), None, timeout)
   }
 
-  def notAllowed[T](message: String): T = {
+  def notAllowed(message: String): Nothing = {
     throw new NotAllowedException(message, 1)
   }
 

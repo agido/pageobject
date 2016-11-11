@@ -22,6 +22,9 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
 import org.pageobject.core.tools.DynamicOptionVariable
+import org.pageobject.core.tools.Limit.ChromeLimit
+import org.pageobject.core.tools.Limit.FirefoxLimit
+import org.pageobject.core.tools.Limit.Limit
 import org.pageobject.core.tools.LogContext
 import org.pageobject.core.tools.Logging
 
@@ -33,13 +36,13 @@ import scala.concurrent.duration.FiniteDuration
  *
  * A VncServerManager is used to create and release a VncServer.
  *
- * @param name the name of the browser to launch
+ * @param limit how many instances should be started
  *
  * @param vncServerManager manager used to create and release a VncServer
  *
  * @tparam V type of the VncServer to use, normally DefaultVncServer
  */
-abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncServerManager: VncServerManager[V])
+abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncServerManager: VncServerManager[V])
   extends RemoteDriverFactory with Logging {
 
   private object vncServer extends DynamicOptionVariable[V]()
@@ -76,7 +79,7 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val name: String, vncSer
  * @tparam V type of the VncServer to use, normally DefaultVncServer
  */
 case class VncChromeDriverFactory[V <: SeleniumVncServer](vncServerManager: VncServerManager[V])
-  extends VncDriverFactory("chrome", vncServerManager) {
+  extends VncDriverFactory(ChromeLimit, vncServerManager) {
 
   def capabilities(): Capabilities = {
     val capabilities = DesiredCapabilities.chrome()
@@ -95,7 +98,7 @@ case class VncChromeDriverFactory[V <: SeleniumVncServer](vncServerManager: VncS
  * @tparam V type of the VncServer to use, normally DefaultVncServer
  */
 case class VncFirefoxDriverFactory[V <: SeleniumVncServer](vncServerManager: VncServerManager[V])
-  extends VncDriverFactory("firefox", vncServerManager) {
+  extends VncDriverFactory(FirefoxLimit, vncServerManager) {
 
   def capabilities(): Capabilities = {
     DesiredCapabilities.firefox()

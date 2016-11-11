@@ -18,6 +18,7 @@ package org.pageobject.scalatest
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.page.UnexpectedPagesFactory
+import org.pageobject.core.tools.LimitProvider
 import org.pageobject.core.tools.LogContext
 import org.scalatest.Args
 import org.scalatest.PageObjectHelper
@@ -38,7 +39,7 @@ import scala.util.Try
  * to create the driver instance if needed.
  */
 @WrapWith(classOf[DriverLaunchWrapper])
-trait DriverLauncher extends SuiteMixin {
+trait DriverLauncher extends SuiteMixin with LimitProvider {
   this: Suite =>
 
   private val currentMock = DriverFactory.currentMock
@@ -49,9 +50,11 @@ trait DriverLauncher extends SuiteMixin {
 
   private val wrapperSuiteName = super.suiteName
 
-  abstract override val suiteName = driverFactory.name
+  abstract override val suiteName = driverFactory.limit.name
 
-  abstract override val suiteId = s"${super.suiteId}$$${driverFactory.name}"
+  abstract override val suiteId = s"${super.suiteId}$$${driverFactory.limit.name}"
+
+  override def limit = driverFactory.limit
 
   abstract override protected def runTests(testName: Option[String], args: Args): Status = {
     Try {

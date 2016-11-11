@@ -17,9 +17,7 @@
 
 set -e
 
-export TRACE_REMOTE_WEB_DRIVER=1
-export RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
-export FIREFOX_LIMIT=0
+export CHROME_LIMIT=1
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
 	# fix for scala 2.10.x only
@@ -29,8 +27,8 @@ fi
 sbt scalastyle
 
 if [ -z "$SCOVER" ]; then
-	sbt test/test examples/test
+	sbt test
 else
-	sbt coverage test/test examples/test coverageReport
+	sbt coverage test coverageReport
 	sbt coverageAggregate
 fi

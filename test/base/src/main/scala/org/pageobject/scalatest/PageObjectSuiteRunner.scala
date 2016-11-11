@@ -26,11 +26,11 @@ import org.scalatest.events.Event
 case class RunnerResult(status: Status, events: collection.immutable.Seq[Event])
 
 object PageObjectSuiteRunner {
-  def apply(clazz: Class[_ <: Suite with PageObjectSuite], webDriver: WebDriver): RunnerResult = {
+  def apply(clazz: Class[_ <: DriverLauncher with Suite], webDriver: WebDriver): RunnerResult = {
     apply(clazz, () => webDriver)
   }
 
-  def apply(clazz: Class[_ <: Suite with PageObjectSuite], webDriverFactory: () => WebDriver): RunnerResult = {
+  def apply(clazz: Class[_ <: DriverLauncher with Suite], webDriverFactory: () => WebDriver): RunnerResult = {
     val events = collection.mutable.ListBuffer[Event]()
     val suite = DriverFactory.withWebDriverMock(webDriverFactory) {
       new DriverLaunchWrapper(clazz)

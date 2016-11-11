@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.core
+package org.pageobject.core.tools
 
-import org.pageobject.scalatest.PageObjectTestSpec
+import scala.util.Try
 
-abstract class TestSpec extends PageObjectTestSpec {
-  override val webAppContext = "test/src/test/webapp"
+object Util {
+  def parseInt(value: Option[String]): Option[Int] = {
+    value.flatMap(parseInt)
+  }
+
+  def parseInt(value: String): Option[Int] = {
+    Try[Int](Integer.parseInt(value)).toOption
+  }
 }

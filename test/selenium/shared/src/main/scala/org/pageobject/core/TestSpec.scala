@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.core.driver
+package org.pageobject.core
 
-/**
- * A simple scala default implementation for java interface <code>DriverFactories</code>
- *
- * DriverFactoryList will filter out all DriverFactories returning false for compatible or selected
- *
- * @param allDrivers driverFactories that should be used to run the tests.
- */
-class DriverFactoryList(allDrivers: DriverFactory*) extends DriverFactories {
-  val drivers = allDrivers.filter(factory => factory.compatible && factory.limit.selected)
+import org.pageobject.scalatest.PageObjectTestSpec
+
+abstract class TestSpec extends PageObjectTestSpec {
+  override val webAppContext = "test/selenium/shared/src/main/webapp"
 }

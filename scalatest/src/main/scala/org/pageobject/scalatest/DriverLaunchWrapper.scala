@@ -21,7 +21,10 @@ import org.pageobject.core.driver.DriverFactories
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.driver.RunWithDrivers
+import org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 import org.pageobject.core.page.UnexpectedPagesFactory
+import org.pageobject.core.tools.Limit.TestLimit
+import org.pageobject.core.tools.LimitProvider
 import org.scalatest.Args
 import org.scalatest.DoNotDiscover
 import org.scalatest.DynaTags
@@ -45,7 +48,12 @@ object DriverLaunchWrapper {
           .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
       )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
-        case None | Some("0") | Some("false") => Some(classOf[DefaultDriverFactoryList])
+        case None | Some("0") | Some("false") =>
+          if (sys.props.getOrElse("os.name", "unknown") == "Linux") {
+            Some(classOf[DefaultVncDriverFactoryList])
+          } else {
+            Some(classOf[DefaultDriverFactoryList])
+          }
         case Some(_) => None
       })
       .getOrElse(TestHelper.notAllowed("Missing RUN_WITH_DRIVERS environment variable!"))
@@ -62,7 +70,7 @@ object DriverLaunchWrapper {
  **/
 @DoNotDiscover
 class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
-  extends Suites with ParallelTestExecution with ConfigureableParallelTestLimit {
+  extends Suites with ParallelTestExecution with ConfigureableParallelTestLimit with LimitProvider {
 
   private val currentMock = DriverFactory.currentMock
 
@@ -75,6 +83,8 @@ class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
       }
     }
   }
+
+  override def limit = TestLimit
 
   override val nestedSuites = UnexpectedPagesFactory.withMaybeUnexpectedPages(runWith) {
     runWith.drivers().map(config => createBrowserSuiteInstance(config)).toIndexedSeq
@@ -97,6 +107,9 @@ class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
   override def suiteId = clazz.getName
 
   override def run(testName: Option[String], args: Args): Status = {
+    if (runWith.drivers().isEmpty) {
+      TestHelper.failTest("no browsers selected, have a look at the documentation about org.pageobject.core.tools.Limit")
+    }
     UnexpectedPagesFactory.withMaybeUnexpectedPages(runWith) {
       super.run(testName, args.copy(filter = patchFilter(args.filter)))
     }

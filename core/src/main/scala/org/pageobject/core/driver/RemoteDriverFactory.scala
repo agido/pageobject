@@ -35,7 +35,7 @@ import org.pageobject.core.tools.Environment
 trait TracedRemoteDriverFactory {
   this: RemoteDriverFactory =>
 
-  protected override val traced = Environment.boolean("TRACE_REMOTE_WEB_DRIVER")
+  protected override val traced = Environment.boolean("TRACE_REMOTE_WEB_DRIVER", default = true)
 }
 
 /**

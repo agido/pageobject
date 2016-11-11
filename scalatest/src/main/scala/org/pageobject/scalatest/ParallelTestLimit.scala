@@ -20,7 +20,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 
-import org.pageobject.core.tools.Limit
+import org.pageobject.core.tools.Limit.Limit
+import org.pageobject.core.tools.Limit.TestLimit
+import org.pageobject.core.tools.LimitProvider
 import org.scalatest.Args
 import org.scalatest.PageObjectHelper
 import org.scalatest.ParallelTestExecution
@@ -61,16 +63,20 @@ object ParallelTestLimit {
  * Can e.g. create a Thread Pool "Firefox" with 2 threads and another one called "Chrome" with 1 thread.
  */
 object ConfigureableParallelTestLimit {
-  private def createPool(envName: String): ExecutorService = Limit.getRawLimit(envName) match {
+  private def createPool(limit: Limit): ExecutorService = limit.get match {
     case -1 => ParallelTestLimit.unlimitedPool
     case max: Int => ParallelTestLimit.createThreadPool(max)
   }
 
   private val map = mutable.Map[String, ExecutorService]()
 
-  def getPool(envNames: Seq[String]): ExecutorService = synchronized {
-    val envName = envNames.find(envName => sys.env.contains(envName)).getOrElse(envNames.last)
-    map.getOrElseUpdate(envName, createPool(envName))
+  def getPool(limit: Limit): ExecutorService = synchronized {
+    val selected = if (limit.env.isDefined) {
+      limit
+    } else {
+      TestLimit
+    }
+    map.getOrElseUpdate(selected.name, createPool(selected))
   }
 }
 
@@ -119,9 +125,7 @@ trait SingleThreadedTestRun extends ParallelTestLimit {
  * @see BrowserLimitSuite
  */
 trait ConfigureableParallelTestLimit extends ParallelTestLimit {
-  this: Suite =>
+  this: Suite with LimitProvider =>
 
-  protected def parallelTestLimitEnvName = Seq(Limit.getLimitName("TEST"))
-
-  val executorService = ConfigureableParallelTestLimit.getPool(parallelTestLimitEnvName)
+  val executorService = ConfigureableParallelTestLimit.getPool(limit)
 }
