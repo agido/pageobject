@@ -23,6 +23,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.Select
 import org.pageobject.core.Dimension
 import org.pageobject.core.Point
+import org.pageobject.core.Rect
 import org.pageobject.core.TestHelper
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.page.DefaultPageReference
@@ -80,6 +81,23 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * @return the underlying WebElement
    */
   def webElement: WebElement = underlying
+
+  /**
+   * The XY location and width/height of this <code>Element</code>.
+   *
+   * <p>
+   * This invokes <code>getRect</code> on the underlying <code>WebElement</code>.
+   * </p>
+   *
+   * @return the location and size of this element on the page
+   */
+  def rect: Rect = retry() {
+    // runtime error 'unknown command'
+    //val rect = underlying.getRect
+    val location = underlying.getLocation
+    val size = underlying.getSize
+    Rect(location.x, location.y, size.width, size.height)
+  }
 
   /**
    * The XY location of the top-left corner of this <code>Element</code>.
