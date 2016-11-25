@@ -20,6 +20,7 @@ logBuffered in Test := false
 val jettyVersion = "9.2.19.v20160908"
 val selenium2Version = "2.53.1"
 val selenium3Version = "3.0.1"
+val scalatestVersion = "3.0.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -106,8 +107,8 @@ lazy val scalatest = (project in file("scalatest"))
   .settings(
     name := "scalatest",
     libraryDependencies ++= Seq(
-      "org.scalactic" %% "scalactic" % "3.0.0",
-      "org.pageobject.patch.org.scalatest" %% "scalatest" % "3.0.0" exclude("org.eclipse.jetty.orbit", "javax.servlet")
+      "org.scalactic" %% "scalactic" % scalatestVersion,
+      "org.pageobject.patch.org.scalatest" %% "scalatest" % scalatestVersion exclude("org.eclipse.jetty.orbit", "javax.servlet")
     )
   )
   .dependsOn(core)
