@@ -234,7 +234,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * @return a string representation of this object
    */
   override def toString: String =
-  s"""Element $typeDescription <$tagName type=${attribute("type").getOrElse("N/A")}> $underlying"""
+    s"""Element $typeDescription <$tagName type=${attribute("type").getOrElse("N/A")}> $underlying"""
 
   /**
    * Gets this field's value.
