@@ -36,16 +36,17 @@ trait ClickDsl {
 
   protected object click {
     /**
-     * Click on the specified <code>Element</code>
-     *
-     * @param element the <code>Element</code> to click on
-     */
-    def on[E <: Element](element: E): Unit = {
-      element.click()
-    }
-
-    /**
      * Click on the specified <code>Locator</code>
+     *
+     * <code>
+     *   trait ExampleModule extends PageModule {
+     *     private val locator = $(id("example"))
+     *
+     *     def click(): Unit = {
+     *       click on locator
+     *     }
+     *   }
+     * </code>
      *
      * @param locator the <code>Locator</code> to click on
      */
