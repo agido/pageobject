@@ -53,6 +53,10 @@ trait ClickDsl {
     def on[E <: Element](locator: Locator[E]): Unit = {
       locator.element.click()
     }
+
+    def after(what: Click.ClickAfterEvent): Click.ClickAfterEventOn = what.on
   }
+
+  object animation extends Click.Animation
 
 }

@@ -28,8 +28,10 @@ import org.pageobject.core.TestHelper
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.page.DefaultPageReference
 
+import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.immutable
+import scala.concurrent.duration.FiniteDuration
 
 /**
  * Wrapper class for a Selenium <code>WebElement</code>. This class provides all possibilities on a <code>WebElement</code>
@@ -300,6 +302,31 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    */
   def click(): Unit = retry(RetryHelper.retryOnClickFailed) {
     underlying.click()
+  }
+
+  /**
+   * Clicks this element after animation has finished.
+   *
+   * Detects the location of the Element to click and waits `duration`.
+   * After this the location is checked again.
+   * The click is only processed if the location and size was not modified.
+   * `AssertionError` is thrown otherwise.
+   */
+  def clickAfterAnimation(duration: FiniteDuration, count: Int): Unit = retry(RetryHelper.retryOnClickFailed) {
+    @tailrec
+    def click(oldRect: Rect = rect, count: Int): Unit = {
+      Thread.sleep(duration.toMillis)
+      val newRect = rect
+      if (oldRect == newRect) {
+        underlying.click()
+      } else if (count <= 0) {
+        throw new AssertionError("animation still in progress")
+      } else {
+        click(newRect, count - 1)
+      }
+    }
+
+    click(rect, count)
   }
 
   /**
