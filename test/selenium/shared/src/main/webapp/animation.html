@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>Animation</title>
+    <script src="jquery.min.js"></script>
+</head>
+<body style="with:100%;height:100%">
+
+<div id="animated" style="position:relative">animated element</div>
+
+<script>
+    // invoked by test
+    function animate(duration) {
+        $("#animated").show().animate({
+            top: "90%",
+            left: "90%"
+      }, duration);
+    }
+</script>
+
+</body>
+</html>
