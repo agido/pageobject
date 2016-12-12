@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- *********************************************************** -->
+    <!-- pageobject is build using sbt                               -->
+    <!-- all maven projects located in this repository are only used -->
+    <!-- to test the scala-maven-plugin plugin                       -->
+    <!-- *********************************************************** -->
+
+    <parent>
+        <groupId>org.pageobject</groupId>
+        <artifactId>maven-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../maven/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>maven-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.pageobject</groupId>
+            <artifactId>scalatest</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
