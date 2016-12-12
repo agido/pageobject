@@ -31,11 +31,8 @@ import org.scalatest.Suite
  *
  * If you want to customize some parts you can extend your Suite
  * with some of the trais listed here and replace others by a custom implementation.
- *
- * TODO: See https://github.com/agido/pageobject/issues/3
- * ConfigureableParallelTestLimit will cause display errors in IntelliJ IDEA
  */
 trait PageObjectSuite extends PageBrowser with DriverLauncher with DefaultDriverProvider
-  /*with ConfigureableParallelTestLimit*/ {
+  with ConfigureableParallelTestLimit {
   this: Suite =>
 }
