@@ -49,6 +49,35 @@ object PageHolder {
   def withPageHolder[S](pageHolder: PageHolder)(thunk: => S): S = PageHolder.withValue(Some(pageHolder))(thunk)
 }
 
+trait PageHolderWatcher {
+  def watch(pageHolder: PageHolder): Unit
+}
+
+private[pageobject] object PageHolderWatcher {
+
+  private object pageHolderWatcher extends DynamicOptionVariable[PageHolderWatcher]()
+
+  def invalidateAfter[S]()(thunk: => S): S = {
+    val set = collection.mutable.Set[PageHolder]()
+    val watcher = new PageHolderWatcher {
+      override def watch(pageHolder: PageHolder): Unit = {
+        set += pageHolder
+      }
+    }
+    pageHolderWatcher.withValue(watcher) {
+      try {
+        thunk
+      } finally {
+        set.foreach(_.clearActivePage())
+      }
+    }
+  }
+
+  def watch(pageHolder: PageHolder): Unit = {
+    pageHolderWatcher.value.watch(pageHolder)
+  }
+}
+
 /**
  * Manages the currently active page, used by PageBrowser
  */
@@ -73,6 +102,7 @@ trait PageHolder extends DriverProvider {
   }
 
   final protected def notifyDeactivated(): Unit = {
+    PageHolderWatcher.watch(this)
     notifiedPageReference.getAndSet(None).foreach(onDeactivated)
   }
 
@@ -89,7 +119,7 @@ trait PageHolder extends DriverProvider {
   /**
    * Marks the active page as inactive.
    */
-  protected def clearActivePage(): Unit = {
+  protected[browser] def clearActivePage(): Unit = {
     activePage = None
   }
 

@@ -15,6 +15,7 @@
  */
 package org.pageobject.scalatest
 
+import org.pageobject.core.browser.PageHolderWatcher
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.page.UnexpectedPagesFactory
@@ -86,7 +87,9 @@ trait DriverLauncher extends SuiteMixin with LimitProvider {
         UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
           DriverFactoryHolder.withValue(Some(driverFactory)) {
             DriverFactory.withWebDriverMock(currentMock) {
-              driverFactory.runTest(testName, super.runTest(testName, args))
+              PageHolderWatcher.invalidateAfter() {
+                driverFactory.runTest(testName, super.runTest(testName, args))
+              }
             }
           }
         }
