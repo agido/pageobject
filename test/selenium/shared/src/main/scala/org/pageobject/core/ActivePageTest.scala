@@ -17,17 +17,25 @@ package org.pageobject.core
 
 import java.util.concurrent.atomic.AtomicInteger
 
+import org.pageobject.core.browser.PageBrowser
 import org.pageobject.core.browser.PageHolder
+import org.pageobject.core.driver.DefaultDriverProvider
 import org.pageobject.core.page.ActivePage
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.EmptyUnexpectedPagesFactory
 import org.pageobject.core.page.PageObject
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.page.UrlPage
-import org.pageobject.scalatest.PageObjectSuite
+import org.pageobject.scalatest.ConfigureableParallelTestLimit
+import org.pageobject.scalatest.DriverLauncher
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.FunSpec
 
-class ActivePageTest extends FunSpec with PageObjectSuite {
+class ActivePageTestSingleThreaded extends ActivePageTest
+
+class ActivePageTestMultiThreaded extends ActivePageTest with ConfigureableParallelTestLimit
+
+trait ActivePageTest extends FunSpec with PageBrowser with DriverLauncher with DefaultDriverProvider with BeforeAndAfterEach {
   val unusedLocalPort1 = 65534
   val unusedLocalPort2 = 65533
 
@@ -61,7 +69,7 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
     super.onDeactivated(page)
   }
 
-  private def reset(): Unit = {
+  protected override def beforeEach() = {
     activated.set(0)
     deactivated.set(0)
   }
@@ -78,7 +86,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should not count via") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page = via(TestPage())
       assertActivated(0, 0)
       assertActivated(page, 0, 0)
@@ -87,7 +94,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should count at") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page = at(TestPage())
       assertActivated(1, 0)
       assertActivated(page, 1, 0)
@@ -96,7 +102,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should count to") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page = to(TestPage())
       assertActivated(1, 0)
       assertActivated(page, 1, 0)
@@ -105,7 +110,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should count invalidateActivePage") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page = at(TestPage())
       invalidateActivePage()
       assertActivated(1, 1)
@@ -115,7 +119,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should count at two times") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page1 = at(TestPage())
       val page2 = at(TestPage())
       assertActivated(2, 1)
@@ -126,7 +129,6 @@ class ActivePageTest extends FunSpec with PageObjectSuite {
 
   it("should count at two times called on same page") {
     UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      reset()
       val page = at(TestPage())
       at(page)
       assertActivated(2, 1)
