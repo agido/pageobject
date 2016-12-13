@@ -18,6 +18,7 @@
 set -e
 
 export CHROME_LIMIT=1
+export PAGEOBJECT_VNC_LIMIT=1
 
 if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
 	# fix for scala 2.10.x only
