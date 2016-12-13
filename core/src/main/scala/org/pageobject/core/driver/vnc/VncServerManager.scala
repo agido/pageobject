@@ -147,6 +147,8 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
       free += vncServer
       startCleanup()
     } else {
+      // give selenium some time
+      Thread.sleep(500) // scalastyle:ignore magic.number
       waiting.take().success(vncServer)
     }
   }
