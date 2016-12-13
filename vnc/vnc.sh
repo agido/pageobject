@@ -181,11 +181,24 @@ function cmd_check() {
 	mute curl http://127.0.0.1:$seleniumPort/wd/hub/status || exit 1
 }
 
+function cmd_stop() {
+	local id=$1
+	local seleniumPort=$2
+	shift || true
+	shift || true
+	local message="Syntax: $0 stop <id> <seleniumPort>"
+	require "$id" "$message"
+	require "$seleniumPort" "$message"
+
+	isexec curl
+	mute curl http://127.0.0.1:$seleniumPort/selenium-server/driver/?cmd=shutDownSeleniumServer || exit 1
+}
+
 function main() {
 	local cmd=$1
 
 	shift || true
-	call "cmd_$cmd" "Syntax: $0 <start|check>" $@
+	call "cmd_$cmd" "Syntax: $0 <start|check|stop>" $@
 }
 
 main $@

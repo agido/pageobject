@@ -47,6 +47,22 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
   private val count = new AtomicInteger()
   private val waiting = new LinkedBlockingQueue[Promise[V]]()
 
+  private val cleanupId = new AtomicInteger()
+
+  private def startCleanup(): Unit = {
+    val id = cleanupId.incrementAndGet()
+    Future {
+      Thread.sleep(2000) // scalastyle:ignore magic.number
+      VncServerManager.synchronized {
+        if (cleanupId.get() == id) {
+          if (running.isEmpty && waiting.isEmpty) {
+            shutdownAll()
+          }
+        }
+      }
+    }
+  }
+
   private def tryStart(): AtomicReference[Either[Option[V], Boolean]] = {
     val ref = new AtomicReference[Either[Option[V], Boolean]](Left(None))
     val ret: V = createVncServer(retry => VncServerManager.synchronized {
@@ -129,6 +145,7 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
     if (waiting.isEmpty) {
       running -= vncServer
       free += vncServer
+      startCleanup()
     } else {
       waiting.take().success(vncServer)
     }
