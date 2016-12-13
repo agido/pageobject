@@ -22,6 +22,7 @@ import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
 import org.pageobject.core.tools.DynamicOptionVariable
+import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.Limit.ChromeLimit
 import org.pageobject.core.tools.Limit.FirefoxLimit
 import org.pageobject.core.tools.Limit.Limit
@@ -49,7 +50,7 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncSer
 
   protected def url(): String = vncServer.value.url
 
-  protected def vncServerDuration() = FiniteDuration(1, TimeUnit.MINUTES)
+  protected def vncServerDuration() = FiniteDuration(Environment.integer("PAGEOBJECT_VNC_DURATION", 1), TimeUnit.MINUTES)
 
   protected def awaitVncServer(): V = {
     Await.result(vncServerManager.getOrCreateFreeVncServer(), vncServerDuration())
