@@ -15,18 +15,10 @@
  */
 package org.pageobject.core.driver;
 
-import scala.collection.Seq;
-
 /**
- * Classes implementing this interface can be used as an argument for {@code &#064;RunWithDrivers}.
+ * Helper interface to allow compiling using maven.
  *
- * A default scala implementation of this interface is provided here: {@code DriverFactoryList}.
+ * Only "trait DriverFactory" should implement this interface.
  */
-public interface DriverFactories {
-    /**
-     * For each returned driver factory a test instance is started and configured using this factory.
-     *
-     * @return a list of driver factories.
-     */
-    Seq<DriverFactory> drivers();
+public interface IDriverFactory {
 }

@@ -68,7 +68,7 @@ class SelectTest extends TestSpec with BrowserPageDsl {
     assert(select1.value == "option1")
     select1.value = "option2"
     assert(select1.value == "option2")
-    click on select1.options("option3")
+    select1.options("option3").click()
     assert(select1.value == "option3")
   }
 

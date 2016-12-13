@@ -17,6 +17,8 @@
           <option name="classCountToUseImportOnDemand" value="99999" />
           <option name="collectImports" value="false" />
           <option name="USE_SCALADOC2_FORMATTING" value="false" />
+          <option name="OVERRIDING_PROPERTY_TYPE_ANNOTATION" value="0" />
+          <option name="OVERRIDING_METHOD_TYPE_ANNOTATION" value="0" />
           <option name="SD_ALIGN_PARAMETERS_COMMENTS" value="false" />
           <option name="SD_BLANK_LINE_AFTER_PARAMETERS_COMMENTS" value="true" />
           <option name="SD_BLANK_LINE_AFTER_RETURN_COMMENTS" value="true" />

@@ -23,12 +23,15 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.Select
 import org.pageobject.core.Dimension
 import org.pageobject.core.Point
+import org.pageobject.core.Rect
 import org.pageobject.core.TestHelper
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.page.DefaultPageReference
 
+import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.immutable
+import scala.concurrent.duration.FiniteDuration
 
 /**
  * Wrapper class for a Selenium <code>WebElement</code>. This class provides all possibilities on a <code>WebElement</code>
@@ -80,6 +83,23 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * @return the underlying WebElement
    */
   def webElement: WebElement = underlying
+
+  /**
+   * The XY location and width/height of this <code>Element</code>.
+   *
+   * <p>
+   * This invokes <code>getRect</code> on the underlying <code>WebElement</code>.
+   * </p>
+   *
+   * @return the location and size of this element on the page
+   */
+  def rect: Rect = retry() {
+    // runtime error 'unknown command'
+    //val rect = underlying.getRect
+    val location = underlying.getLocation
+    val size = underlying.getSize
+    Rect(location.x, location.y, size.width, size.height)
+  }
 
   /**
    * The XY location of the top-left corner of this <code>Element</code>.
@@ -234,7 +254,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * @return a string representation of this object
    */
   override def toString: String =
-  s"""Element $typeDescription <$tagName type=${attribute("type").getOrElse("N/A")}> $underlying"""
+    s"""Element $typeDescription <$tagName type=${attribute("type").getOrElse("N/A")}> $underlying"""
 
   /**
    * Gets this field's value.
@@ -282,6 +302,31 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    */
   def click(): Unit = retry(RetryHelper.retryOnClickFailed) {
     underlying.click()
+  }
+
+  /**
+   * Clicks this element after animation has finished.
+   *
+   * Detects the location of the Element to click and waits `duration`.
+   * After this the location is checked again.
+   * The click is only processed if the location and size was not modified.
+   * `AssertionError` is thrown otherwise.
+   */
+  def clickAfterAnimation(duration: FiniteDuration, count: Int): Unit = retry(RetryHelper.retryOnClickFailed) {
+    @tailrec
+    def click(oldRect: Rect = rect, count: Int): Unit = {
+      Thread.sleep(duration.toMillis)
+      val newRect = rect
+      if (oldRect == newRect) {
+        underlying.click()
+      } else if (count <= 0) {
+        throw new AssertionError("animation still in progress")
+      } else {
+        click(newRect, count - 1)
+      }
+    }
+
+    click(rect, count)
   }
 
   /**

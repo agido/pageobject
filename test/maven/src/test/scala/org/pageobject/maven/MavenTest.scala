@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.core.tools
+package org.pageobject.maven
 
-object Environment {
-  def integer(name: String): Option[Int] = {
-    sys.env.get(name).map(Integer.parseInt)
-  }
+import org.pageobject.core.BrowserErrorPage
+import org.pageobject.core.page.EmptyUnexpectedPagesFactory
+import org.pageobject.core.page.UnexpectedPagesFactory
+import org.pageobject.core.page.UrlPage
+import org.pageobject.scalatest.PageObjectSuite
+import org.scalatest.FunSpec
 
-  def integer(name: String, default: Int): Int = {
-    sys.env.get(name).fold(default)(Integer.parseInt)
-  }
-
-  def parseBoolean(boolean: String): Boolean = boolean.toLowerCase match {
-    case "1" | "true" => true
-    case "0" | "false" => false
-  }
-
-  def boolean(name: String, default: Boolean = false): Boolean = {
-    sys.env.get(name).fold(default)(parseBoolean)
+class MavenTest extends FunSpec with PageObjectSuite {
+  it("should detect browsers connection refused page") {
+    via(UrlPage("http://localhost:65534/"))
+    UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
+      at(BrowserErrorPage())
+    }
   }
 }

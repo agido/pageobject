@@ -5,6 +5,7 @@
     <setting name="workingDir" value="$PROJECT_DIR$" />
     <envs>
       <env name="CHROME_LIMIT" value="1" />
+      <env name="PAGEOBJECT_VNC_LIMIT" value="1" />
     </envs>
     <method />
   </configuration>

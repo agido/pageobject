@@ -67,7 +67,7 @@ class RadioButtonTest extends TestSpec with BrowserPageDsl {
     group.value = "Option 1"
     assert(group.selection.get == "Option 1")
 
-    click on options("Option 3")
+    options("Option 3").click()
     assert(group.selection.get == "Option 3")
   }
 }

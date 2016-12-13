@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.core.tools
+package org.pageobject.core
 
-object Environment {
-  def integer(name: String): Option[Int] = {
-    sys.env.get(name).map(Integer.parseInt)
-  }
+import scala.language.implicitConversions
 
-  def integer(name: String, default: Int): Int = {
-    sys.env.get(name).fold(default)(Integer.parseInt)
+/**
+ * A dimension containing the width and height of a screen element.
+ */
+case class Rect(x: Int, y: Int, width: Int, height: Int) {
+  def apply(point: Point, dimension: Dimension): Rect = {
+    Rect(point.x, point.y, dimension.width, dimension.height)
   }
+}
 
-  def parseBoolean(boolean: String): Boolean = boolean.toLowerCase match {
-    case "1" | "true" => true
-    case "0" | "false" => false
-  }
+object Rect {
+  implicit def toPoint(rect: Rect): Point = Point(rect.x, rect.y)
 
-  def boolean(name: String, default: Boolean = false): Boolean = {
-    sys.env.get(name).fold(default)(parseBoolean)
-  }
+  implicit def toDimension(rect: Rect): Dimension = Dimension(rect.width, rect.height)
 }

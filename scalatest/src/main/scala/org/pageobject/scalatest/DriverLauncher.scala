@@ -15,21 +15,17 @@
  */
 package org.pageobject.scalatest
 
+import org.pageobject.core.browser.PageHolderWatcher
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.tools.LimitProvider
 import org.pageobject.core.tools.LogContext
 import org.scalatest.Args
-import org.scalatest.PageObjectHelper
 import org.scalatest.Status
 import org.scalatest.Suite
 import org.scalatest.SuiteMixin
 import org.scalatest.WrapWith
-
-import scala.util.Failure
-import scala.util.Success
-import scala.util.Try
 
 /**
  * Use this trait if you want to test against different browsers
@@ -57,43 +53,35 @@ trait DriverLauncher extends SuiteMixin with LimitProvider {
   override def limit = driverFactory.limit
 
   abstract override protected def runTests(testName: Option[String], args: Args): Status = {
-    Try {
-      LogContext.apply(Map(
-        LogContext.suiteName -> wrapperSuiteName,
-        LogContext.browser -> suiteName
-      )) {
-        UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
-          DriverFactoryHolder.withValue(Some(driverFactory)) {
-            DriverFactory.withWebDriverMock(currentMock) {
-              driverFactory.runTests(super.runTests(testName, args))
-            }
+    LogContext.apply(Map(
+      LogContext.suiteName -> wrapperSuiteName,
+      LogContext.browser -> suiteName
+    )) {
+      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+        DriverFactoryHolder.withValue(Some(driverFactory)) {
+          DriverFactory.withWebDriverMock(currentMock) {
+            driverFactory.runTests(super.runTests(testName, args))
           }
         }
       }
-    } match {
-      case Success(result) => result
-      case Failure(ex) => PageObjectHelper.failedStatus(ex)
     }
   }
 
   abstract override protected def runTest(testName: String, args: Args): Status = {
-    Try {
-      LogContext(Map(
-        LogContext.suiteName -> wrapperSuiteName,
-        LogContext.browser -> suiteName,
-        LogContext.testName -> testName
-      )) {
-        UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
-          DriverFactoryHolder.withValue(Some(driverFactory)) {
-            DriverFactory.withWebDriverMock(currentMock) {
+    LogContext(Map(
+      LogContext.suiteName -> wrapperSuiteName,
+      LogContext.browser -> suiteName,
+      LogContext.testName -> testName
+    )) {
+      UnexpectedPagesFactory.withUnexpectedPages(unexpectedPagesFactory) {
+        DriverFactoryHolder.withValue(Some(driverFactory)) {
+          DriverFactory.withWebDriverMock(currentMock) {
+            PageHolderWatcher.invalidateAfter() {
               driverFactory.runTest(testName, super.runTest(testName, args))
             }
           }
         }
       }
-    } match {
-      case Success(result) => result
-      case Failure(ex) => PageObjectHelper.failedStatus(ex)
     }
   }
 }

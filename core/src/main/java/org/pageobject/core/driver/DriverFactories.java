@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pageobject.core.tools
+package org.pageobject.core.driver;
 
-object Environment {
-  def integer(name: String): Option[Int] = {
-    sys.env.get(name).map(Integer.parseInt)
-  }
+import scala.collection.Seq;
 
-  def integer(name: String, default: Int): Int = {
-    sys.env.get(name).fold(default)(Integer.parseInt)
-  }
-
-  def parseBoolean(boolean: String): Boolean = boolean.toLowerCase match {
-    case "1" | "true" => true
-    case "0" | "false" => false
-  }
-
-  def boolean(name: String, default: Boolean = false): Boolean = {
-    sys.env.get(name).fold(default)(parseBoolean)
-  }
+/**
+ * Classes implementing this interface can be used as an argument for {@code &#064;RunWithDrivers}.
+ *
+ * A default scala implementation of this interface is provided here: {@code DriverFactoryList}.
+ */
+public interface DriverFactories {
+    /**
+     * For each returned driver factory a test instance is started and configured using this factory.
+     *
+     * @return a list of driver factories.
+     */
+    Seq<IDriverFactory> drivers();
 }

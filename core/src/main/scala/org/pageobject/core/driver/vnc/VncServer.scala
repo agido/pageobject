@@ -15,7 +15,6 @@
  */
 package org.pageobject.core.driver.vnc
 
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 import org.openqa.selenium.net.PortProber
@@ -29,22 +28,16 @@ import scala.sys.process.ProcessLogger
 private object VncServer {
   val threadGroup = new ThreadGroup("VncServer")
 
-  def createProcessLogger(stdoutName: String, stderrName: String,
+  def createProcessLogger(stdoutName: () => String, stderrName: () => String,
                           stdout: String => Unit, stderr: String => Unit): ProcessLogger = {
-    val outNamed = new AtomicBoolean
-    val errNamed = new AtomicBoolean
     new ProcessLogger {
       def out(s: => String): Unit = {
-        if (!outNamed.getAndSet(true)) {
-          Thread.currentThread().setName(stdoutName)
-        }
+        Thread.currentThread().setName(stdoutName())
         stdout(s)
       }
 
       def err(s: => String): Unit = {
-        if (!errNamed.getAndSet(true)) {
-          Thread.currentThread().setName(stderrName)
-        }
+        Thread.currentThread().setName(stderrName())
         stderr(s)
       }
 
@@ -104,9 +97,9 @@ trait VncServer extends Logging {
 
   def name: String = s"VNC :$id"
 
-  def stdoutName: String = s"$name STDOUT"
+  def stdoutName(): String = s"$name STDOUT"
 
-  def stderrName: String = s"$name STDERR"
+  def stderrName(): String = s"$name STDERR"
 
   def shutdown(): Unit = {
     stopCommand.foreach(execute(_))
@@ -151,17 +144,21 @@ trait CountedId {
 trait SeleniumVncServer extends VncServer {
   def seleniumPort: Int
 
-  protected def seleniumScript: Option[String] = None match {
+  protected def seleniumScript: Option[String] = sys.env.get("PAGEOBJECT_SELENIUM_SCRIPT").orElse(None match {
     case _ if OS.isOSX => Some("selenium/osx.sh")
     case _ if OS.isWindows => Some("selenium/win.bat")
     case _ if OS.isLinux => Some("selenium/linux.sh")
-  }
+  })
 
   protected def seleniumCommand: Option[String] = seleniumScript.map(script => s"$script -port $seleniumPort")
 
   protected override def extraEnv = seleniumCommand.map(command => Seq("SELENIUM_COMMAND" -> command)).getOrElse(Seq())
 
-  lazy val url = s"http://localhost:$seleniumPort/wd/hub"
+  protected def seleniumProto: String = sys.env.getOrElse("PAGEOBJECT_SELENIUM_PROTO", "http")
+
+  protected def seleniumHost: String = sys.env.getOrElse("PAGEOBJECT_SELENIUM_HOST", "localhost")
+
+  lazy val url = s"$seleniumProto://$seleniumHost:$seleniumPort/wd/hub"
 }
 
 /**
