@@ -30,7 +30,6 @@ import org.scalatest.DoNotDiscover
 import org.scalatest.DynaTags
 import org.scalatest.Filter
 import org.scalatest.PageObjectHelper
-import org.scalatest.ParallelTestExecution
 import org.scalatest.Status
 import org.scalatest.Suite
 import org.scalatest.Suites
@@ -70,7 +69,8 @@ object DriverLaunchWrapper {
  **/
 @DoNotDiscover
 class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
-  extends Suites with ParallelTestExecution with ConfigureableParallelTestLimit with LimitProvider {
+  extends Suites /*with ParallelTestExecution with ConfigureableParallelTestLimit*/ with LimitProvider {
+  // TODO see https://github.com/agido/pageobject/issues/3
 
   private val currentMock = DriverFactory.currentMock
 
