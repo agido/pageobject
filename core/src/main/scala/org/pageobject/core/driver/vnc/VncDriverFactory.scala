@@ -58,7 +58,7 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncSer
   override def runTest[T](testName: String, fn: => T): T = {
     debug(s"starting vnc server")
     val vnc: V = awaitVncServer()
-    debug(s"started vnc server")
+    debug(s"started vnc server ${vnc.name}")
     try vncServer.withValue(Some(vnc)) {
       LogContext(Map(
         LogContext.vnc -> vnc.name
@@ -66,6 +66,7 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncSer
         super.runTest(testName, fn)
       }
     } finally {
+      debug(s"releasing vnc server ${vnc.name}")
       vncServerManager.release(vnc)
     }
   }

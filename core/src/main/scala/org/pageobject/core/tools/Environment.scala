@@ -16,6 +16,10 @@
 package org.pageobject.core.tools
 
 object Environment {
+  def integer(name: String): Option[Int] = {
+    sys.env.get(name).map(Integer.parseInt)
+  }
+
   def integer(name: String, default: Int): Int = {
     sys.env.get(name).fold(default)(Integer.parseInt)
   }

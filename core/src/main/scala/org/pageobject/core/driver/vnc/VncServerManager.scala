@@ -15,14 +15,18 @@
  */
 package org.pageobject.core.driver.vnc
 
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicReference
 
 import org.pageobject.core.WaitFor
+import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.Logging
 
 import scala.collection.mutable
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.Promise
 import scala.concurrent.blocking
 
 /**
@@ -39,6 +43,9 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
 
   // VNC servers that can be reused
   private val free = mutable.Set[V]()
+
+  private val count = new AtomicInteger()
+  private val waiting = new LinkedBlockingQueue[Promise[V]]()
 
   private def tryStart(): AtomicReference[Either[Option[V], Boolean]] = {
     val ref = new AtomicReference[Either[Option[V], Boolean]](Left(None))
@@ -81,18 +88,35 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
     start(retryCount - 1)
   }
 
+  private def startNewVncServer(): Future[V] = {
+    count.incrementAndGet()
+    Future {
+      blocking {
+        start()
+      }
+    }
+  }
+
+  private def freeVncServer(): Future[V] = {
+    val vncServer = free.head
+    free -= vncServer
+    running += vncServer
+    Future(vncServer)
+  }
+
   def getOrCreateFreeVncServer(): Future[V] = VncServerManager.synchronized {
     if (free.isEmpty) {
-      Future {
-        blocking {
-          start()
-        }
+      Environment.integer("PAGEOBJECT_VNC_LIMIT") match {
+        case Some(limit) if count.get() >= limit =>
+          val promise = Promise[V]()
+          waiting.put(promise)
+          promise.future
+
+        case _ =>
+          startNewVncServer()
       }
     } else {
-      val vncServer = free.head
-      free -= vncServer
-      running += vncServer
-      Future(vncServer)
+      freeVncServer()
     }
   }
 
@@ -102,8 +126,12 @@ case class VncServerManager[V <: VncServer](createVncServer: (Boolean => Unit) =
    * @param vncServer VncServer to release
    */
   def release(vncServer: V): Unit = VncServerManager.synchronized {
-    running -= vncServer
-    free += vncServer
+    if (waiting.isEmpty) {
+      running -= vncServer
+      free += vncServer
+    } else {
+      waiting.take().success(vncServer)
+    }
   }
 
   /**
