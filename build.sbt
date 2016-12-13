@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// do not overload travis
+concurrentRestrictions in Global := Seq(Tags.limitAll(1))
+
 logBuffered in Test := false
 
 // jetty 9.2.x is the last version with support java 7
