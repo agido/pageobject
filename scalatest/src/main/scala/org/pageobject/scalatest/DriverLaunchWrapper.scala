@@ -87,7 +87,7 @@ class DriverLaunchWrapper(clazz: Class[_ <: DriverLauncher with Suite])
   override def limit = TestLimit
 
   override val nestedSuites = UnexpectedPagesFactory.withMaybeUnexpectedPages(runWith) {
-    runWith.drivers().map(config => createBrowserSuiteInstance(config)).toIndexedSeq
+    runWith.drivers().map(config => createBrowserSuiteInstance(config.asInstanceOf[DriverFactory])).toIndexedSeq
   }
 
   private def patchFilter(filter: Filter): Filter = {

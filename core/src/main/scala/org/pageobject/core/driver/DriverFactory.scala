@@ -55,7 +55,7 @@ private[pageobject] object DriverFactory {
 /**
  * This trait is used to configure a test run and create a WebDriver used by the test.
  */
-trait DriverFactory {
+trait DriverFactory extends IDriverFactory {
   def limit: Limit
 
   def compatible: Boolean = true
