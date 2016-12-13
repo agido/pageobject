@@ -161,7 +161,11 @@ trait SeleniumVncServer extends VncServer {
 
   protected override def extraEnv = seleniumCommand.map(command => Seq("SELENIUM_COMMAND" -> command)).getOrElse(Seq())
 
-  lazy val url = s"http://localhost:$seleniumPort/wd/hub"
+  protected def seleniumProto: String = sys.env.getOrElse("PAGEOBJECT_SELENIUM_PROTO", "http")
+
+  protected def seleniumHost: String = sys.env.getOrElse("PAGEOBJECT_SELENIUM_HOST", "localhost")
+
+  lazy val url = s"$seleniumProto://$seleniumHost:$seleniumPort/wd/hub"
 }
 
 /**
