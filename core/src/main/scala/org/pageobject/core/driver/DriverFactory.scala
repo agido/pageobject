@@ -120,7 +120,7 @@ trait LoggingDriverFactory extends DriverFactory {
         LoggingDriverFactory.debug(s"$name has taken ${ms}ms\n")
       case Failure(exception) =>
         LoggingDriverFactory.error(s"$name has failed after ${ms}ms\n")
-        TestHelper.failedResult(exception)
+        throw exception
     }) {
       super.runTest(testName, {
         LoggingDriverFactory.info(s"running $name")
