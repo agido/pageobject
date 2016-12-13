@@ -176,6 +176,7 @@ class TracedRemoteWebDriver(executor: CommandExecutor,
               message
             }
           }
+
           val msg = s"Console: ${log.getLevel} $withoutNewLine"
           if (log.getLevel == Level.SEVERE) {
             warn(msg)

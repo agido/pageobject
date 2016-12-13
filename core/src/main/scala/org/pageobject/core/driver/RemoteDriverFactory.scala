@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.CommandInfo
 import org.openqa.selenium.remote.HttpCommandExecutor
 import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.remote.UnreachableBrowserException
 import org.openqa.selenium.remote.internal.ApacheHttpClient
 import org.openqa.selenium.remote.internal.HttpClientFactory
 import org.pageobject.core.WaitFor
@@ -53,7 +54,7 @@ trait AlwaysTracedRemoteDriverFactory {
 object RemoteDriverFactory extends WaitFor {
 
   // how long to wait for the RemoteWebDriver connection
-  object CreateDriver extends PatienceConfig(120.seconds)
+  object CreateDriver extends PatienceConfig(60.seconds)
 
 }
 
@@ -72,7 +73,24 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
   // default is 3 hours in HttpClientFactory, this is too long for this use case
   protected val socketTimeout: FiniteDuration = 2.minutes
 
+  private val createWebDriverRetryCount = 3
+
   protected def createRealWebDriver(): WebDriver = {
+    def tryCreateWebDriver(n: Int = createWebDriverRetryCount): WebDriver = {
+      try {
+        waitFor(RemoteDriverFactory.CreateDriver) {
+          createRealWebDriver2()
+        }
+      } catch {
+        case _: UnreachableBrowserException if n > 1 =>
+          tryCreateWebDriver(n - 1)
+      }
+    }
+
+    tryCreateWebDriver()
+  }
+
+  private def createRealWebDriver2(): WebDriver = {
     // we need to override the very long default socketTimeout...
     val factory = new HttpClientFactory(connectionTimeout.toMillis.toInt, socketTimeout.toMillis.toInt)
     val executor = new HttpCommandExecutor(ImmutableMap.of[String, CommandInfo](), new URL(url()),
