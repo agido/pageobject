@@ -15,7 +15,7 @@
         <relativePath>../maven/pom.xml</relativePath>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>maven-core</artifactId>
 
     <dependencies>
         <dependency>

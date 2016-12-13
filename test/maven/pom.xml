@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.pageobject</groupId>
-            <artifactId>scalatest</artifactId>
+            <artifactId>maven-scalatest</artifactId>
         </dependency>
     </dependencies>
 

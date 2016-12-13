@@ -8,10 +8,14 @@
     <!-- to test the scala-maven-plugin plugin                       -->
     <!-- *********************************************************** -->
 
-    <groupId>org.pageobject</groupId>
-    <artifactId>maven</artifactId>
-    <!-- this is only an internal number used to test the maven plugin -->
-    <version>1.0.0-SNAPSHOT</version>
+    <parent>
+        <groupId>org.pageobject</groupId>
+        <artifactId>maven-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>maven/pom.xml</relativePath>
+    </parent>
+
+    <artifactId>maven-root</artifactId>
     <packaging>pom</packaging>
 
     <modules>
