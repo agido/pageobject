@@ -151,11 +151,11 @@ trait CountedId {
 trait SeleniumVncServer extends VncServer {
   def seleniumPort: Int
 
-  protected def seleniumScript: Option[String] = None match {
+  protected def seleniumScript: Option[String] = sys.env.get("PAGEOBJECT_SELENIUM_SCRIPT").orElse(None match {
     case _ if OS.isOSX => Some("selenium/osx.sh")
     case _ if OS.isWindows => Some("selenium/win.bat")
     case _ if OS.isLinux => Some("selenium/linux.sh")
-  }
+  })
 
   protected def seleniumCommand: Option[String] = seleniumScript.map(script => s"$script -port $seleniumPort")
 

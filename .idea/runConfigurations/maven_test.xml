@@ -7,6 +7,8 @@
           <option name="environmentProperties">
             <map>
               <entry key="CHROME_LIMIT" value="1" />
+              <entry key="PAGEOBJECT_SELENIUM_SCRIPT" value="../../selenium/linux.sh" />
+              <entry key="PAGEOBJECT_VNC_SCRIPT" value="../../vnc/vnc.sh" />
             </map>
           </option>
           <option name="jreName" value="#USE_PROJECT_JDK" />
@@ -33,10 +35,12 @@
             <map />
           </option>
           <option name="resolveToWorkspace" value="false" />
-          <option name="workingDirPath" value="$PROJECT_DIR$" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/test/maven" />
         </MavenRunnerParameters>
       </option>
     </MavenSettings>
-    <method />
+    <method>
+      <option name="MakeProject" enabled="true" />
+    </method>
   </configuration>
 </component>
