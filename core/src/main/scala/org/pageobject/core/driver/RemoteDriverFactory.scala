@@ -23,10 +23,10 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.CommandInfo
 import org.openqa.selenium.remote.HttpCommandExecutor
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.openqa.selenium.remote.UnreachableBrowserException
 import org.openqa.selenium.remote.internal.ApacheHttpClient
 import org.openqa.selenium.remote.internal.HttpClientFactory
 import org.pageobject.core.WaitFor
+import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.tools.Environment
 
 /**
@@ -76,18 +76,11 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
   private val createWebDriverRetryCount = 3
 
   protected def createRealWebDriver(): WebDriver = {
-    def tryCreateWebDriver(n: Int = createWebDriverRetryCount): WebDriver = {
-      try {
-        waitFor(RemoteDriverFactory.CreateDriver) {
-          createRealWebDriver2()
-        }
-      } catch {
-        case _: UnreachableBrowserException if n > 1 =>
-          tryCreateWebDriver(n - 1)
+    RetryHelper(retryOn = RetryHelper.retryOnBrowserCommunicationFailed) {
+      waitFor(RemoteDriverFactory.CreateDriver) {
+        createRealWebDriver2()
       }
     }
-
-    tryCreateWebDriver()
   }
 
   private def createRealWebDriver2(): WebDriver = {

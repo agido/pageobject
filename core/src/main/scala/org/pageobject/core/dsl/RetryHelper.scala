@@ -15,7 +15,9 @@
  */
 package org.pageobject.core.dsl
 
+import org.openqa.selenium.SessionNotCreatedException
 import org.openqa.selenium.StaleElementReferenceException
+import org.openqa.selenium.remote.UnreachableBrowserException
 
 import scala.util.Failure
 import scala.util.Success
@@ -26,6 +28,10 @@ object RetryHelper {
   val defaultRetryCount = 3
 
   def retryOnStaleElementReferenceException(th: Throwable): Boolean = th.isInstanceOf[StaleElementReferenceException]
+
+  def retryOnBrowserCommunicationFailed(th: Throwable): Boolean = {
+    th.isInstanceOf[UnreachableBrowserException] || th.isInstanceOf[SessionNotCreatedException]
+  }
 
   def retryOnClickFailed(th: Throwable): Boolean = {
     th.getMessage.startsWith("unknown error: Element is not clickable at point")
