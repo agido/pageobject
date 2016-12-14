@@ -194,11 +194,20 @@ function cmd_stop() {
 	mute curl http://127.0.0.1:$seleniumPort/selenium-server/driver/?cmd=shutDownSeleniumServer || exit 1
 }
 
+function cmd_view() {
+	local id=$1
+	shift || true
+	require "$id" "Syntax: $0 view <id>"
+
+    isexec $basedir/vncviewer
+    exec $basedir/vncviewer ::$(vncport $id) PasswordFile=$basedir/.vncpasswd 2>&1
+}
+
 function main() {
 	local cmd=$1
 
 	shift || true
-	call "cmd_$cmd" "Syntax: $0 <start|check|stop>" $@
+	call "cmd_$cmd" "Syntax: $0 <start|check|stop|view>" $@
 }
 
 main $@
