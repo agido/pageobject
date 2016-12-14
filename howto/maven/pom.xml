@@ -1,0 +1,146 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.pageobject.howto</groupId>
+    <artifactId>maven-howto</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
+
+    <!-- this howto is using a public build of pageobject -->
+    <!-- the version located in the root of this repository is not used! -->
+
+    <!-- to allow snapshot versions -->
+    <repositories>
+        <repository>
+            <id>sonatype-oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <properties>
+        <scalatest.version>3.0.1</scalatest.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- scala runtime -->
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.11.8</version>
+        </dependency>
+
+        <!-- selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.53.1</version>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+
+        <!-- pageobject and patched scalatest -->
+        <dependency>
+            <groupId>org.pageobject</groupId>
+            <artifactId>scalatest_2.11</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pageobject.patch.org.scalatest</groupId>
+            <artifactId>scalatest_2.11</artifactId>
+            <version>${scalatest.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- use java 1.7 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+
+            <!-- compile scala sources -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <args>
+                        <arg>-feature</arg>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
+                    </args>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- enable scalatest -->
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <!--
+                    when using forkMode=never argLine and environmentVariables can't be used
+
+                    forkMode=never is needed if you want to debug a maven build in idea,
+                    configure the environment variables in the launch config in this case.
+
+                    <forkMode>never</forkMode>
+                    -->
+
+                    <!--
+                    this is not needed when using vnc server on linux
+                    <argLine>-Dwebdriver.chrome.driver=../../selenium/chromedriver</argLine>
+                    -->
+
+                    <environmentVariables>
+                        <!-- this is not needed when setting -Dwebdriver.chrome.driver -->
+                        <CHROME_LIMIT>1</CHROME_LIMIT>
+                        <!-- default is vnc/vnc.sh -->
+                        <PAGEOBJECT_VNC_SCRIPT>../../vnc/vnc.sh</PAGEOBJECT_VNC_SCRIPT>
+                        <!-- default is platform dependend, on linux selenium/linux.sh -->
+                        <PAGEOBJECT_SELENIUM_SCRIPT>../../selenium/linux.sh</PAGEOBJECT_SELENIUM_SCRIPT>
+                    </environmentVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

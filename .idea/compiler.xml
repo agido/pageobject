@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="maven-howto" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="core" target="1.8" />
+      <module name="maven-howto" target="1.7" />
       <module name="root" target="1.8" />
       <module name="scalatest" target="1.8" />
     </bytecodeTargetLevel>
