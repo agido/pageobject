@@ -46,6 +46,15 @@ To use PageObject, add this lines to yours build.sbt:
 libraryDependencies += "org.pageobject" %% "scalatest" % "0.2.0"
 ```
 
+## Selenium 3
+pageobject is full compatible with Selenium 2 and Selenium 3. Because Selenium 3 requires Java 8 and pageobject still supports java 7, pageobject is build against Selenium 2. However all tests are run with both Selenium 2 and Selenium 3 to ensure compatibility.
+
+If you want to use selenium 3 add this line to your build.xml:
+
+```
+dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % "3.0.1"
+```
+
 ## Maven
 You can also use maven to run your tests. See [maven-howto] for a small maven howto.
 
