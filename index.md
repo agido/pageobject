@@ -61,6 +61,34 @@ You can also use maven to run your tests. See [maven-howto] for a small maven ho
 ## Download PageObject
 The code is hosted and developed in the [PageObject GitHub repository](https://github.com/agido/pageobject/).
 
+## Development Snapshots
+If you want to use a SNAPSHOT version add this lines to your build config:
+
+### sbt build.sbt
+
+```
+  resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+```
+
+### maven pom.xml
+
+<pre>
+    &lt;!-- to allow snapshot versions --&gt;
+    &lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;sonatype-oss-snapshots&lt;/id&gt;
+            &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+            &lt;releases&gt;
+                &lt;enabled&gt;false&lt;/enabled&gt;
+            &lt;/releases&gt;
+            &lt;snapshots&gt;
+                &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;/snapshots&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+</pre>
+
+
 [travis]: https://travis-ci.org/agido/pageobject
 [travis-image]: https://travis-ci.org/agido/pageobject.svg?branch=master
 [license-image]: http://img.shields.io/badge/license-Apache--2-brightgreen.svg?style=flat
