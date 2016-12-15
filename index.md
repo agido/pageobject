@@ -46,6 +46,9 @@ To use PageObject, add this lines to yours build.sbt:
 libraryDependencies += "org.pageobject" %% "scalatest" % "0.2.0"
 ```
 
+## Maven
+You can also use maven to run your tests. See [maven-howto] for a small maven howto.
+
 ## Download PageObject
 The code is hosted and developed in the [PageObject GitHub repository](https://github.com/agido/pageobject/).
 
@@ -57,3 +60,4 @@ The code is hosted and developed in the [PageObject GitHub repository](https://g
 [dependencies-image]: https://app.updateimpact.com/badge/755117671372165120/pageobject.svg?config=compile
 [coverage]: https://coveralls.io/github/agido/pageobject?branch=master
 [coverage-image]: https://coveralls.io/repos/github/agido/pageobject/badge.svg?branch=master
+[maven-howto]: https://github.com/agido/pageobject/tree/master/howto/maven
