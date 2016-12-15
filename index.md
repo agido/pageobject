@@ -36,14 +36,14 @@ We created an overview presentation showing you how to use PageObject to create 
 * [Download as PDF](/downloads/PageObjectTour.pdf) (download hosted on pageobject.org).
 
 ## Using PageObject
-The current version of PageObject is 0.1.0.
+The current version of PageObject is 0.2.0.
 
 Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
 
 To use PageObject, add this lines to yours build.sbt:
 
 ```
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0"
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.2.0"
 ```
 
 ## Download PageObject
