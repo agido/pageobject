@@ -27,7 +27,7 @@ val scalatestVersion = "3.0.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
-  version := "0.2.0-SNAPSHOT",
+  version := "0.2.0",
   scalaVersion := sys.env.getOrElse("TRAVIS_SCALA_VERSION", "2.11.8"),
 
   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
