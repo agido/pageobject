@@ -92,34 +92,25 @@ class Readme extends ExamplePageObjectSpec {
 }
 ```
 
-## Using PageObject
-The current version of PageObject is 0.1.0. This Version is available at maven central, just add this line to yours build.sbt file:
-```
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.1.0"
-```
-
-If you want to use a development version you can find a list of all snapshot versions [here](https://oss.sonatype.org/#nexus-search;quick~org.pageobject).
-
-To use the development version of PageObject, add this lines to yours build.sbt:
-```
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.2.0-SNAPSHOT"
-```
-
-Alternative you can checkout this repository and run `$ sbt publishLocal` if you want to modify or try it out.
-
 ## ScalaTest Bug
 Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issues/1)) we need to use a patched version. ```org.pageobject.patch.org.scalatest``` is a current build of ScalaTest 3.0.x, the only difference is that the [PR](https://github.com/scalatest/scalatest/issues/931) to fix this bug was added. We hope that this PR will be merged into ScalaTest but unfortunately it looks like that pull requests are ignored...
 
 ## Project Structure
 * **core** All Test Runner independent files of PageObject
-* **scalatest** Classes needed to use PageObject with ScalaTest 3 
-* **test** Unit Tests for PageObject, tested with ScalaTest 3 using Jetty
 * **examples** examples how to use PageObject with ScalaTest 3
+* **howto/maven** example project how to use pageobject with maven
+* **maven** maven build configuration, used for internal testing only
+* **project** sbt build configuration used to build pageobject
+* **scalatest** Classes needed to use PageObject with ScalaTest 3 
 * **selenium** Selenium Scripts and chrome driver, used for building pageobject
-* **vnc** A VNC server and control script reference implementation, used for building pageobject
+* **test/base** base project for unit tests and examples
+* **test/maven** internal maven project to test maven build
+* **test/selenium/selenium2** project used to test pageobject against selenium 2
+* **test/selenium/selenium3** project used to test pageobject against selenium 3
+* **test/selenium/selenium3jdk7** dummy project used on jdk7 because selenium 3 requires jdk8
+* **test/selenium/shared** unit tests used by selenium 2 and selenium 3 tests
 * **travis** Scripts used by travis to build and upload PageObject to sonatype
+* **vnc** A VNC server and control script reference implementation, used for building pageobject
 
 ## Building PageObject
 ### Prerequisites
@@ -130,10 +121,10 @@ The followings are recommended for building PageObject:
 * [Scala](http://www.scala-lang.org/documentation/getting-started.html)
  * 2.10.6
  * 2.11.8
- * 2.12.0
+ * 2.12.1
 
 Because Selenium requires at least Java 7 it is not possible to use PageObject with Java 6.
-maven builds of PageObject for scala 2.10 and 2.11 are using openjdk7 and openjdk8 for scala 2.12.
+travis builds of PageObject for scala 2.10 and 2.11 are using openjdk7 and openjdk8 for scala 2.12.
 
 ### Building and Running Tests
 This command will build and run the regular tests:
@@ -143,10 +134,6 @@ This command will build and run the regular tests:
 If you are using Linux and want to run all Browsers inside of VNC Servers, (recommended for both linux developers and linux build/test servers) use this command:
 
   `$ travis/build.sh`
-
-  which will execute:
-
-  `$ RUN_WITH_DRIVERS=org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList sbt test`
 
 Before first run you need to download VNC and selenium files:
 
