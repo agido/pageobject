@@ -36,7 +36,7 @@ We created an overview presentation showing you how to use PageObject to create 
 * [Download as PDF](/downloads/PageObjectTour.pdf) (download hosted on pageobject.org).
 
 ## Using PageObject
-The current version of PageObject is 0.2.0.
+The current version of PageObject is 0.2.0. This Version is available at maven central.
 
 Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
 
@@ -62,13 +62,16 @@ You can also use maven to run your tests. See [maven-howto] for a small maven ho
 The code is hosted and developed in the [PageObject GitHub repository](https://github.com/agido/pageobject/).
 
 ## Development Snapshots
+If you want to use a development version you can find a list of all snapshot versions [here](https://oss.sonatype.org/#nexus-search;quick~org.pageobject). Alternative you can checkout this repository and run `$ sbt publishLocal` if you want to modify or try it out.
+
 If you want to use a SNAPSHOT version add this lines to your build config:
 
 ### sbt build.sbt
 
-```
-  resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-```
+<pre>
+resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.3.0-SNAPSHOT"
+</pre>
 
 ### maven pom.xml
 
