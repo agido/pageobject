@@ -63,12 +63,12 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
     webElement
   }
 
-  private val underlyingReference = new AtomicReference[WebElement](factory.initial)
+  private val underlyingReference = new AtomicReference[WebElement](check(factory.initial))
 
   protected[pageobject] def underlying: WebElement = underlyingReference.get()
 
   protected def retry[T](retryOn: (Throwable => Boolean)*)(what: => T): T = {
-    RetryHelper(recover = () => underlyingReference.set(factory.retry()),
+    RetryHelper(recover = () => underlyingReference.set(check(factory.retry())),
       retryOn = RetryHelper.join(
         RetryHelper.retryOnStaleElementReferenceException,
         RetryHelper.join(retryOn: _*)
