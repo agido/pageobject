@@ -72,6 +72,6 @@ class ElementTest extends TestSpec with BrowserPageDsl {
   }
 
   describe("button") {
-    test("button", (query, own) => a(query)(own))
+    test("button", (query, own) => button(query)(own))
   }
 }
