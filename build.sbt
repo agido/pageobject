@@ -94,7 +94,7 @@ lazy val core = (project in file("core"))
   .settings(
     name := "core",
     libraryDependencies ++= Seq(
-      "org.slf4j" % "slf4j-api" % "1.7.21",
+      "org.slf4j" % "slf4j-api" % "1.7.24",
       // remove circular dependency
       "org.seleniumhq.selenium" % "selenium-java" % selenium2Version exclude("com.codeborne", "phantomjsdriver"),
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
