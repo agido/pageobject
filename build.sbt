@@ -22,7 +22,7 @@ logBuffered in Test := false
 // jetty 9.2.x is the last version with support java 7
 val jettyVersion = "9.2.19.v20160908"
 val selenium2Version = "2.53.1"
-val selenium3Version = "3.0.1"
+val selenium3Version = "3.3.0"
 val scalatestVersion = "3.0.1"
 
 lazy val commonSettings = Seq(
@@ -101,7 +101,7 @@ lazy val core = (project in file("core"))
       "net.sourceforge.htmlunit" % "htmlunit" % "2.25" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
 
       // Warning: Class javax.annotation.Nullable not found
-      "com.google.code.findbugs" % "jsr305" % selenium3Version % Optional
+      "com.google.code.findbugs" % "jsr305" % "3.0.1" % Optional
     )
   )
 
