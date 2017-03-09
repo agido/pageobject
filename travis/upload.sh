@@ -21,8 +21,18 @@ function decrypt() {
 	openssl aes-256-cbc -pass env:ENCRYPTION_PASSWORD -in $1.bin -out $1 -d
 }
 
-if [ "$TRAVIS_BRANCH" != "master" -o "$PUBLISH" != "true" ]; then
+if [ "$PUBLISH" != "true" ]; then
 	exit 0
+fi
+
+if [[ `grep "^\s*version := " build.sbt | cut -f2 -d\"` == *-SNAPSHOT ]]; then
+    if [ "$TRAVIS_BRANCH" != "develop" ]; then
+	    exit 0
+    fi
+else
+    if [ "$TRAVIS_BRANCH" != "master" ]; then
+	    exit 0
+    fi
 fi
 
 if [ -z "$ENCRYPTION_PASSWORD" ]; then
