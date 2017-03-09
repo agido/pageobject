@@ -65,13 +65,14 @@ trait WaitFor extends DurationDsl {
       Right(fun)
     } catch {
       case SeleniumException(ex) => throw ex
-      case NonFatal(th) => if (TestHelper.isTestAbortError(th)) {
-        // rethrowing will break out of waitFor and throw the given exception
-        throw th
-      } else {
-        // Left will tell waitFor to retry
-        Left(th)
-      }
+      case NonFatal(th) =>
+        if (TestHelper.isTestAbortError(th)) {
+          // rethrowing will break out of waitFor and throw the given exception
+          throw th
+        } else {
+          // Left will tell waitFor to retry
+          Left(th)
+        }
     }
   }
 
