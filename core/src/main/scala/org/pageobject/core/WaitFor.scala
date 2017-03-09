@@ -57,8 +57,6 @@ import scala.util.control.NonFatal
  *
  */
 trait WaitFor extends DurationDsl {
-  type PatienceConfig = WaitFor.PatienceConfig
-
   private def tryFunction[T](fun: => T): Either[Throwable, T] = {
     try {
       // Right return a success value

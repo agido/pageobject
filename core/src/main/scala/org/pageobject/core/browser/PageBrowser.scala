@@ -17,6 +17,7 @@ package org.pageobject.core.browser
 
 import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor
+import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.page.AtChecker
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.page.UrlPage
