@@ -24,6 +24,7 @@ val jettyVersion = "9.2.19.v20160908"
 val selenium2Version = "2.53.1"
 val selenium3Version = "3.0.1"
 val scalatestVersion = "3.0.1"
+val configVersion = "1.3.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -111,7 +112,8 @@ lazy val scalatest = (project in file("scalatest"))
     name := "scalatest",
     libraryDependencies ++= Seq(
       "org.scalactic" %% "scalactic" % scalatestVersion,
-      "org.pageobject.patch.org.scalatest" %% "scalatest" % scalatestVersion exclude("org.eclipse.jetty.orbit", "javax.servlet")
+      "org.pageobject.patch.org.scalatest" %% "scalatest" % scalatestVersion exclude("org.eclipse.jetty.orbit", "javax.servlet"),
+      "com.typesafe" % "config" % configVersion
     )
   )
   .dependsOn(core)
