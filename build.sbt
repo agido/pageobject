@@ -162,6 +162,9 @@ lazy val testSelenium3 = if (isJdk7) {
       name := "test/selenium/selenium3",
       // without this sbt won't find the shared tests...
       unmanagedSourceDirectories in Test += baseDirectory.value / "../shared/src/main/scala",
+      libraryDependencies ++= Seq(
+        "org.seleniumhq.selenium" % "selenium-support" % selenium3Version
+      ),
       // set selenium version to 3.x
       dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % selenium3Version
     ).dependsOn(testSeleniumShared % "test->compile")
