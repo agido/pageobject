@@ -27,7 +27,7 @@ import scala.language.implicitConversions
 
 object Locator extends WaitFor {
 
-  object SingleElement extends PatienceConfig(10.seconds)
+  object SingleElement extends WaitFor.PatienceConfig(10.seconds)
 
   implicit def locatorToElement[E <: Element](locator: Locator[E]): E = locator.element
 }

@@ -26,6 +26,7 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.internal.ApacheHttpClient
 import org.openqa.selenium.remote.internal.HttpClientFactory
 import org.pageobject.core.WaitFor
+import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.tools.Environment
 

@@ -63,12 +63,12 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
     webElement
   }
 
-  private val underlyingReference = new AtomicReference[WebElement](factory.initial)
+  private val underlyingReference = new AtomicReference[WebElement](check(factory.initial))
 
   protected[pageobject] def underlying: WebElement = underlyingReference.get()
 
   protected def retry[T](retryOn: (Throwable => Boolean)*)(what: => T): T = {
-    RetryHelper(recover = () => underlyingReference.set(factory.retry()),
+    RetryHelper(recover = () => underlyingReference.set(check(factory.retry())),
       retryOn = RetryHelper.join(
         RetryHelper.retryOnStaleElementReferenceException,
         RetryHelper.join(retryOn: _*)
@@ -337,11 +337,31 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
   }
 }
 
+/**
+ * The tag name is readonly according to W3C specification.
+ *
+ * You can use this trait to prevent calling
+ * <code>underlying.getTagName</code> if you already know the tag name.
+ */
+trait FixedTagName {
+  self: Element =>
+
+  def fixedTagName: String
+
+  final override def tagName: String = fixedTagName
+}
+
+trait InputTagName extends FixedTagName {
+  self: Element =>
+
+  def fixedTagName: String = "input"
+}
+
 case class UntypedElement(factory: ElementFactory)
   extends Element("untyped", _ => true)
 
-case class HtmlElement(tag: String)(val factory: ElementFactory)
-  extends Element(tag, ElementHelper.isElement(tag))
+case class HtmlElement(fixedTagName: String)(val factory: ElementFactory)
+  extends Element(fixedTagName, ElementHelper.isElement(fixedTagName)) with FixedTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -357,7 +377,9 @@ case class HtmlElement(tag: String)(val factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing
  */
 case class Button(factory: ElementFactory)
-  extends Element("button", ElementHelper.isButton)
+  extends Element("button", ElementHelper.isButton) with FixedTagName {
+  override def fixedTagName = "button"
+}
 
 /**
  * This class is part of the PageObject DSL.
@@ -373,7 +395,7 @@ case class Button(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a text field
  */
 case class TextField(factory: ElementFactory)
-  extends Element("text", ElementHelper.isTextField)
+  extends Element("text", ElementHelper.isTextField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -389,7 +411,9 @@ case class TextField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a text area
  */
 case class TextArea(factory: ElementFactory)
-  extends Element("text area", ElementHelper.isTextArea)
+  extends Element("text area", ElementHelper.isTextArea) with FixedTagName {
+  override def fixedTagName = "textarea"
+}
 
 /**
  * This class is part of the PageObject DSL.
@@ -405,7 +429,7 @@ case class TextArea(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a password field
  */
 case class PasswordField(factory: ElementFactory)
-  extends Element("password", ElementHelper.isPasswordField)
+  extends Element("password", ElementHelper.isPasswordField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -421,7 +445,7 @@ case class PasswordField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a email field
  */
 case class EmailField(factory: ElementFactory)
-  extends Element("email", ElementHelper.isEmailField)
+  extends Element("email", ElementHelper.isEmailField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -437,7 +461,7 @@ case class EmailField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a color field
  */
 case class ColorField(factory: ElementFactory)
-  extends Element("color", ElementHelper.isColorField)
+  extends Element("color", ElementHelper.isColorField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -453,7 +477,7 @@ case class ColorField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a date field
  */
 case class DateField(factory: ElementFactory)
-  extends Element("date", ElementHelper.isDateField)
+  extends Element("date", ElementHelper.isDateField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -469,7 +493,7 @@ case class DateField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a datetime field
  */
 case class DateTimeField(factory: ElementFactory)
-  extends Element("datetime", ElementHelper.isDateTimeField)
+  extends Element("datetime", ElementHelper.isDateTimeField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -485,7 +509,7 @@ case class DateTimeField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a datetime-local field
  */
 case class DateTimeLocalField(factory: ElementFactory)
-  extends Element("datetime-local", ElementHelper.isDateTimeLocalField)
+  extends Element("datetime-local", ElementHelper.isDateTimeLocalField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -501,7 +525,7 @@ case class DateTimeLocalField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a month field
  */
 case class MonthField(factory: ElementFactory)
-  extends Element("month", ElementHelper.isMonthField)
+  extends Element("month", ElementHelper.isMonthField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -517,7 +541,7 @@ case class MonthField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a number field
  */
 case class NumberField(factory: ElementFactory)
-  extends Element("number", ElementHelper.isNumberField)
+  extends Element("number", ElementHelper.isNumberField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -533,7 +557,7 @@ case class NumberField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a range field
  */
 case class RangeField(factory: ElementFactory)
-  extends Element("range", ElementHelper.isRangeField)
+  extends Element("range", ElementHelper.isRangeField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -549,7 +573,7 @@ case class RangeField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a search field
  */
 case class SearchField(factory: ElementFactory)
-  extends Element("search", ElementHelper.isSearchField)
+  extends Element("search", ElementHelper.isSearchField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -565,7 +589,7 @@ case class SearchField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a tel field
  */
 case class TelField(factory: ElementFactory)
-  extends Element("tel", ElementHelper.isTelField)
+  extends Element("tel", ElementHelper.isTelField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -581,7 +605,7 @@ case class TelField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a time field
  */
 case class TimeField(factory: ElementFactory)
-  extends Element("time", ElementHelper.isTimeField)
+  extends Element("time", ElementHelper.isTimeField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -597,7 +621,7 @@ case class TimeField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a url field
  */
 case class UrlField(factory: ElementFactory)
-  extends Element("url", ElementHelper.isUrlField)
+  extends Element("url", ElementHelper.isUrlField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -613,7 +637,7 @@ case class UrlField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a week field
  */
 case class WeekField(factory: ElementFactory)
-  extends Element("week", ElementHelper.isWeekField)
+  extends Element("week", ElementHelper.isWeekField) with InputTagName
 
 /**
  * This class is part of the PageObject DSL.
@@ -629,7 +653,7 @@ case class WeekField(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a text area
  */
 case class RadioButton(factory: ElementFactory)
-  extends Element("radio button", ElementHelper.isRadioButton) {
+  extends Element("radio button", ElementHelper.isRadioButton) with InputTagName {
 
   override def value_=(value: String) = throw new NotImplementedError
 
@@ -650,7 +674,7 @@ case class RadioButton(factory: ElementFactory)
  * @param factory the <code>ElementFactory</code> representing a checkbox
  */
 case class Checkbox(factory: ElementFactory)
-  extends Element("check box", ElementHelper.isCheckBox) {
+  extends Element("check box", ElementHelper.isCheckBox) with InputTagName {
 
   /**
    * Selects this checkbox.
@@ -858,7 +882,9 @@ class MultiSelOptionSeq(underlying: immutable.IndexedSeq[String]) extends immuta
 }
 
 abstract class AbstractSel(typeDescription: String, isMultiple: Boolean)
-  extends Element(typeDescription, ElementHelper.isSelectElement) {
+  extends Element(typeDescription, ElementHelper.isSelectElement) with FixedTagName {
+
+  final val fixedTagName = "select"
 
   private val optionLocator = UntypedLocator(TagNameQuery("option"),
     DefaultPageReference(Some(this))(factory.webDriver))

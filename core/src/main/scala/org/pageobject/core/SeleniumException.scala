@@ -25,7 +25,6 @@ import org.openqa.selenium.UnableToSetCookieException
 import org.openqa.selenium.UnhandledAlertException
 import org.openqa.selenium.UnsupportedCommandException
 import org.openqa.selenium.firefox.UnableToCreateProfileException
-import org.openqa.selenium.os.WindowsRegistryException
 import org.openqa.selenium.remote.ErrorHandler.UnknownServerException
 import org.openqa.selenium.remote.ScreenshotException
 import org.openqa.selenium.remote.UnreachableBrowserException
@@ -43,7 +42,6 @@ object SeleniumException {
          _: UnhandledAlertException |
          _: UnsupportedCommandException |
          _: UnableToCreateProfileException |
-         _: WindowsRegistryException |
          _: UnknownServerException |
          _: ScreenshotException |
          _: UnreachableBrowserException |

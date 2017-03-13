@@ -20,11 +20,11 @@ concurrentRestrictions in Global := Seq(Tags.limitAll(1))
 logBuffered in Test := false
 
 // jetty 9.2.x is the last version with support java 7
-val jettyVersion = "9.2.19.v20160908"
+val jettyVersion = "9.2.21.v20170120"
 val selenium2Version = "2.53.1"
-val selenium3Version = "3.0.1"
+val selenium3Version = "3.3.1"
 val scalatestVersion = "3.0.1"
-val configVersion = "1.3.1"
+val configVersion = "1.2.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -95,15 +95,15 @@ lazy val core = (project in file("core"))
   .settings(
     name := "core",
     libraryDependencies ++= Seq(
-      "org.slf4j" % "slf4j-api" % "1.7.21",
+      "org.slf4j" % "slf4j-api" % "1.7.24",
       // remove circular dependency
       "org.seleniumhq.selenium" % "selenium-java" % selenium2Version exclude("com.codeborne", "phantomjsdriver"),
-      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
-      "net.sourceforge.htmlunit" % "htmlunit" % "2.21" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
+      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.25" % Optional,
+      "net.sourceforge.htmlunit" % "htmlunit" % "2.25" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
       "com.typesafe" % "config" % configVersion,
 
       // Warning: Class javax.annotation.Nullable not found
-      "com.google.code.findbugs" % "jsr305" % selenium3Version % Optional
+      "com.google.code.findbugs" % "jsr305" % "3.0.1" % Optional
     )
   )
 
@@ -164,6 +164,9 @@ lazy val testSelenium3 = if (isJdk7) {
       name := "test/selenium/selenium3",
       // without this sbt won't find the shared tests...
       unmanagedSourceDirectories in Test += baseDirectory.value / "../shared/src/main/scala",
+      libraryDependencies ++= Seq(
+        "org.seleniumhq.selenium" % "selenium-support" % selenium3Version
+      ),
       // set selenium version to 3.x
       dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % selenium3Version
     ).dependsOn(testSeleniumShared % "test->compile")

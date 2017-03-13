@@ -22,13 +22,13 @@ import org.openqa.selenium.support.ui.Select
 private[pageobject] object ElementHelper {
   def isElement(tag: String): WebElement => Boolean = _.getTagName.toLowerCase == tag
 
-  val isSelectElement = isElement("select")
+  val isSelectElement: WebElement => Boolean = isElement("select")
 
-  val isInputElement = isElement("input")
+  val isInputElement: WebElement => Boolean = isElement("input")
 
-  val isTextAreaElement = isElement("textarea")
+  val isTextAreaElement: WebElement => Boolean = isElement("textarea")
 
-  val isButtonElement = isElement("button")
+  val isButtonElement: WebElement => Boolean = isElement("button")
 
   def isButton(webElement: WebElement): Boolean = isButtonElement(webElement) ||
     isInputField(webElement, "button") || isInputField(webElement, "reset") || isInputField(webElement, "submit")
@@ -77,50 +77,50 @@ private[pageobject] object ElementHelper {
   {
     val element = factory.initial
     if (isTextField(element)) {
-      new TextField(factory)
+      TextField(factory)
     } else if (isTextArea(element)) {
-      new TextArea(factory)
+      TextArea(factory)
     } else if (isPasswordField(element)) {
-      new PasswordField(factory)
+      PasswordField(factory)
     } else if (isEmailField(element)) {
-      new EmailField(factory)
+      EmailField(factory)
     } else if (isColorField(element)) {
-      new ColorField(factory)
+      ColorField(factory)
     } else if (isDateField(element)) {
-      new DateField(factory)
+      DateField(factory)
     } else if (isDateTimeField(element)) {
-      new DateTimeField(factory)
+      DateTimeField(factory)
     } else if (isDateTimeLocalField(element)) {
-      new DateTimeLocalField(factory)
+      DateTimeLocalField(factory)
     } else if (isMonthField(element)) {
-      new MonthField(factory)
+      MonthField(factory)
     } else if (isNumberField(element)) {
-      new NumberField(factory)
+      NumberField(factory)
     } else if (isRangeField(element)) {
-      new RangeField(factory)
+      RangeField(factory)
     } else if (isSearchField(element)) {
-      new SearchField(factory)
+      SearchField(factory)
     } else if (isTelField(element)) {
-      new TelField(factory)
+      TelField(factory)
     } else if (isTimeField(element)) {
-      new TimeField(factory)
+      TimeField(factory)
     } else if (isUrlField(element)) {
-      new UrlField(factory)
+      UrlField(factory)
     } else if (isWeekField(element)) {
-      new WeekField(factory)
+      WeekField(factory)
     } else if (isCheckBox(element)) {
-      new Checkbox(factory)
+      Checkbox(factory)
     } else if (isRadioButton(element)) {
-      new RadioButton(factory)
+      RadioButton(factory)
     } else if (isSelectElement(element)) {
       val select = new Select(element)
       if (select.isMultiple) {
-        new MultiSel(factory)
+        MultiSel(factory)
       } else {
-        new SingleSel(factory)
+        SingleSel(factory)
       }
     } else {
-      new UntypedElement(factory)
+      UntypedElement(factory)
     }
   }
 }
