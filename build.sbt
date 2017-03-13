@@ -20,7 +20,7 @@ concurrentRestrictions in Global := Seq(Tags.limitAll(1))
 logBuffered in Test := false
 
 // jetty 9.2.x is the last version with support java 7
-val jettyVersion = "9.2.19.v20160908"
+val jettyVersion = "9.2.21.v20170120"
 val selenium2Version = "2.53.1"
 val selenium3Version = "3.3.1"
 val scalatestVersion = "3.0.1"
