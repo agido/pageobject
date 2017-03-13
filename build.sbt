@@ -22,7 +22,7 @@ logBuffered in Test := false
 // jetty 9.2.x is the last version with support java 7
 val jettyVersion = "9.2.19.v20160908"
 val selenium2Version = "2.53.1"
-val selenium3Version = "3.3.0"
+val selenium3Version = "3.3.1"
 val scalatestVersion = "3.0.1"
 
 lazy val commonSettings = Seq(
