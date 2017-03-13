@@ -47,7 +47,7 @@ object DriverLaunchWrapper {
       .map(_.value())
       .orElse(
         sys.env.get("RUN_WITH_DRIVERS")
-          .orElse(Try(ConfigFactory.load().getString("org.pageobject.driverFactory")).toOption)
+          .orElse(Try(ConfigFactory.load().getString("org.pageobject.run-with-drivers")).toOption)
           .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
       )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {

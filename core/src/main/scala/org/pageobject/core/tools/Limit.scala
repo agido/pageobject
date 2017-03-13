@@ -22,6 +22,8 @@ import scala.util.Try
 /**
  * Support for running multiple browsers in parallel.
  *
+ * Can be set by environment variable or with typesafe config under the path org.pageobject.<name>-limit
+ *
  * Overall test limit:
  * Use TEST_LIMIT=-1 to allow unlimited parallel test runs
  * The default TEST_LIMIT is 1, use TEST_LIMIT=4 to allow 4 tests to be executed at the same time.
