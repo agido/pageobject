@@ -15,6 +15,10 @@
  */
 package org.pageobject.core.tools
 
+import com.typesafe.config.ConfigFactory
+
+import scala.util.Try
+
 /**
  * Support for running multiple browsers in parallel.
  *
@@ -50,7 +54,11 @@ object Limit {
     def envName: String = s"${propertyName.getOrElse(name).toUpperCase}_LIMIT"
 
     // int value of the environment variable or None
-    def env: Option[Int] = Util.parseInt(sys.env.get(envName))
+    def env: Option[Int] = Util.parseInt {
+      val configPath = s"org.pageobject.${propertyName.getOrElse(name).toLowerCase}-limit"
+      sys.env.get(envName)
+        .orElse(Try(ConfigFactory.load().getString(configPath)).toOption)
+    }
 
     // true if a matching webdriver property is set
     def hasWebDriverProp: Boolean = {

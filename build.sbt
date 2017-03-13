@@ -100,6 +100,7 @@ lazy val core = (project in file("core"))
       "org.seleniumhq.selenium" % "selenium-java" % selenium2Version exclude("com.codeborne", "phantomjsdriver"),
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.20" % Optional,
       "net.sourceforge.htmlunit" % "htmlunit" % "2.21" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
+      "com.typesafe" % "config" % configVersion,
 
       // Warning: Class javax.annotation.Nullable not found
       "com.google.code.findbugs" % "jsr305" % selenium3Version % Optional
@@ -112,8 +113,7 @@ lazy val scalatest = (project in file("scalatest"))
     name := "scalatest",
     libraryDependencies ++= Seq(
       "org.scalactic" %% "scalactic" % scalatestVersion,
-      "org.pageobject.patch.org.scalatest" %% "scalatest" % scalatestVersion exclude("org.eclipse.jetty.orbit", "javax.servlet"),
-      "com.typesafe" % "config" % configVersion
+      "org.pageobject.patch.org.scalatest" %% "scalatest" % scalatestVersion exclude("org.eclipse.jetty.orbit", "javax.servlet")
     )
   )
   .dependsOn(core)
