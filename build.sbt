@@ -24,6 +24,7 @@ val seleniumVersion = "3.3.1"
 val scalatestVersion = "3.0.1"
 val slf4jVersion = "1.7.24"
 val logbackVersion = "1.2.1"
+val configVersion = "1.2.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -95,6 +96,7 @@ lazy val core = (project in file("core"))
       "org.seleniumhq.selenium" % "selenium-support" % seleniumVersion,
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.25" % Optional,
       "net.sourceforge.htmlunit" % "htmlunit" % "2.25" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
+      "com.typesafe" % "config" % configVersion,
 
       // Warning: Class javax.annotation.Nullable not found
       "com.google.code.findbugs" % "jsr305" % "3.0.1" % Optional

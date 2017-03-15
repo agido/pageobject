@@ -15,6 +15,7 @@
  */
 package org.pageobject.scalatest
 
+import com.typesafe.config.ConfigFactory
 import org.pageobject.core.TestHelper
 import org.pageobject.core.driver.DefaultDriverFactoryList
 import org.pageobject.core.driver.DriverFactories
@@ -35,6 +36,8 @@ import org.scalatest.Suite
 import org.scalatest.Suites
 import org.scalatest.tools.AnnotationHelper
 
+import scala.util.Try
+
 /**
  * Helper Object to get the corresponding DriverFactories
  */
@@ -44,6 +47,7 @@ object DriverLaunchWrapper {
       .map(_.value())
       .orElse(
         sys.env.get("RUN_WITH_DRIVERS")
+          .orElse(Try(ConfigFactory.load().getString("org.pageobject.run-with-drivers")).toOption)
           .map(Class.forName(_).asInstanceOf[Class[DriverFactories]])
       )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
