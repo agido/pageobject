@@ -18,5 +18,5 @@ package org.pageobject.core
 import org.pageobject.scalatest.PageObjectTestSpec
 
 abstract class TestSpec extends PageObjectTestSpec {
-  override val webAppContext = "test/src/main/webapp"
+  override val webAppContext = "test/src/test/webapp"
 }
