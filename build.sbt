@@ -24,7 +24,7 @@ val seleniumVersion = "3.3.1"
 val scalatestVersion = "3.0.1"
 val slf4jVersion = "1.7.24"
 val logbackVersion = "1.2.1"
-val configVersion = "1.2.1"
+val configVersion = "1.3.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
