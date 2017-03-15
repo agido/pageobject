@@ -19,12 +19,8 @@
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/scalatest" />
             <option value="$PROJECT_DIR$/scalatest/project" />
-            <option value="$PROJECT_DIR$/test/selenium/selenium2" />
-            <option value="$PROJECT_DIR$/test/selenium/selenium2/project" />
-            <option value="$PROJECT_DIR$/test/selenium/selenium3" />
-            <option value="$PROJECT_DIR$/test/selenium/selenium3/project" />
-            <option value="$PROJECT_DIR$/test/selenium/shared" />
-            <option value="$PROJECT_DIR$/test/selenium/shared/project" />
+            <option value="$PROJECT_DIR$/test" />
+            <option value="$PROJECT_DIR$/test/project" />
           </set>
         </option>
         <option name="sbtVersion" value="0.13.13" />

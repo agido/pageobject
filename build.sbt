@@ -21,8 +21,7 @@ logBuffered in Test := false
 
 // jetty 9.2.x is the last version with support java 7
 val jettyVersion = "9.2.21.v20170120"
-val selenium2Version = "2.53.1"
-val selenium3Version = "3.3.1"
+val seleniumVersion = "3.3.1"
 val scalatestVersion = "3.0.1"
 
 lazy val commonSettings = Seq(
@@ -39,9 +38,6 @@ lazy val commonSettings = Seq(
   publishMavenStyle := true,
 
   pomIncludeRepository := { _ => false },
-
-  // use selenium 2 as default
-  dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % selenium2Version,
 
   publishTo <<= version { v: String =>
     val nexus = "https://oss.sonatype.org/"
@@ -83,9 +79,7 @@ lazy val root = (project in file("."))
     core,
     scalatest,
     jetty,
-    testSeleniumShared,
-    testSelenium2,
-    testSelenium3,
+    test,
     examples
   )
 
@@ -96,7 +90,8 @@ lazy val core = (project in file("core"))
     libraryDependencies ++= Seq(
       "org.slf4j" % "slf4j-api" % "1.7.24",
       // remove circular dependency
-      "org.seleniumhq.selenium" % "selenium-java" % selenium2Version exclude("com.codeborne", "phantomjsdriver"),
+      "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion exclude("com.codeborne", "phantomjsdriver"),
+      "org.seleniumhq.selenium" % "selenium-support" % seleniumVersion,
       "org.seleniumhq.selenium" % "htmlunit-driver" % "2.25" % Optional,
       "net.sourceforge.htmlunit" % "htmlunit" % "2.25" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
 
@@ -131,44 +126,9 @@ lazy val jetty = (project in file("jetty"))
     )
   ).dependsOn(scalatest)
 
-lazy val testSeleniumShared = (project in file("test/selenium/shared"))
+lazy val test = (project in file("test"))
   .settings(noPublishSettings: _*)
   .dependsOn(jetty)
-
-// run tests against selenium 2
-lazy val testSelenium2 = (project in file("test/selenium/selenium2"))
-  .settings(noPublishSettings: _*)
-  .settings(
-    name := "test/selenium/selenium2",
-    // without this sbt won't find the shared tests...
-    unmanagedSourceDirectories in Test += baseDirectory.value / "../shared/src/main/scala"
-  ).dependsOn(testSeleniumShared % "test->compile")
-
-lazy val isJdk7: Boolean = sys.props.get("java.specification.version") == Some("1.7")
-
-// run tests against selenium 3
-lazy val testSelenium3 = if (isJdk7) {
-  // selenium does not support jdk7...
-  // just add an empty dummy project in this case
-  (project in file("test/selenium/selenium3jdk7"))
-    .settings(noPublishSettings: _*)
-    .settings(
-      name := "test/selenium/selenium3jdk7"
-    )
-} else {
-  (project in file("test/selenium/selenium3"))
-    .settings(noPublishSettings: _*)
-    .settings(
-      name := "test/selenium/selenium3",
-      // without this sbt won't find the shared tests...
-      unmanagedSourceDirectories in Test += baseDirectory.value / "../shared/src/main/scala",
-      libraryDependencies ++= Seq(
-        "org.seleniumhq.selenium" % "selenium-support" % selenium3Version
-      ),
-      // set selenium version to 3.x
-      dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % selenium3Version
-    ).dependsOn(testSeleniumShared % "test->compile")
-}
 
 lazy val examples = (project in file("examples"))
   .settings(noPublishSettings: _*)

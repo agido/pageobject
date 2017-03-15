@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="selenium2 tests" type="ScalaTestRunConfiguration" factoryName="ScalaTest" singleton="true">
+  <configuration default="false" name="tests" type="ScalaTestRunConfiguration" factoryName="ScalaTest" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <module name="testSelenium2" />
+    <module name="test" />
     <setting name="path" value="" />
     <setting name="package" value="" />
     <setting name="vmparams" value="" />
