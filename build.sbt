@@ -23,6 +23,7 @@ val jettyVersion = "9.4.2.v20170220"
 val seleniumVersion = "3.3.1"
 val scalatestVersion = "3.0.1"
 val slf4jVersion = "1.7.24"
+val logbackVersion = "1.2.1"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -117,7 +118,7 @@ lazy val jetty = (project in file("jetty"))
     dependencyOverrides += "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
 
     libraryDependencies ++= Seq(
-      "ch.qos.logback" % "logback-classic" % "1.1.7",
+      "ch.qos.logback" % "logback-classic" % logbackVersion,
       "org.slf4j" % "jcl-over-slf4j" % slf4jVersion,
       "org.easymock" % "easymock" % "3.4",
       "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
