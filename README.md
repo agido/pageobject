@@ -103,12 +103,9 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 * **project** sbt build configuration used to build pageobject
 * **scalatest** Classes needed to use PageObject with ScalaTest 3 
 * **selenium** Selenium Scripts and chrome driver, used for building pageobject
-* **test/base** base project for unit tests and examples
+* **jetty** base project for unit tests and examples
 * **test/maven** internal maven project to test maven build
-* **test/selenium/selenium2** project used to test pageobject against selenium 2
-* **test/selenium/selenium3** project used to test pageobject against selenium 3
-* **test/selenium/selenium3jdk7** dummy project used on jdk7 because selenium 3 requires jdk8
-* **test/selenium/shared** unit tests used by selenium 2 and selenium 3 tests
+* **test** project used to test pageobject against selenium 3
 * **travis** Scripts used by travis to build and upload PageObject to sonatype
 * **vnc** A VNC server and control script reference implementation, used for building pageobject
 
@@ -116,15 +113,11 @@ Because of a bug in ScalaTest (See [#1](https://github.com/agido/pageobject/issu
 ### Prerequisites
 The followings are recommended for building PageObject:
 (other versions may work but are currently untested)
-* openjdk7 (not supported by scala 2.12.x), openjdk8 or oraclejdk8
+* openjdk8 or oraclejdk8
 * [SBT 0.13.x](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
 * [Scala](http://www.scala-lang.org/documentation/getting-started.html)
- * 2.10.6
  * 2.11.8
  * 2.12.1
-
-Because Selenium requires at least Java 7 it is not possible to use PageObject with Java 6.
-travis builds of PageObject for scala 2.10 and 2.11 are using openjdk7 and openjdk8 for scala 2.12.
 
 ### Building and Running Tests
 This command will build and run the regular tests:
