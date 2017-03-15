@@ -22,6 +22,7 @@ logBuffered in Test := false
 val jettyVersion = "9.4.2.v20170220"
 val seleniumVersion = "3.3.1"
 val scalatestVersion = "3.0.1"
+val slf4jVersion = "1.7.24"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
@@ -87,7 +88,7 @@ lazy val core = (project in file("core"))
   .settings(
     name := "core",
     libraryDependencies ++= Seq(
-      "org.slf4j" % "slf4j-api" % "1.7.24",
+      "org.slf4j" % "slf4j-api" % slf4jVersion,
       // remove circular dependency
       "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion exclude("com.codeborne", "phantomjsdriver"),
       "org.seleniumhq.selenium" % "selenium-support" % seleniumVersion,
@@ -117,7 +118,7 @@ lazy val jetty = (project in file("jetty"))
 
     libraryDependencies ++= Seq(
       "ch.qos.logback" % "logback-classic" % "1.1.7",
-      "org.slf4j" % "jcl-over-slf4j" % "1.7.21",
+      "org.slf4j" % "jcl-over-slf4j" % slf4jVersion,
       "org.easymock" % "easymock" % "3.4",
       "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
       "org.eclipse.jetty" % "jetty-server" % jettyVersion,
