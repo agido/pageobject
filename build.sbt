@@ -82,7 +82,7 @@ lazy val root = (project in file("."))
   .aggregate(
     core,
     scalatest,
-    testBase,
+    jetty,
     testSeleniumShared,
     testSelenium2,
     testSelenium3,
@@ -116,7 +116,7 @@ lazy val scalatest = (project in file("scalatest"))
   )
   .dependsOn(core)
 
-lazy val testBase = (project in file("test/base"))
+lazy val jetty = (project in file("jetty"))
   .settings(noPublishSettings: _*)
   .settings(
     dependencyOverrides += "org.eclipse.jetty.websocket" % "websocket-client" % jettyVersion,
@@ -133,7 +133,7 @@ lazy val testBase = (project in file("test/base"))
 
 lazy val testSeleniumShared = (project in file("test/selenium/shared"))
   .settings(noPublishSettings: _*)
-  .dependsOn(testBase)
+  .dependsOn(jetty)
 
 // run tests against selenium 2
 lazy val testSelenium2 = (project in file("test/selenium/selenium2"))
@@ -172,7 +172,7 @@ lazy val testSelenium3 = if (isJdk7) {
 
 lazy val examples = (project in file("examples"))
   .settings(noPublishSettings: _*)
-  .dependsOn(testBase)
+  .dependsOn(jetty)
 
 updateImpactOpenBrowser in ThisBuild := false
 

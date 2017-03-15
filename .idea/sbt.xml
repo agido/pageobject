@@ -14,11 +14,11 @@
             <option value="$PROJECT_DIR$/core/project" />
             <option value="$PROJECT_DIR$/examples" />
             <option value="$PROJECT_DIR$/examples/project" />
+            <option value="$PROJECT_DIR$/jetty" />
+            <option value="$PROJECT_DIR$/jetty/project" />
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/scalatest" />
             <option value="$PROJECT_DIR$/scalatest/project" />
-            <option value="$PROJECT_DIR$/test/base" />
-            <option value="$PROJECT_DIR$/test/base/project" />
             <option value="$PROJECT_DIR$/test/selenium/selenium2" />
             <option value="$PROJECT_DIR$/test/selenium/selenium2/project" />
             <option value="$PROJECT_DIR$/test/selenium/selenium3" />
