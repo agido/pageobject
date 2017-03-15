@@ -21,11 +21,6 @@ export CHROME_LIMIT=1
 export PAGEOBJECT_VNC_LIMIT=1
 export PAGEOBJECT_VNC_DURATION=10
 
-if [[ "$TRAVIS_SCALA_VERSION" == 2.10* ]]; then
-	# fix for scala 2.10.x only
-	export SBT_OPTS="-Dscalac.patmat.analysisBudget=off"
-fi
-
 sbt scalastyle
 
 if [ -z "$SCOVER" ]; then
