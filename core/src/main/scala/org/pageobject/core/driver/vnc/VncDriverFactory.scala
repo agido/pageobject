@@ -46,6 +46,8 @@ import scala.concurrent.duration.FiniteDuration
 abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncServerManager: VncServerManager[V])
   extends RemoteDriverFactory with Logging {
 
+  override val vnc: Boolean = true
+
   private object vncServer extends DynamicOptionVariable[V]()
 
   protected def url(): String = vncServer.value.url

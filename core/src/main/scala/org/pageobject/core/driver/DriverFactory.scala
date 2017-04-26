@@ -60,6 +60,8 @@ trait DriverFactory extends IDriverFactory {
 
   def compatible: Boolean = true
 
+  def vnc: Boolean = false
+
   def takeScreenshot(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {}
 
   def webDriver: WebDriver
