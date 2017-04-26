@@ -18,7 +18,7 @@ package org.pageobject.examples.angularjs.todo
 import org.pageobject.scalatest.JettySuite.JettyPage
 import org.pageobject.scalatest.JettySuite.JettyUrl
 
-case class TodoPage(implicit val jettyUrl: JettyUrl) extends JettyPage {
+case class TodoPage()(implicit val jettyUrl: JettyUrl) extends JettyPage {
   val path = "/examples/angularjs-todo/"
 
   object content extends TodoModule
