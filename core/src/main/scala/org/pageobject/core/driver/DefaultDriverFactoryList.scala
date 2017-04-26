@@ -21,6 +21,8 @@ import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.safari.SafariDriver
+import org.pageobject.core.driver.vnc.DefaultVncChromeDriverFactory
+import org.pageobject.core.driver.vnc.DefaultVncFirefoxDriverFactory
 import org.pageobject.core.tools.Limit.ChromeLimit
 import org.pageobject.core.tools.Limit.FirefoxLimit
 import org.pageobject.core.tools.Limit.HtmlUnitLimit
@@ -79,4 +81,4 @@ case object InternetExplorerDriverFactory
  * DriverFactoryList will filter DriverFactories returning false for compatible or selected
  */
 class DefaultDriverFactoryList extends DriverFactoryList(HtmlUnitDriverFactory, FirefoxDriverFactory,
-  SafariDriverFactory, ChromeDriverFactory, InternetExplorerDriverFactory)
+  SafariDriverFactory, ChromeDriverFactory, InternetExplorerDriverFactory, DefaultVncChromeDriverFactory, DefaultVncFirefoxDriverFactory)
