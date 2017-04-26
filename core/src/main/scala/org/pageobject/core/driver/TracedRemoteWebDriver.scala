@@ -69,12 +69,10 @@ private object TracedRemoteWebDriver {
  *
  * @param desiredCapabilities passed directly to selenium's RemoteWebDriver
  *
- * @param requiredCapabilities passed directly to selenium's RemoteWebDriver
  */
 class TracedRemoteWebDriver(executor: CommandExecutor,
-                            desiredCapabilities: Capabilities,
-                            requiredCapabilities: Capabilities)
-  extends RemoteWebDriver(executor, desiredCapabilities, requiredCapabilities) with Logging {
+                            desiredCapabilities: Capabilities)
+  extends RemoteWebDriver(executor, desiredCapabilities) with Logging {
 
   val idFoundBy: mutable.Map[String, String] = new TrieMap[String, String]()
 
