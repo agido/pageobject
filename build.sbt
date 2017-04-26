@@ -20,7 +20,7 @@ concurrentRestrictions in Global := Seq(Tags.limitAll(1))
 logBuffered in Test := false
 
 val jettyVersion = "9.4.4.v20170414"
-val seleniumVersion = "3.3.1"
+val seleniumVersion = "3.4.0"
 val scalatestVersion = "3.0.1"
 val slf4jVersion = "1.7.24"
 val logbackVersion = "1.2.1"
