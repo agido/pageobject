@@ -23,7 +23,7 @@ val jettyVersion = "9.4.4.v20170414"
 val seleniumVersion = "3.4.0"
 val scalatestVersion = "3.0.3"
 val slf4jVersion = "1.7.25"
-val logbackVersion = "1.2.1"
+val logbackVersion = "1.2.2"
 val configVersion = "1.3.1"
 
 lazy val commonSettings = Seq(
