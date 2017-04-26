@@ -44,27 +44,3 @@ object DefaultVncChromeDriverFactory extends VncChromeDriverFactory(DefaultVncSe
  */
 object DefaultVncFirefoxDriverFactory extends VncFirefoxDriverFactory(DefaultVncServerManager)
   with DefaultVncDriverTraits
-
-/**
- * This is the default DriverFactoryList for Browsers running on VNC Servers.
- *
- * You can customise this list if you want:
- * <code>
- *   class MyDriverFactoryList extends DefaultVncDriverFactoryList with UnexpectedPagesFactoryProvider {
- *     override val unexpectedPagesFactory = UnexpectedPagesFactory(cancelTestPages = Seq(() => MaintenancePage()))
- *   }
- * </code>
- *
- * Because the VNC implementation is intended for Linux Servers (and developers),
- * only Chrome and Firefox are listed here.
- *
- * VNC is not used to remote control a already running desktop, a new (virtual) Desktop should be created.
- *
- * If you are a Linux developer you can use this to workaround the problem that some DOM elements are needing the focus,
- * but if you are debugging, you IDE has the focus and the test may fail.
- *
- * You can also running multiple tests in parallel, because every browser has a seperate desktop
- * each browser also has the focus without disturbing each other.
- */
-class DefaultVncDriverFactoryList
-  extends DriverFactoryList(DefaultVncChromeDriverFactory, DefaultVncFirefoxDriverFactory)

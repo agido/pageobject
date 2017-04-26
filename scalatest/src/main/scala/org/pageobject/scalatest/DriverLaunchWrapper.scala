@@ -22,7 +22,6 @@ import org.pageobject.core.driver.DriverFactories
 import org.pageobject.core.driver.DriverFactory
 import org.pageobject.core.driver.DriverFactoryHolder
 import org.pageobject.core.driver.RunWithDrivers
-import org.pageobject.core.driver.vnc.DefaultVncDriverFactoryList
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.tools.Limit.TestLimit
 import org.pageobject.core.tools.LimitProvider
@@ -52,11 +51,7 @@ object DriverLaunchWrapper {
       )
       .orElse(sys.env.get("IGNORE_DEFAULT_DRIVER") match {
         case None | Some("0") | Some("false") =>
-          if (sys.props.getOrElse("os.name", "unknown") == "Linux") {
-            Some(classOf[DefaultVncDriverFactoryList])
-          } else {
-            Some(classOf[DefaultDriverFactoryList])
-          }
+          Some(classOf[DefaultDriverFactoryList])
         case Some(_) => None
       })
       .getOrElse(TestHelper.notAllowed("Missing RUN_WITH_DRIVERS environment variable!"))
