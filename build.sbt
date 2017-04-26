@@ -94,8 +94,8 @@ lazy val core = (project in file("core"))
       // remove circular dependency
       "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion exclude("com.codeborne", "phantomjsdriver"),
       "org.seleniumhq.selenium" % "selenium-support" % seleniumVersion,
-      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.25" % Optional,
-      "net.sourceforge.htmlunit" % "htmlunit" % "2.25" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
+      "org.seleniumhq.selenium" % "htmlunit-driver" % "2.26" % Optional,
+      "net.sourceforge.htmlunit" % "htmlunit" % "2.26" % Optional exclude("org.eclipse.jetty.websocket", "websocket-client"),
       "com.typesafe" % "config" % configVersion,
 
       // Warning: Class javax.annotation.Nullable not found
