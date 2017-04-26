@@ -2,17 +2,17 @@ dist: trusty
 language: scala
 matrix:
   include:
-  - scala: 2.11.8
+  - scala: 2.11.11
     jdk: openjdk8
     env:
     - PUBLISH=true
-  - scala: 2.11.8
+  - scala: 2.11.11
     jdk: oraclejdk8
-  - scala: 2.12.1
+  - scala: 2.12.2
     jdk: openjdk8
     env:
     - PUBLISH=true
-  - scala: 2.12.1
+  - scala: 2.12.2
     jdk: oraclejdk8
 notifications:
   email: support@pageobject.org
