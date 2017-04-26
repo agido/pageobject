@@ -45,29 +45,29 @@ abstract class DefaultCreateDriverFactory(val limit: Limit, val create: () => We
 /**
  * A DriverFactory creating a local HtmlUnit browser
  */
-case class HtmlUnitDriverFactory() extends DefaultCreateDriverFactory(HtmlUnitLimit, () => new HtmlUnitDriver())
+case object HtmlUnitDriverFactory extends DefaultCreateDriverFactory(HtmlUnitLimit, () => new HtmlUnitDriver())
 
 /**
  * A DriverFactory creating a local Firefox browser
  */
-case class FirefoxDriverFactory() extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver())
+case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver())
 
 /**
  * A DriverFactory creating a local Safari browser
  */
-case class SafariDriverFactory() extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver()) {
+case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver()) {
   override val compatible = OS.isOSX
 }
 
 /**
  * A DriverFactory creating a local Chrome browser
  */
-case class ChromeDriverFactory() extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver())
+case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver())
 
 /**
  * A DriverFactory creating a local Internet Explorer browser
  */
-case class InternetExplorerDriverFactory()
+case object InternetExplorerDriverFactory
   extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver()) {
 
   override val compatible = OS.isWindows
@@ -78,5 +78,5 @@ case class InternetExplorerDriverFactory()
  *
  * DriverFactoryList will filter DriverFactories returning false for compatible or selected
  */
-class DefaultDriverFactoryList extends DriverFactoryList(HtmlUnitDriverFactory(), FirefoxDriverFactory(),
-  SafariDriverFactory(), ChromeDriverFactory(), InternetExplorerDriverFactory())
+class DefaultDriverFactoryList extends DriverFactoryList(HtmlUnitDriverFactory, FirefoxDriverFactory,
+  SafariDriverFactory, ChromeDriverFactory, InternetExplorerDriverFactory)
