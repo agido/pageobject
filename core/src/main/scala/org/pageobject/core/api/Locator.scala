@@ -70,7 +70,8 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
           assert(initial.size == query.size)
           query(i)
         }
-        elementFactory(ElementFactory(element, requery))
+
+        elementFactory(ElementFactory(element, () => requery()))
     })
   }
 

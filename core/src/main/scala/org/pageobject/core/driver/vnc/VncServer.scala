@@ -61,7 +61,7 @@ trait VncServer extends Logging {
   protected def id: Int
 
   protected val processLogger: ProcessLogger =
-    VncServer.createProcessLogger(stdoutName, stderrName,
+    VncServer.createProcessLogger(() => stdoutName(), () => stderrName(),
       message => if (log(message)) {
         logStdOut(message)
       }, message => if (log(message)) {
