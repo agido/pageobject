@@ -15,6 +15,13 @@
  */
 package org.pageobject.core.driver
 
+import org.pageobject.core.tools.Environment
+import org.pageobject.core.tools.OS
+
+object DriverFactoryList {
+  val useVnc: Boolean = OS.isLinux == Environment.boolean("PAGEOBJECT_VNC", OS.isLinux)
+}
+
 /**
  * A simple scala default implementation for java interface <code>DriverFactories</code>
  *
@@ -23,5 +30,5 @@ package org.pageobject.core.driver
  * @param allDrivers driverFactories that should be used to run the tests.
  */
 class DriverFactoryList(allDrivers: DriverFactory*) extends DriverFactories {
-  val drivers = allDrivers.filter(factory => factory.compatible && factory.limit.selected)
+  val drivers = allDrivers.filter(factory => factory.compatible && factory.limit.selected && factory.vnc == DriverFactoryList.useVnc)
 }
