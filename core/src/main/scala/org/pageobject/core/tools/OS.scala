@@ -24,4 +24,16 @@ object OS {
   val isOSX = name.indexOf("darwin") != -1
   val isWindows = name.startsWith("windows")
   val isLinux = name.indexOf("linux") != -1
+
+  lazy val suffix: String = {
+    if (isOSX) {
+      "osx"
+    } else if (isWindows) {
+      "win"
+    } else if (isLinux) {
+      "linux"
+    } else {
+      throw new RuntimeException("could not detect OS type!")
+    }
+  }
 }
