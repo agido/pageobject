@@ -19,7 +19,7 @@ import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.OS
 
 object DriverFactoryList {
-  val useVnc: Boolean = OS.isLinux == Environment.boolean("PAGEOBJECT_VNC", OS.isLinux)
+  val useVnc: Boolean = Environment.boolean("PAGEOBJECT_VNC", OS.isLinux)
 }
 
 /**
