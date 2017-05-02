@@ -28,6 +28,7 @@ import org.pageobject.core.TestHelper
 import org.pageobject.core.WaitFor
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.dsl.RetryHelper
+import org.pageobject.core.dsl.ScriptDsl
 import org.pageobject.core.page.DefaultPageReference
 import org.pageobject.core.tools.Logging
 
@@ -51,7 +52,7 @@ import scala.collection.immutable
  * You can access the wrapped <code>WebElement</code> via the <code>underlying</code> method.
  * </p>
  */
-abstract class Element(typeDescription: String, checker: WebElement => Boolean) extends Logging with WaitFor {
+abstract class Element(typeDescription: String, checker: WebElement => Boolean) extends Logging with WaitFor with ScriptDsl {
   /**
    * The factory returning the underlying <code>WebElement</code> wrapped by this <code>Element</code>
    */
@@ -333,6 +334,14 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    */
   def submit(): Unit = retry("submit") {
     underlying.submit()
+  }
+
+  /**
+   * scroll the element into the view
+   */
+  def scrollIntoView(): Unit = retry("scrollIntoView") {
+    implicit val webDriver = factory.webDriver
+    executeScript("arguments[0].scrollIntoView()", underlying)
   }
 }
 
