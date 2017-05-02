@@ -52,19 +52,19 @@ case object HtmlUnitDriverFactory extends DefaultCreateDriverFactory(HtmlUnitLim
 /**
  * A DriverFactory creating a local Firefox browser
  */
-case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver())
+case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver() with TracedRemoteWebDriver)
 
 /**
  * A DriverFactory creating a local Safari browser
  */
-case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver()) {
+case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver() with TracedRemoteWebDriver) {
   override val compatible = OS.isOSX
 }
 
 /**
  * A DriverFactory creating a local Chrome browser
  */
-case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver()) {
+case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver() with TracedRemoteWebDriver) {
   sys.env.get("PAGEOBJECT_CHROMEDRIVER_PATH")
     .map(path => System.setProperty("webdriver.chrome.driver", s"${path}_${OS.suffix}"))
 }
@@ -73,7 +73,7 @@ case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, 
  * A DriverFactory creating a local Internet Explorer browser
  */
 case object InternetExplorerDriverFactory
-  extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver()) {
+  extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver() with TracedRemoteWebDriver) {
 
   override val compatible = OS.isWindows
 }

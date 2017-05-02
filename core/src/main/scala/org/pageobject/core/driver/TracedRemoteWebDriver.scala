@@ -70,10 +70,11 @@ private object TracedRemoteWebDriver {
  * @param desiredCapabilities passed directly to selenium's RemoteWebDriver
  *
  */
-class TracedRemoteWebDriver(executor: CommandExecutor,
-                            desiredCapabilities: Capabilities)
-  extends RemoteWebDriver(executor, desiredCapabilities) with Logging {
+class DefaultTracedRemoteWebDriver(executor: CommandExecutor,
+                                   desiredCapabilities: Capabilities)
+  extends RemoteWebDriver(executor, desiredCapabilities) with TracedRemoteWebDriver
 
+trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
   val idFoundBy: mutable.Map[String, String] = new TrieMap[String, String]()
 
   private def prettyPrint(what: Any): String = what match {

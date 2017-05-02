@@ -96,7 +96,7 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
 
   protected def createWebDriver(executor: HttpCommandExecutor, capabilities: Capabilities): WebDriver = {
     if (traced) {
-      new TracedRemoteWebDriver(executor, capabilities)
+      new DefaultTracedRemoteWebDriver(executor, capabilities)
     } else {
       new RemoteWebDriver(executor, capabilities)
     }
