@@ -16,7 +16,7 @@
     <classRegexps />
     <testRegexps />
     <envs>
-      <envVar name="CHROME_LIMIT" value="1" />
+      <envVar name="PAGEOBJECT_CHROMEDRIVER_PATH" value="selenium/chromedriver" />
     </envs>
     <method />
   </configuration>
