@@ -16,6 +16,7 @@
  */
 package org.pageobject.core
 
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
 
 import org.pageobject.core.WaitFor.PatienceConfig
@@ -104,8 +105,9 @@ trait WaitFor extends DurationDsl {
           }
           tryIt(attempt + 1)
         } else {
-          val message = s"The code passed to waitFor never returned normally. Attempted $attempt times over $duration."
-          val failure = Option(e).map(_.getMessage).fold("")(msg => s"Last failure message: $msg")
+          val ms = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.NANOSECONDS)
+          val message = s"The code passed to waitFor never returned normally. Attempted $attempt times over ${ms}ms."
+          val failure = Option(e).map(_.getMessage).fold("")(msg => s"\nLast failure message: $msg")
           TestHelper.timeoutTest(message + failure, timeout)
         }
     }
