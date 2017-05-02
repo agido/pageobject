@@ -75,12 +75,12 @@ trait WaitFor extends DurationDsl {
     }
   }
 
-  protected def waitFor[T](duration: FiniteDuration)(fun: => T): T = {
-    waitFor(WaitFor.PatienceConfig(duration))(fun)
+  protected def waitFor[T](timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
+    waitFor(WaitFor.PatienceConfig(timeout, interval))(fun)
   }
 
-  protected def withPatience[T](config: (PatienceConfig, FiniteDuration)*)(fun: => T): T = {
-    withPatience(config.toMap.mapValues(PatienceConfig(_))) {
+  protected def withPatience[T](config: (PatienceConfig, PatienceConfig)*)(fun: => T): T = {
+    withPatience(config.toMap) {
       fun
     }
   }
@@ -137,7 +137,7 @@ object WaitFor extends DurationDsl {
    * Because each PatienceConfig should be unique, which is required to override values using
    * <code>WaitFor.withPatience()</code>, each PatienceConfig has an uniq field just counted up for every instance.
    */
-  case class PatienceConfig(timeout: FiniteDuration = 150.millis, interval: FiniteDuration = 15.millis, uniq: Long = nextId) {
+  case class PatienceConfig(timeout: FiniteDuration, interval: FiniteDuration, uniq: Long = nextId) {
     override def toString: String = {
       s"${getClass.getName}($timeout, $interval)"
     }
@@ -147,16 +147,12 @@ object WaitFor extends DurationDsl {
 
   private object WaitForHolder extends DynamicOptionVariable[PatienceMap]()
 
-  def waitFor[T](duration: FiniteDuration)(fun: => T): T = {
-    waitForDelegate.waitFor(duration)(fun)
+  def waitFor[T](timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
+    waitForDelegate.waitFor(PatienceConfig(timeout, interval))(fun)
   }
 
   def waitFor[T](config: PatienceConfig)(fun: => T): T = {
     waitForDelegate.waitFor(config)(fun)
-  }
-
-  def withPatience[T](config: (PatienceConfig, FiniteDuration)*)(fun: => T): T = {
-    waitForDelegate.withPatience(config: _*)(fun)
   }
 
   def withPatience[T](map: PatienceMap)(fun: => T): T = {

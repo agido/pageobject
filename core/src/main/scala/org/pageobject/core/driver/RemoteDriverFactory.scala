@@ -55,7 +55,7 @@ trait AlwaysTracedRemoteDriverFactory {
 object RemoteDriverFactory extends WaitFor {
 
   // how long to wait for the RemoteWebDriver connection
-  object CreateDriver extends PatienceConfig(60.seconds)
+  object CreateDriver extends PatienceConfig(timeout = 60.seconds, interval = 3.seconds)
 
 }
 

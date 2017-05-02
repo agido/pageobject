@@ -30,7 +30,7 @@ import org.pageobject.core.tools.Logging
 object PageBrowser extends WaitFor {
 
   // timeout how long to wait for the expected page
-  object At extends PatienceConfig(30.seconds)
+  object At extends PatienceConfig(timeout = 30.seconds, interval = 1.second)
 
 }
 

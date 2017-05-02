@@ -17,6 +17,7 @@
 package org.pageobject.examples.tour03
 
 import org.pageobject.core.WaitFor
+import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.browser.PageBrowser
 import org.pageobject.core.page.DomainPage
 import org.pageobject.core.page.PageModule
@@ -112,7 +113,7 @@ class Tour03 extends FunSpec with PageObjectSuite with WaitFor {
       assert(Try(firstPage.content.searchTerm()).isFailure)
 
       // at check for Tour03GoogleSearchPage should fail
-      withPatience(PageBrowser.At -> 1.second) {
+      withPatience(PageBrowser.At -> PatienceConfig(timeout = 1.second, interval = 100.milliseconds)) {
         assert(Try(at(Tour03GoogleSearchPage())).isFailure)
       }
     }
