@@ -47,12 +47,12 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
   override implicit def webDriver: WebDriver = reference.webDriver
 
   private def singleElement[T](elements: Seq[T]): T = {
-    assert(elements.size == 1)
+    assert(elements.size == 1, s"expected exactly one element, but ${elements.length} elements found")
     elements.head
   }
 
   private def singleElementOption[T](elements: Seq[T]): Option[T] = {
-    assert(elements.isEmpty || elements.size == 1)
+    assert(elements.isEmpty || elements.size == 1, s"expected not more then one element, but ${elements.length} elements found")
     elements.headOption
   }
 
@@ -66,7 +66,7 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
       case (element, i) =>
         def requery(): WebElement = {
           val query = webElements
-          assert(initial.size == query.size)
+          assert(initial.size == query.size, s"requery: expected ${initial.size} elements but found ${query.size} elements")
           query(i)
         }
 
@@ -74,7 +74,7 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
     })
   }
 
-  def element: E = waitFor("element", Locator.SingleElement) {
+  def element: E = waitFor("Locator.element", Locator.SingleElement) {
     elementFactory(ElementFactory(() => singleElement(webElements)))
   }
 
@@ -84,11 +84,11 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
     )
   }
 
-  def webElement: WebElement = waitFor("webElement", Locator.SingleElement) {
+  def webElement: WebElement = waitFor("Locator.webElement", Locator.SingleElement) {
     singleElement(webElements)
   }
 
-  def webElementOption: Option[WebElement] = waitFor("webElementOption", Locator.SingleElement) {
+  def webElementOption: Option[WebElement] = waitFor("Locator.webElementOption", Locator.SingleElement) {
     singleElementOption(webElements)
   }
 
