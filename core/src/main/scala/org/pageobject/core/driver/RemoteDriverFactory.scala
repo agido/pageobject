@@ -27,7 +27,6 @@ import org.openqa.selenium.remote.internal.ApacheHttpClient
 import org.openqa.selenium.remote.internal.HttpClientFactory
 import org.pageobject.core.WaitFor
 import org.pageobject.core.WaitFor.PatienceConfig
-import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.tools.Environment
 
 /**
@@ -77,10 +76,8 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
   private val createWebDriverRetryCount = 3
 
   protected def createRealWebDriver(): WebDriver = {
-    RetryHelper(retryOn = RetryHelper.retryOnBrowserCommunicationFailed) {
-      waitFor("create web driver", RemoteDriverFactory.CreateDriver) {
-        createRealWebDriver2()
-      }
+    waitFor("create web driver", RemoteDriverFactory.CreateDriver) {
+      createRealWebDriver2()
     }
   }
 
