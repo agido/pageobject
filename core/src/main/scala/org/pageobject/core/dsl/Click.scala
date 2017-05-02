@@ -15,6 +15,7 @@
  */
 package org.pageobject.core.dsl
 
+import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.api.Element
 import org.pageobject.core.api.Locator
 
@@ -32,11 +33,9 @@ object Click {
   }
 
   trait ClickAfterEventOn extends DurationDsl {
-    protected def defaultDuration: FiniteDuration
+    protected def patienceConfig: PatienceConfig
 
-    protected def defaultRetryCount: Int
-
-    def on[E <: Element](locator: Locator[E], duration: FiniteDuration = defaultDuration, retryCount: Int = defaultRetryCount): Unit
+    def on[E <: Element](locator: Locator[E], patience: PatienceConfig = patienceConfig): Unit
   }
 
   /**
@@ -49,8 +48,7 @@ object Click {
   protected[dsl] trait Animation extends ClickAfterEvent {
 
     object on extends ClickAfterEventOn {
-      protected val defaultDuration: FiniteDuration = 500.millis
-      protected val defaultRetryCount = 10
+      protected val patienceConfig: PatienceConfig = PatienceConfig(timeout = 5.seconds, interval = 500.milliseconds)
 
       /**
        * Click on the specified <code>Locator</code>
@@ -72,8 +70,8 @@ object Click {
        *
        * @param locator the <code>Locator</code> to click on
        */
-      def on[E <: Element](locator: Locator[E], duration: FiniteDuration, count: Int): Unit = {
-        locator.element.clickAfterAnimation(duration, count)
+      def on[E <: Element](locator: Locator[E], patienceConfig: PatienceConfig): Unit = {
+        locator.element.clickAfterAnimation(patienceConfig)
       }
     }
 

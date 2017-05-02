@@ -25,14 +25,14 @@ import org.pageobject.core.Dimension
 import org.pageobject.core.Point
 import org.pageobject.core.Rect
 import org.pageobject.core.TestHelper
+import org.pageobject.core.WaitFor
+import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.page.DefaultPageReference
 import org.pageobject.core.tools.Logging
 
-import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.immutable
-import scala.concurrent.duration.FiniteDuration
 
 /**
  * Wrapper class for a Selenium <code>WebElement</code>. This class provides all possibilities on a <code>WebElement</code>
@@ -51,7 +51,7 @@ import scala.concurrent.duration.FiniteDuration
  * You can access the wrapped <code>WebElement</code> via the <code>underlying</code> method.
  * </p>
  */
-abstract class Element(typeDescription: String, checker: WebElement => Boolean) extends Logging {
+abstract class Element(typeDescription: String, checker: WebElement => Boolean) extends Logging with WaitFor {
   /**
    * The factory returning the underlying <code>WebElement</code> wrapped by this <code>Element</code>
    */
@@ -316,21 +316,16 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * The click is only processed if the location and size was not modified.
    * `AssertionError` is thrown otherwise.
    */
-  def clickAfterAnimation(duration: FiniteDuration, count: Int): Unit = retry("clickAfterAnimation", RetryHelper.retryOnClickFailed) {
-    @tailrec
-    def click(oldRect: Rect = rect, count: Int): Unit = {
-      Thread.sleep(duration.toMillis)
+  def clickAfterAnimation(patienceConfig: PatienceConfig): Unit = retry("clickAfterAnimation", RetryHelper.retryOnClickFailed) {
+    waitFor("clickAfterAnimation", patienceConfig) {
       val newRect = rect
-      if (oldRect == newRect) {
+      Thread.sleep(patienceConfig.interval.toMillis)
+      if (newRect == rect) {
         underlying.click()
-      } else if (count <= 0) {
-        throw new AssertionError("animation still in progress")
       } else {
-        click(newRect, count - 1)
+        throw new AssertionError("animation still in progress")
       }
     }
-
-    click(rect, count)
   }
 
   /**
