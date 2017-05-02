@@ -149,14 +149,6 @@ object WaitFor extends DurationDsl {
 
   private object WaitForHolder extends DynamicOptionVariable[PatienceMap]()
 
-  def waitFor[T](description: String, timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
-    waitForDelegate.waitFor(description, PatienceConfig(timeout, interval))(fun)
-  }
-
-  def waitFor[T](description: String, config: PatienceConfig)(fun: => T): T = {
-    waitForDelegate.waitFor(description, config)(fun)
-  }
-
   def withPatience[T](map: PatienceMap)(fun: => T): T = {
     waitForDelegate.withPatience(map)(fun)
   }

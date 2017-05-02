@@ -18,7 +18,6 @@ package org.pageobject.core.api
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.pageobject.core.WaitFor
-import org.pageobject.core.WaitFor.waitFor
 import org.pageobject.core.driver.DriverProvider
 import org.pageobject.core.page.PageReference
 
@@ -41,7 +40,7 @@ object Locator extends WaitFor {
  *
  * @tparam E the type of Elements to locate
  */
-abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extends DriverProvider {
+abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extends DriverProvider with WaitFor {
   protected val query: Query
   protected val reference: PageReference
 
