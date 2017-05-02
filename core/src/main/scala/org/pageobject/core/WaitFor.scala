@@ -75,8 +75,8 @@ trait WaitFor extends DurationDsl {
     }
   }
 
-  protected def waitFor[T](timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
-    waitFor(WaitFor.PatienceConfig(timeout, interval))(fun)
+  protected def waitFor[T](description: String, timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
+    waitFor(description, WaitFor.PatienceConfig(timeout, interval))(fun)
   }
 
   protected def withPatience[T](config: (PatienceConfig, PatienceConfig)*)(fun: => T): T = {
@@ -85,7 +85,7 @@ trait WaitFor extends DurationDsl {
     }
   }
 
-  protected def waitFor[T](config: PatienceConfig)(fun: => T): T = {
+  protected def waitFor[T](description: String, config: PatienceConfig)(fun: => T): T = {
     val mapped = WaitForHolder.option.flatMap(_.get(config)).getOrElse(config)
     val timeout = mapped.timeout
     val interval = mapped.interval
@@ -106,7 +106,7 @@ trait WaitFor extends DurationDsl {
           tryIt(attempt + 1)
         } else {
           val ms = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.NANOSECONDS)
-          val message = s"The code passed to waitFor never returned normally. Attempted $attempt times over ${ms}ms."
+          val message = s"""The code passed to "waitFor($description)" never returned normally. Attempted $attempt times over ${ms}ms."""
           val failure = Option(e).map(_.getMessage).fold("")(msg => s"\nLast failure message: $msg")
           TestHelper.timeoutTest(message + failure, timeout)
         }
@@ -147,12 +147,12 @@ object WaitFor extends DurationDsl {
 
   private object WaitForHolder extends DynamicOptionVariable[PatienceMap]()
 
-  def waitFor[T](timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
-    waitForDelegate.waitFor(PatienceConfig(timeout, interval))(fun)
+  def waitFor[T](description: String, timeout: FiniteDuration, interval: FiniteDuration)(fun: => T): T = {
+    waitForDelegate.waitFor(description, PatienceConfig(timeout, interval))(fun)
   }
 
-  def waitFor[T](config: PatienceConfig)(fun: => T): T = {
-    waitForDelegate.waitFor(config)(fun)
+  def waitFor[T](description: String, config: PatienceConfig)(fun: => T): T = {
+    waitForDelegate.waitFor(description, config)(fun)
   }
 
   def withPatience[T](map: PatienceMap)(fun: => T): T = {

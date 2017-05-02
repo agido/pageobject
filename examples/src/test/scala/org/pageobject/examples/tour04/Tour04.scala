@@ -120,7 +120,7 @@ class Tour04 extends FunSpec with PageObjectSuite {
       val page = to(Tour04GoogleSearchPage())
       assert(!page.header.isGoogleAppsMenuOpen)
       page.header.openGoogleAppsMenu()
-      waitFor(timeout = 1.second, interval = 100.milliseconds) {
+      waitFor("example", timeout = 1.second, interval = 100.milliseconds) {
         assert(page.header.isGoogleAppsMenuOpen)
       }
     }

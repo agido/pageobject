@@ -75,7 +75,7 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
     })
   }
 
-  def element: E = waitFor(Locator.SingleElement) {
+  def element: E = waitFor("element", Locator.SingleElement) {
     elementFactory(ElementFactory(() => singleElement(webElements)))
   }
 
@@ -85,11 +85,11 @@ abstract class Locator[E <: Element](elementFactory: ElementFactory => E) extend
     )
   }
 
-  def webElement: WebElement = waitFor(Locator.SingleElement) {
+  def webElement: WebElement = waitFor("webElement", Locator.SingleElement) {
     singleElement(webElements)
   }
 
-  def webElementOption: Option[WebElement] = waitFor(Locator.SingleElement) {
+  def webElementOption: Option[WebElement] = waitFor("webElementOption", Locator.SingleElement) {
     singleElementOption(webElements)
   }
 

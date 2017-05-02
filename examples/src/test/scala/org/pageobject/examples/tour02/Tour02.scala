@@ -43,7 +43,7 @@ class Tour02 extends FunSpec with PageObjectSuite with BrowserDsl with WaitFor w
       textField("q").element.value = "Cheese!"
       submit()
       // Google's search is rendered dynamically with JavaScript.
-      waitFor(timeout = 30.seconds, interval = 1.second) {
+      waitFor("example", timeout = 30.seconds, interval = 1.second) {
         assert(pageTitle.startsWith("Cheese! - Google"))
       }
 

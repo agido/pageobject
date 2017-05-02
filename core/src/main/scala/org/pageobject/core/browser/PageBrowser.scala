@@ -111,7 +111,7 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
     clearActivePage()
 
     val unexpectedPages = defer(UnexpectedPagesFactory.createUnexpectedPages())
-    waitFor(PageBrowser.At) {
+    waitFor("at", PageBrowser.At) {
       unexpectedPages.waitPages.find(isAt(_)).foreach(atWaitPage)
       unexpectedPages.cancelTestPages.find(isAt(_)).foreach(atCancelTestPage)
       unexpectedPages.failTestPages.find(isAt(_)).foreach(atFailTestPage)

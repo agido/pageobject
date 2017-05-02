@@ -78,7 +78,7 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
 
   protected def createRealWebDriver(): WebDriver = {
     RetryHelper(retryOn = RetryHelper.retryOnBrowserCommunicationFailed) {
-      waitFor(RemoteDriverFactory.CreateDriver) {
+      waitFor("create web driver", RemoteDriverFactory.CreateDriver) {
         createRealWebDriver2()
       }
     }
@@ -89,9 +89,7 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
     val factory = new HttpClientFactory(connectionTimeout.toMillis.toInt, socketTimeout.toMillis.toInt)
     val executor = new HttpCommandExecutor(ImmutableMap.of[String, CommandInfo](), new URL(url()),
       new ApacheHttpClient.Factory(factory))
-    waitFor(RemoteDriverFactory.CreateDriver) {
-      createWebDriver(executor, capabilities())
-    }
+    createWebDriver(executor, capabilities())
   }
 
   protected def createWebDriver(executor: HttpCommandExecutor, capabilities: Capabilities): WebDriver = {
