@@ -77,8 +77,8 @@ trait RemoteDriverFactory extends DynamicDriverFactory with WaitFor {
   private val createWebDriverRetryCount = 3
 
   protected def createRealWebDriver(): WebDriver = {
-    waitFor("create web driver", RemoteDriverFactory.CreateDriver) {
-      RetryHelper(retryOn = RetryHelper.retryOnBrowserCommunicationFailed) {
+    RetryHelper(retryOn = RetryHelper.retryOnBrowserCommunicationFailed) {
+      waitFor("create web driver", RemoteDriverFactory.CreateDriver) {
         createRealWebDriver2()
       }
     }
