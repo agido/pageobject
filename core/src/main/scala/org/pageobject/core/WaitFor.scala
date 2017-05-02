@@ -24,6 +24,7 @@ import org.pageobject.core.WaitFor.PatienceMap
 import org.pageobject.core.WaitFor.WaitForHolder
 import org.pageobject.core.dsl.DurationDsl
 import org.pageobject.core.tools.DynamicOptionVariable
+import org.pageobject.core.tools.Logging
 
 import scala.annotation.tailrec
 import scala.util.control.NonFatal
@@ -57,7 +58,7 @@ import scala.util.control.NonFatal
  * </code>
  *
  */
-trait WaitFor extends DurationDsl {
+trait WaitFor extends DurationDsl with Logging {
   private def tryFunction[T](fun: => T): Either[Throwable, T] = {
     try {
       // Right return a success value
@@ -103,6 +104,7 @@ trait WaitFor extends DurationDsl {
           } else {
             Thread.sleep(interval.toMillis)
           }
+          debug(s"retrying $description (caused by ${e.getMessage})")
           tryIt(attempt + 1)
         } else {
           val ms = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.NANOSECONDS)
