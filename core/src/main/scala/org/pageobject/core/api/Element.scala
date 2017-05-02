@@ -27,6 +27,7 @@ import org.pageobject.core.Rect
 import org.pageobject.core.TestHelper
 import org.pageobject.core.dsl.RetryHelper
 import org.pageobject.core.page.DefaultPageReference
+import org.pageobject.core.tools.Logging
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters.asScalaBufferConverter
@@ -50,7 +51,7 @@ import scala.concurrent.duration.FiniteDuration
  * You can access the wrapped <code>WebElement</code> via the <code>underlying</code> method.
  * </p>
  */
-abstract class Element(typeDescription: String, checker: WebElement => Boolean) {
+abstract class Element(typeDescription: String, checker: WebElement => Boolean) extends Logging {
   /**
    * The factory returning the underlying <code>WebElement</code> wrapped by this <code>Element</code>
    */
@@ -67,8 +68,11 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
 
   protected[pageobject] def underlying: WebElement = underlyingReference.get()
 
-  protected def retry[T](retryOn: (Throwable => Boolean)*)(what: => T): T = {
-    RetryHelper(recover = () => underlyingReference.set(check(factory.retry())),
+  protected def retry[T](description: String, retryOn: (Throwable => Boolean)*)(what: => T): T = {
+    RetryHelper(recover = () => {
+      debug(s"retrying Element.$description")
+      underlyingReference.set(check(factory.retry()))
+    },
       retryOn = RetryHelper.join(
         RetryHelper.retryOnStaleElementReferenceException,
         RetryHelper.join(retryOn: _*)
@@ -93,7 +97,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the location and size of this element on the page
    */
-  def rect: Rect = retry() {
+  def rect: Rect = retry("rect") {
     // runtime error 'unknown command'
     //val rect = underlying.getRect
     val location = underlying.getLocation
@@ -110,7 +114,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the location of the top-left corner of this element on the page
    */
-  def location: Point = retry() {
+  def location: Point = retry("location") {
     val location = underlying.getLocation
     Point(location.getX, location.getY)
   }
@@ -124,7 +128,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the size of the element on the page
    */
-  def size: Dimension = retry() {
+  def size: Dimension = retry("size") {
     val size = underlying.getSize
     Dimension(size.getWidth, size.getHeight)
   }
@@ -138,7 +142,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return <code>true</code> if the element is currently displayed
    */
-  def isDisplayed: Boolean = retry() {
+  def isDisplayed: Boolean = retry("isDisplayed") {
     underlying.isDisplayed
   }
 
@@ -152,7 +156,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return <code>true</code> if the element is currently enabled
    */
-  def isEnabled: Boolean = retry() {
+  def isEnabled: Boolean = retry("isEnabled") {
     underlying.isEnabled
   }
 
@@ -167,7 +171,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return <code>true</code> if the element is currently selected or checked
    */
-  def isSelected: Boolean = retry() {
+  def isSelected: Boolean = retry("isSelected") {
     underlying.isSelected
   }
 
@@ -183,7 +187,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the tag name of this element
    */
-  def tagName: String = retry() {
+  def tagName: String = retry("tagName") {
     underlying.getTagName
   }
 
@@ -198,7 +202,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the attribute with the given name, wrapped in a <code>Some</code>, else <code>None</code>
    */
-  def css(name: String): Option[String] = retry() {
+  def css(name: String): Option[String] = retry(s"""css("$name")""") {
     Option(underlying.getCssValue(name))
   }
 
@@ -213,7 +217,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the attribute with the given name, wrapped in a <code>Some</code>, else <code>None</code>
    */
-  def attribute(name: String): Option[String] = retry() {
+  def attribute(name: String): Option[String] = retry(s"""attribute("$name")""") {
     Option(underlying.getAttribute(name))
   }
 
@@ -223,7 +227,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @return the visible text enclosed by this element, or an empty string, if the element encloses no visible text
    */
-  def text: String = retry() {
+  def text: String = retry("text") {
     Option(underlying.getText).getOrElse("")
   }
 
@@ -272,7 +276,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @param value the new value
    */
-  def value_=(value: String): Unit = retry() {
+  def value_=(value: String): Unit = retry(s"""value = "$value"""") {
     underlying.clear()
     underlying.sendKeys(value)
   }
@@ -282,25 +286,25 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    *
    * @param value the keys to send
    */
-  def sendKeys(value: String): Unit = retry() {
+  def sendKeys(value: String): Unit = retry(s"""sendKeys("$value")""") {
     underlying.sendKeys(value)
   }
 
-  def hasFocus: Boolean = retry() {
+  def hasFocus: Boolean = retry("hasFocus") {
     underlying == factory.webDriver.switchTo.activeElement
   }
 
   /**
    * Clears this element.
    */
-  def clear(): Unit = retry() {
+  def clear(): Unit = retry("clear()") {
     underlying.clear()
   }
 
   /**
    * Clicks this element.
    */
-  def click(): Unit = retry(RetryHelper.retryOnClickFailed) {
+  def click(): Unit = retry("click()", RetryHelper.retryOnClickFailed) {
     underlying.click()
   }
 
@@ -312,7 +316,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
    * The click is only processed if the location and size was not modified.
    * `AssertionError` is thrown otherwise.
    */
-  def clickAfterAnimation(duration: FiniteDuration, count: Int): Unit = retry(RetryHelper.retryOnClickFailed) {
+  def clickAfterAnimation(duration: FiniteDuration, count: Int): Unit = retry("clickAfterAnimation", RetryHelper.retryOnClickFailed) {
     @tailrec
     def click(oldRect: Rect = rect, count: Int): Unit = {
       Thread.sleep(duration.toMillis)
@@ -332,7 +336,7 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
   /**
    * Submits the current form.
    */
-  def submit(): Unit = retry() {
+  def submit(): Unit = retry("submit") {
     underlying.submit()
   }
 }
@@ -679,7 +683,7 @@ case class Checkbox(factory: ElementFactory)
   /**
    * Selects this checkbox.
    */
-  def select(): Unit = retry() {
+  def select(): Unit = retry("select()") {
     if (!underlying.isSelected) {
       underlying.click()
     }
@@ -688,7 +692,7 @@ case class Checkbox(factory: ElementFactory)
   /**
    * Clears this checkbox
    */
-  override def clear(): Unit = retry() {
+  override def clear(): Unit = retry("clear()") {
     if (underlying.isSelected) {
       underlying.click()
     }
@@ -891,7 +895,7 @@ abstract class AbstractSel(typeDescription: String, isMultiple: Boolean)
 
   val isMulti = attribute("multiple") != Option("false")
 
-  protected def select = retry() {
+  protected def select = retry("select") {
     new Select(underlying)
   }
 
