@@ -28,7 +28,7 @@ trait TestHelper {
 
   def cancelTest(throwable: Throwable): Nothing
 
-  def timeoutTest(message: String, timeout: FiniteDuration): Nothing
+  def timeoutTest(message: String, timeout: FiniteDuration, cause: Option[Throwable] = None): Nothing
 
   def notAllowed(message: String): Nothing
 
@@ -54,7 +54,7 @@ object TestHelper extends TestHelper {
 
   def cancelTest(throwable: Throwable): Nothing = delegate.cancelTest(throwable)
 
-  def timeoutTest(message: String, timeout: FiniteDuration): Nothing = delegate.timeoutTest(message, timeout)
+  def timeoutTest(message: String, timeout: FiniteDuration, cause: Option[Throwable]): Nothing = delegate.timeoutTest(message, timeout, cause)
 
   def notAllowed(message: String): Nothing = delegate.notAllowed(message)
 

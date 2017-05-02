@@ -18,6 +18,7 @@ package org.pageobject.core
 import org.pageobject.core.dsl.BrowserPageDsl
 import org.pageobject.core.page.PageModule
 import org.pageobject.scalatest.JettySuite.JettyPage
+import org.scalatest.exceptions.TestFailedDueToTimeoutException
 
 class AnimationTest extends TestSpec with BrowserPageDsl {
 
@@ -53,9 +54,10 @@ class AnimationTest extends TestSpec with BrowserPageDsl {
 
   it("should not be able to click an element with long animation") {
     val page = to(AnimationTestPage())
-    val thrown = intercept[AssertionError] {
+    val thrown = intercept[TestFailedDueToTimeoutException] {
       page.content.clickElement(Some(10000L)) // scalastyle:ignore magic.number
     }
-    assert(thrown.getMessage == "animation still in progress")
+    assert(thrown.message.get.startsWith("""The code passed to "waitFor(clickAfterAnimation)" never returned normally. Attempted """))
+    assert(thrown.cause.get.getMessage == "animation still in progress")
   }
 }

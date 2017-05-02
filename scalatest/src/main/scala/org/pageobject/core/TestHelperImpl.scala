@@ -47,8 +47,8 @@ class TestHelperImpl extends TestHelper {
     throw new TestFailedException(throwable, 1)
   }
 
-  def timeoutTest(message: String, timeout: FiniteDuration): Nothing = {
-    throw new TestFailedDueToTimeoutException((_: StackDepthException) => Some(message), None,
+  def timeoutTest(message: String, timeout: FiniteDuration, cause: Option[Throwable]): Nothing = {
+    throw new TestFailedDueToTimeoutException((_: StackDepthException) => Some(message), cause,
       Right((_: StackDepthException) => 1), None, timeout)
   }
 

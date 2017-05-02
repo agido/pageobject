@@ -110,7 +110,7 @@ trait WaitFor extends DurationDsl with Logging {
           val ms = TimeUnit.MILLISECONDS.convert(duration, TimeUnit.NANOSECONDS)
           val message = s"""The code passed to "waitFor($description)" never returned normally. Attempted $attempt times over ${ms}ms."""
           val failure = Option(e).map(_.getMessage).fold("")(msg => s"\nLast failure message: $msg")
-          TestHelper.timeoutTest(message + failure, timeout)
+          TestHelper.timeoutTest(message + failure, timeout, Some(e))
         }
     }
 
