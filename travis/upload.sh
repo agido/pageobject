@@ -42,7 +42,8 @@ else
 	decrypt .gnupg/secring.gpg
 	decrypt .gnupg/credentials.sbt
 
-	mv .gnupg/credentials.sbt project
+	mkdir -p ~/.sbt/0.13/
+	mv .gnupg/credentials.sbt ~/.sbt/0.13/
 
 	sbt core/aether-deploy scalatest/aether-deploy
 fi
