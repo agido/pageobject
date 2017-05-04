@@ -25,7 +25,7 @@ if [ "$PUBLISH" != "true" ]; then
 	exit 0
 fi
 
-if [[ `grep "^\s*version := " build.sbt | cut -f2 -d\"` == *-SNAPSHOT ]]; then
+if [[ `cut -f2 -d\" version.sbt` == *-SNAPSHOT ]]; then
     if [ "$TRAVIS_BRANCH" != "develop" ]; then
 	    exit 0
     fi
