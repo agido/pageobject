@@ -35,25 +35,22 @@ We created an overview presentation showing you how to use PageObject to create 
 * [Google Slides: PageObject Tour](https://docs.google.com/presentation/d/1mHCZD6UgvoET_VxLZaWqUxPKpiZzHj9M9ua6ASSRrn0) (online, you can send us comments)
 * [Download as PDF](/downloads/PageObjectTour.pdf) (download hosted on pageobject.org).
 
-## Using PageObject
-The current version of PageObject is 0.2.0. This Version is available at maven central.
+## Changelog
+You can find the Changelog here: [https://github.com/agido/pageobject/blob/master/CHANGELOG.md](https://github.com/agido/pageobject/blob/master/CHANGELOG.md).
 
-Scala versions 2.10.x, 2.11.x and 2.12.x are supported.
+## Using PageObject
+The current version of PageObject is 0.3.0. This Version is available at maven central.
+
+Scala versions 2.11.x and 2.12.x are supported.
 
 To use PageObject, add this lines to yours build.sbt:
 
 ```
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.2.0"
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.3.0"
 ```
 
 ## Selenium 3
-pageobject is full compatible with Selenium 2 and Selenium 3. Because Selenium 3 requires Java 8 and pageobject still supports java 7, pageobject is build against Selenium 2. However all tests are run with both Selenium 2 and Selenium 3 to ensure compatibility.
-
-If you want to use selenium 3 add this line to your build.xml:
-
-```
-dependencyOverrides += "org.seleniumhq.selenium" % "selenium-java" % "3.0.1"
-```
+pageobject requires Selenium 3. Because Selenium 3 requires Java 8 pageobject also requires Java 8.
 
 ## Maven
 You can also use maven to run your tests. See [maven-howto] for a small maven howto.
@@ -70,7 +67,7 @@ If you want to use a SNAPSHOT version add this lines to your build config:
 
 <pre>
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-libraryDependencies += "org.pageobject" %% "scalatest" % "0.3.0-SNAPSHOT"
+libraryDependencies += "org.pageobject" %% "scalatest" % "0.4.0-SNAPSHOT"
 </pre>
 
 ### maven pom.xml
