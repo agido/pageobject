@@ -44,7 +44,7 @@ else
 
 	mv .gnupg/credentials.sbt project
 
-	sbt core/publishSigned scalatest/publishSigned
+	sbt core/aether-deploy scalatest/aether-deploy
 fi
 
 if [ -z "$UPDATEIMPACT_API_KEY" ]; then

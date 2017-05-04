@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+enablePlugins(SignedAetherPlugin)
+overridePublishSignedSettings
+
 // do not overload travis
 concurrentRestrictions in Global := Seq(Tags.limitAll(1))
 
@@ -41,12 +44,11 @@ lazy val commonSettings = Seq(
 
   pomIncludeRepository := { _ => false },
 
-  publishTo <<= version { v: String =>
-    val nexus = "https://oss.sonatype.org/"
-    if (v.trim.endsWith("SNAPSHOT")) {
-      Some("publish-snapshots" at nexus + "content/repositories/snapshots")
+  publishTo := {
+    if ((version in ThisBuild).value.endsWith("SNAPSHOT")) {
+      Some(Opts.resolver.sonatypeSnapshots)
     } else {
-      Some("publish-releases" at nexus + "service/local/staging/deploy/maven2")
+      Some(Opts.resolver.sonatypeStaging)
     }
   },
 
