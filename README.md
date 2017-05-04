@@ -13,6 +13,9 @@ Official Website: https://www.pageobject.org/
 
 PageObject was initially based on [ScalaTest's Selenium Support](http://www.scalatest.org/user_guide/using_selenium) and has adopted some features of [geb](http://www.gebish.org/).
 
+## Changelog
+You can find the Changelog [here](CHANGELOG.md)
+
 ## Contributing
 Feel free to open an Issue if you think something is missing our you found a bug. Pull Requests are very welcome!
 
