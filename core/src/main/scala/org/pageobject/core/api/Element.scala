@@ -339,9 +339,12 @@ abstract class Element(typeDescription: String, checker: WebElement => Boolean) 
   /**
    * scroll the element into the view
    */
-  def scrollIntoView(): Unit = retry("scrollIntoView") {
+  def scrollIntoView(offset: Int = 0): Unit = retry("scrollIntoView") {
     implicit val webDriver = factory.webDriver
     executeScript("arguments[0].scrollIntoView()", underlying)
+    if (offset != 0) {
+      executeScript(s"body.scrollTop -= $offset")
+    }
   }
 }
 
