@@ -109,9 +109,22 @@ function setup_chromedriver() {
 	fi
 }
 
+function setup_geckodriver() {
+	if [ $ARCH = "linux" ]; then
+		download selenium/geckodriver_linux64.tgz https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz 57dfd55d4759d9878eb75b4c0123d00c
+		unpack selenium/geckodriver_linux64.tgz geckodriver selenium/geckodriver fecb7fbca54d8d478be7e6bcf2dc1b34
+		if [ ! -e selenium/geckodriver_linux ]; then
+		    ln -s geckodriver selenium/geckodriver_linux
+		fi
+	else
+		echo "skipping.. geckodriver currently not tested on OSX!"
+	fi
+}
+
 function setup() {
 	setup_vnc
 	setup_seleniumserver
+	setup_geckodriver
 	setup_chromedriver
 }
 

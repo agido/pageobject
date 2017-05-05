@@ -1,2 +1,3 @@
 /selenium-server-standalone.jar
+/geckodriver*
 /chromedriver*
