@@ -52,7 +52,8 @@ case object HtmlUnitDriverFactory extends DefaultCreateDriverFactory(HtmlUnitLim
 /**
  * A DriverFactory creating a local Firefox browser
  */
-case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver() with TracedRemoteWebDriver) {
+case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver() with TracedRemoteWebDriver)
+  with TakeScreenshot {
   sys.env.get("PAGEOBJECT_GECKODRIVER_PATH")
     .map(path => System.setProperty("webdriver.gecko.driver", s"${path}_${OS.suffix}"))
 }
@@ -60,14 +61,16 @@ case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit
 /**
  * A DriverFactory creating a local Safari browser
  */
-case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver() with TracedRemoteWebDriver) {
+case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, () => new SafariDriver() with TracedRemoteWebDriver)
+  with TakeScreenshot {
   override val compatible = OS.isOSX
 }
 
 /**
  * A DriverFactory creating a local Chrome browser
  */
-case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver() with TracedRemoteWebDriver with TraceBrowserConsole) {
+case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver() with TracedRemoteWebDriver with TraceBrowserConsole)
+  with TakeScreenshot {
   sys.env.get("PAGEOBJECT_CHROMEDRIVER_PATH")
     .map(path => System.setProperty("webdriver.chrome.driver", s"${path}_${OS.suffix}"))
 }
@@ -76,7 +79,8 @@ case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, 
  * A DriverFactory creating a local Internet Explorer browser
  */
 case object InternetExplorerDriverFactory
-  extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver() with TracedRemoteWebDriver) {
+  extends DefaultCreateDriverFactory(InternetExplorerLimit, () => new InternetExplorerDriver() with TracedRemoteWebDriver)
+    with TakeScreenshot {
 
   override val compatible = OS.isWindows
 }

@@ -1,4 +1,5 @@
 # 0.3.0
+* local drivers will take screenshots on test failure #22
 * added firefox to travis test build #18
 * retry on ElementNotInteractableException (when element is not visible) #19
 * fixed snaptshot builds maven metadata #15
