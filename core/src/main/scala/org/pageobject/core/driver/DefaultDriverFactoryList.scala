@@ -67,7 +67,7 @@ case object SafariDriverFactory extends DefaultCreateDriverFactory(SafariLimit, 
 /**
  * A DriverFactory creating a local Chrome browser
  */
-case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver() with TracedRemoteWebDriver) {
+case object ChromeDriverFactory extends DefaultCreateDriverFactory(ChromeLimit, () => new ChromeDriver() with TracedRemoteWebDriver with TraceBrowserConsole) {
   sys.env.get("PAGEOBJECT_CHROMEDRIVER_PATH")
     .map(path => System.setProperty("webdriver.chrome.driver", s"${path}_${OS.suffix}"))
 }

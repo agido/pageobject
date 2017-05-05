@@ -36,6 +36,7 @@ import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
 
+
 /**
  * Heper object containg a mapping of fields to dump when a RemoteWebDriver command was executed.
  **/
@@ -165,8 +166,7 @@ trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
     if (driverCommand == "getLog") {
       super.execute(driverCommand, parameters)
     } else {
-      /* TODO #18
-      if (Option(getSessionId).isDefined) {
+      if (this.isInstanceOf[TraceBrowserConsole] && Option(getSessionId).isDefined) {
         manage.logs.get(LogType.BROWSER).getAll.asScala.foreach(log => {
           def withoutNewLine: String = {
             val message = log.getMessage
@@ -185,7 +185,6 @@ trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
           }
         })
       }
-      */
       Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
         super.execute(driverCommand, parameters)
       }
