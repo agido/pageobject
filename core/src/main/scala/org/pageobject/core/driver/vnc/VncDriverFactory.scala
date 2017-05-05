@@ -21,6 +21,7 @@ import org.openqa.selenium.Capabilities
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.pageobject.core.driver.RemoteDriverFactory
+import org.pageobject.core.driver.TraceBrowserConsole
 import org.pageobject.core.tools.DynamicOptionVariable
 import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.Limit.ChromeLimit
@@ -83,7 +84,7 @@ abstract class VncDriverFactory[V <: SeleniumVncServer](val limit: Limit, vncSer
  * @tparam V type of the VncServer to use, normally DefaultVncServer
  */
 case class VncChromeDriverFactory[V <: SeleniumVncServer](vncServerManager: VncServerManager[V])
-  extends VncDriverFactory(ChromeLimit, vncServerManager) {
+  extends VncDriverFactory(ChromeLimit, vncServerManager) with TraceBrowserConsole {
 
   def capabilities(): Capabilities = {
     val capabilities = DesiredCapabilities.chrome()
