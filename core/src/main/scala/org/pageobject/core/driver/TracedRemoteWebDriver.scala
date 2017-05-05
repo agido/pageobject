@@ -24,6 +24,7 @@ import org.openqa.selenium.remote.CommandExecutor
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.remote.RemoteWebElement
 import org.openqa.selenium.remote.Response
+import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.Logging
 import org.pageobject.core.tools.Perf
 
@@ -40,8 +41,8 @@ import scala.util.Try
 /**
  * Heper object containg a mapping of fields to dump when a RemoteWebDriver command was executed.
  **/
-private object TracedRemoteWebDriver {
-  val commandArguments: immutable.Map[String, Seq[String]] = immutable.Map(
+object TracedRemoteWebDriver {
+  private val commandArguments: immutable.Map[String, Seq[String]] = immutable.Map(
     "newSession" -> Seq(),
     "setWindowPosition" -> Seq("x", "y"),
     "setWindowSize" -> Seq("width", "height"),
@@ -61,6 +62,9 @@ private object TracedRemoteWebDriver {
     "quit" -> Seq(),
     "close" -> Seq()
   )
+
+  lazy val enabled: Boolean = Environment.boolean("TRACE_REMOTE_WEB_DRIVER", default = true)
+
 }
 
 /**
@@ -163,7 +167,7 @@ trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
   }
 
   override def execute(driverCommand: String, parameters: java.util.Map[String, _]): Response = {
-    if (driverCommand == "getLog") {
+    if (!TracedRemoteWebDriver.enabled || driverCommand == "getLog") {
       super.execute(driverCommand, parameters)
     } else {
       if (this.isInstanceOf[TraceBrowserConsole] && Option(getSessionId).isDefined) {

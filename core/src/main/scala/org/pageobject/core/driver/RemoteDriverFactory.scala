@@ -28,7 +28,6 @@ import org.openqa.selenium.remote.internal.HttpClientFactory
 import org.pageobject.core.WaitFor
 import org.pageobject.core.WaitFor.PatienceConfig
 import org.pageobject.core.dsl.RetryHelper
-import org.pageobject.core.tools.Environment
 
 /**
  * When using this trait you can set environment variable TRACE_REMOTE_WEB_DRIVER
@@ -37,7 +36,7 @@ import org.pageobject.core.tools.Environment
 trait TracedRemoteDriverFactory {
   this: RemoteDriverFactory =>
 
-  protected override val traced = Environment.boolean("TRACE_REMOTE_WEB_DRIVER", default = true)
+  protected override val traced = TracedRemoteWebDriver.enabled
 }
 
 /**
