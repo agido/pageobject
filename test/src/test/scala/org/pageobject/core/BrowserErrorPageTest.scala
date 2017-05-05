@@ -15,6 +15,7 @@
  */
 package org.pageobject.core
 
+import org.openqa.selenium.WebDriverException
 import org.pageobject.core.page.EmptyUnexpectedPagesFactory
 import org.pageobject.core.page.UnexpectedPagesFactory
 import org.pageobject.core.page.UrlPage
@@ -23,23 +24,38 @@ import org.scalatest.FunSpec
 
 class BrowserErrorPageTest extends FunSpec with PageObjectSuite {
   it("should detect browsers connection refused page") {
-    via(UrlPage("http://localhost:65534/"))
-    UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      at(BrowserErrorPage())
+    try {
+      via(UrlPage("http://localhost:65534/"))
+      UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
+        at(BrowserErrorPage())
+      }
+    } catch {
+      case wde: WebDriverException if wde.getMessage.startsWith("Reached error page:") =>
+      // firefox workaround
     }
   }
 
   it("should detect browser error pages when connection to a secure port using http") {
-    via(UrlPage("http://www.google.com:443/"))
-    UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      at(BrowserErrorPage())
+    try {
+      via(UrlPage("http://www.google.com:443/"))
+      UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
+        at(BrowserErrorPage())
+      }
+    } catch {
+      case wde: WebDriverException if wde.getMessage.startsWith("Reached error page:") =>
+      // firefox workaround
     }
   }
 
   it("should detect browser error pages when connection to an insecure port using https") {
-    via(UrlPage("https://www.google.com:80/"))
-    UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
-      at(BrowserErrorPage())
+    try {
+      via(UrlPage("https://www.google.com:80/"))
+      UnexpectedPagesFactory.withUnexpectedPages(EmptyUnexpectedPagesFactory()) {
+        at(BrowserErrorPage())
+      }
+    } catch {
+      case wde: WebDriverException if wde.getMessage.startsWith("Reached error page:") =>
+      // firefox workaround
     }
   }
 }
