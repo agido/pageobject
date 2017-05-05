@@ -15,6 +15,7 @@
  */
 package org.pageobject.core.dsl
 
+import org.openqa.selenium.ElementNotInteractableException
 import org.openqa.selenium.SessionNotCreatedException
 import org.openqa.selenium.StaleElementReferenceException
 import org.openqa.selenium.remote.UnreachableBrowserException
@@ -27,7 +28,9 @@ import scala.util.control.NonFatal
 object RetryHelper {
   val defaultRetryCount = 3
 
-  def retryOnStaleElementReferenceException(th: Throwable): Boolean = th.isInstanceOf[StaleElementReferenceException]
+  def retryOnStaleElementReferenceException(th: Throwable): Boolean = {
+    th.isInstanceOf[StaleElementReferenceException] || th.isInstanceOf[ElementNotInteractableException]
+  }
 
   def retryOnBrowserCommunicationFailed(th: Throwable): Boolean = {
     th.isInstanceOf[UnreachableBrowserException] || th.isInstanceOf[SessionNotCreatedException]
