@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.TakesScreenshot
 import org.openqa.selenium.WebDriver
+import org.pageobject.core.tools.Environment
 import org.pageobject.core.tools.Logging
 
 /**
@@ -33,6 +34,7 @@ private object TakeScreenshot extends Logging {
   private val screenshotCounter = new AtomicInteger
   private val screenshotDate = new SimpleDateFormat("yyyy-MM-dd_HHmm").format(new Date())
   private val screenshotsDir = new File("screenshots", screenshotDate)
+  private val enabled = Environment.boolean("PAGEOBJECT_SCREENSHOT", default = true)
 
   private def screenshotId = screenshotCounter.getAndIncrement()
 
@@ -70,8 +72,10 @@ trait TakeScreenshot {
   this: DriverFactory =>
 
   override def takeScreenshot(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {
-    val png = webDriver.getScreenshotAs(OutputType.BYTES)
-    val html = webDriver.getPageSource.getBytes
-    TakeScreenshot.writeFiles(testName, png, html)
+    if (TakeScreenshot.enabled) {
+      val png = webDriver.getScreenshotAs(OutputType.BYTES)
+      val html = webDriver.getPageSource.getBytes
+      TakeScreenshot.writeFiles(testName, png, html)
+    }
   }
 }
