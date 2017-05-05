@@ -123,7 +123,7 @@ object Limit {
    *
    * You may also need to adjust TEST_LIMIT.
    */
-  object FirefoxLimit extends Limit("Firefox")
+  object FirefoxLimit extends Limit("Firefox", propertyName = Some("gecko"))
 
   /**
    * How may Chrome instances should be used concurrently.

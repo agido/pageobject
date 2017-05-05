@@ -17,6 +17,7 @@
     <testRegexps />
     <envs>
       <envVar name="PAGEOBJECT_CHROMEDRIVER_PATH" value="selenium/chromedriver" />
+      <envVar name="PAGEOBJECT_GECKODRIVER_PATH" value="selenium/geckodriver" />
     </envs>
     <method />
   </configuration>

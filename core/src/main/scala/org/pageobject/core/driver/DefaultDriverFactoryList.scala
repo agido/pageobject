@@ -52,7 +52,10 @@ case object HtmlUnitDriverFactory extends DefaultCreateDriverFactory(HtmlUnitLim
 /**
  * A DriverFactory creating a local Firefox browser
  */
-case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver() with TracedRemoteWebDriver)
+case object FirefoxDriverFactory extends DefaultCreateDriverFactory(FirefoxLimit, () => new FirefoxDriver() with TracedRemoteWebDriver) {
+  sys.env.get("PAGEOBJECT_GECKODRIVER_PATH")
+    .map(path => System.setProperty("webdriver.gecko.driver", s"${path}_${OS.suffix}"))
+}
 
 /**
  * A DriverFactory creating a local Safari browser
