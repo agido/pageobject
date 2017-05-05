@@ -119,8 +119,8 @@ The followings are recommended for building PageObject:
 * openjdk8 or oraclejdk8
 * [SBT 0.13.x](http://www.scala-sbt.org/0.13/docs/Getting-Started.html)
 * [Scala](http://www.scala-lang.org/documentation/getting-started.html)
- * 2.11.8
- * 2.12.1
+ * 2.11.11
+ * 2.12.2
 
 ### Building and Running Tests
 This command will build and run the regular tests:
