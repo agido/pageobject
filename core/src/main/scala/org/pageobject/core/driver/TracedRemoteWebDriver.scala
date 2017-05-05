@@ -165,6 +165,7 @@ trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
     if (driverCommand == "getLog") {
       super.execute(driverCommand, parameters)
     } else {
+      /* TODO #18
       if (Option(getSessionId).isDefined) {
         manage.logs.get(LogType.BROWSER).getAll.asScala.foreach(log => {
           def withoutNewLine: String = {
@@ -184,6 +185,7 @@ trait TracedRemoteWebDriver extends RemoteWebDriver with Logging {
           }
         })
       }
+      */
       Perf.logResult(debug(_), format(driverCommand, parameters.asScala, _: Try[Response])) {
         super.execute(driverCommand, parameters)
       }
