@@ -50,21 +50,27 @@ object Limit {
 
   case class Limit(name: String,
                    propertyName: Option[String] = None,
+                   webdriverProperty: Option[String] = None,
                    defaultOption: Option[Int] = None,
                    isBrowser: Boolean = true) {
+    // name of the webdriver property
+    def webdriverPropertyName: String = {
+      webdriverProperty.orElse(propertyName).getOrElse(name).toLowerCase
+    }
+
     // name of the environment variable used to override the limit
     def envName: String = s"${propertyName.getOrElse(name).toUpperCase}_LIMIT"
 
     // int value of the environment variable or None
     def env: Option[Int] = Util.parseInt {
-      val configPath = s"org.pageobject.${propertyName.getOrElse(name).toLowerCase}-limit"
+      val configPath = s"org.pageobject.$webdriverPropertyName-limit"
       sys.env.get(envName)
         .orElse(Try(ConfigFactory.load().getString(configPath)).toOption)
     }
 
     // true if a matching webdriver property is set
     def hasWebDriverProp: Boolean = {
-      isBrowser && sys.props.keys.exists(_.startsWith(s"webdriver.${propertyName.getOrElse(name).toLowerCase}"))
+      isBrowser && sys.props.keys.exists(_.startsWith(s"webdriver.$webdriverPropertyName"))
     }
 
     // how many instances should normally be started
@@ -123,7 +129,7 @@ object Limit {
    *
    * You may also need to adjust TEST_LIMIT.
    */
-  object FirefoxLimit extends Limit("Firefox", propertyName = Some("gecko"))
+  object FirefoxLimit extends Limit("Firefox", webdriverProperty = Some("gecko"))
 
   /**
    * How may Chrome instances should be used concurrently.
