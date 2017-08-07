@@ -1,4 +1,5 @@
 # 0.3.0
+* macOS Sierra support: detect "mac os x" for system property "os.name"
 * local drivers will take screenshots on test failure #22
 * added firefox to travis test build #18
 * retry on ElementNotInteractableException (when element is not visible) #19

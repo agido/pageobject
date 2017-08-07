@@ -21,7 +21,7 @@ package org.pageobject.core.tools
 object OS {
   private val name = System.getProperty("os.name", "generic").toLowerCase
 
-  val isOSX = name.indexOf("darwin") != -1
+  val isOSX = name == "mac os x" || name.indexOf("darwin") != -1
   val isWindows = name.startsWith("windows")
   val isLinux = name.indexOf("linux") != -1
 
