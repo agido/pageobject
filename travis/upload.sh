@@ -45,7 +45,11 @@ else
 	mkdir -p ~/.sbt/0.13/
 	mv .gnupg/credentials.sbt ~/.sbt/0.13/
 
-	sbt core/aether-deploy scalatest/aether-deploy
+	if [ "$TRAVIS_BRANCH" == "master" ]; then
+		sbt core/publishSigned scalatest/publishSigned
+	else
+		sbt core/aether-deploy scalatest/aether-deploy
+	fi
 fi
 
 if [ -z "$UPDATEIMPACT_API_KEY" ]; then
