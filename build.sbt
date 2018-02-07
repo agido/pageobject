@@ -22,12 +22,12 @@ concurrentRestrictions in Global := Seq(Tags.limitAll(1))
 
 logBuffered in Test := false
 
-val jettyVersion = "9.4.4.v20170414"
-val seleniumVersion = "3.4.0"
+val jettyVersion = "9.4.8.v20171121"
+val seleniumVersion = "3.9.0"
 val scalatestVersion = "3.0.1"
 val slf4jVersion = "1.7.25"
-val logbackVersion = "1.2.2"
-val configVersion = "1.3.1"
+val logbackVersion = "1.2.3"
+val configVersion = "1.3.2"
 
 lazy val commonSettings = Seq(
   organization := "org.pageobject",

@@ -1,3 +1,8 @@
+# 0.3.1
+* updated jetty to 9.4.8
+* updated selenium to 3.9.0
+* updated logback to 1.2.3
+* updated typesafe config to 1.3.2
 # 0.3.0
 * macOS Sierra support: detect "mac os x" for system property "os.name"
 * local drivers will take screenshots on test failure #22
