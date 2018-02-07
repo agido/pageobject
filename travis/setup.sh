@@ -111,8 +111,8 @@ function setup_chromedriver() {
 
 function setup_geckodriver() {
 	if [ $ARCH = "linux" ]; then
-		download selenium/geckodriver_linux64.tgz https://github.com/mozilla/geckodriver/releases/download/v0.16.1/geckodriver-v0.16.1-linux64.tar.gz 57dfd55d4759d9878eb75b4c0123d00c
-		unpack selenium/geckodriver_linux64.tgz geckodriver selenium/geckodriver fecb7fbca54d8d478be7e6bcf2dc1b34
+		download selenium/geckodriver_linux64.tgz https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz ad21bc63be0bae119416755ea7c44768
+		unpack selenium/geckodriver_linux64.tgz geckodriver selenium/geckodriver cf2ed8b2f014ca3e68b5c2dc4607ec20
 		if [ ! -e selenium/geckodriver_linux ]; then
 		    ln -s geckodriver selenium/geckodriver_linux
 		fi
