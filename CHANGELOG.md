@@ -8,6 +8,7 @@
 * updated chromedriver linux64 to 2.35
 * updated geckodriver to 0.19.1
 * updated sbt to 0.13.17
+* updated tigervnc to 1.8.0
 # 0.3.0
 * macOS Sierra support: detect "mac os x" for system property "os.name"
 * local drivers will take screenshots on test failure #22

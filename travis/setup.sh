@@ -84,10 +84,10 @@ function unpack() {
 
 function setup_vnc() {
 	if [ $ARCH = "linux" ]; then
-		local tigervnc=tigervnc-1.7.0.x86_64.tar.gz
-		download vnc/$tigervnc https://bintray.com/tigervnc/stable/download_file?file_path=$tigervnc 7b311c320367398730fc117caec0fc9c
-		unpack vnc/$tigervnc tigervnc-1.7.0.x86_64/usr/bin/Xvnc vnc/Xvnc a1e57073dd79c8f927b35a6d03ec9e3b
-		unpack vnc/$tigervnc tigervnc-1.7.0.x86_64/usr/bin/vncviewer vnc/vncviewer 7d2acb7fc5c80fc9eac5edcfb153e23e
+		local tigervnc=tigervnc-1.8.0.x86_64.tar.gz
+		download vnc/$tigervnc https://bintray.com/tigervnc/stable/download_file?file_path=$tigervnc 4493f1acbea0ba11f88ffa485764ce25
+		unpack vnc/$tigervnc tigervnc-1.8.0.x86_64/usr/bin/Xvnc vnc/Xvnc 4d0d76507a65399a7587a75a68cffcde
+		unpack vnc/$tigervnc tigervnc-1.8.0.x86_64/usr/bin/vncviewer vnc/vncviewer 2ccf2c3b5c526f8d0c814da8ea73f8d4
 	else
 		echo "skipping.. vnc currently not tested on OSX!"
 	fi
