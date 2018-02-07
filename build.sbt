@@ -32,7 +32,7 @@ val configVersion = "1.3.2"
 lazy val commonSettings = Seq(
   organization := "org.pageobject",
 
-  scalaVersion := sys.env.getOrElse("TRAVIS_SCALA_VERSION", "2.12.2"),
+  scalaVersion := sys.env.getOrElse("TRAVIS_SCALA_VERSION", "2.12.4"),
 
   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 
