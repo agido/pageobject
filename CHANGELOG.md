@@ -5,6 +5,7 @@
 * updated typesafe config to 1.3.2
 * updated scala to 2.11.12/2.12.4
 * updated selenium-server-standalone.jar to 3.9.0
+* updated chromedriver linux64 to 2.35
 # 0.3.0
 * macOS Sierra support: detect "mac os x" for system property "os.name"
 * local drivers will take screenshots on test failure #22
