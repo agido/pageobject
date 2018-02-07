@@ -1,0 +1,30 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="0" />
+    <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+    <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+    <GroovyCodeStyleSettings>
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
+      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
+    </GroovyCodeStyleSettings>
+    <JavaCodeStyleSettings>
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
+      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
+      <option name="JD_P_AT_EMPTY_LINES" value="false" />
+    </JavaCodeStyleSettings>
+    <ScalaCodeStyleSettings>
+      <option name="classCountToUseImportOnDemand" value="99999" />
+      <option name="collectImports" value="false" />
+      <option name="USE_SCALADOC2_FORMATTING" value="false" />
+      <option name="SD_ALIGN_PARAMETERS_COMMENTS" value="false" />
+      <option name="SD_BLANK_LINE_AFTER_PARAMETERS_COMMENTS" value="true" />
+      <option name="SD_BLANK_LINE_AFTER_RETURN_COMMENTS" value="true" />
+      <option name="SD_BLANK_LINE_BETWEEN_PARAMETERS" value="true" />
+      <option name="SD_BLANK_LINE_BEFORE_PARAMETERS" value="true" />
+      <option name="SD_KEEP_BLANK_LINES_BETWEEN_TAGS" value="true" />
+    </ScalaCodeStyleSettings>
+    <XML>
+      <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+    </XML>
+  </code_scheme>
+</component>
