@@ -30,7 +30,7 @@ import org.pageobject.core.tools.Logging
 /**
  * Helper object to capture screenshots on test failure and store them into the local filesystem
  */
-private object TakeScreenshot extends Logging {
+object TakeScreenshot extends Logging {
   private val screenshotCounter = new AtomicInteger
   private val screenshotDate = new SimpleDateFormat("yyyy-MM-dd_HHmm").format(new Date())
   private val screenshotsDir = new File("screenshots", screenshotDate)
@@ -58,10 +58,16 @@ private object TakeScreenshot extends Logging {
     finally fos1.close()
   }
 
-  def writeFiles(testName: String, png: Array[Byte], html: Array[Byte]): Unit = {
+  private def writeFiles(testName: String, png: Array[Byte], html: Array[Byte]): Unit = {
     val (pngFile, htmlFile) = createScreenshotFiles(testName)
     writeToFile(pngFile, png)
     writeToFile(htmlFile, html)
+  }
+
+  def apply(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {
+    val png = webDriver.getScreenshotAs(OutputType.BYTES)
+    val html = webDriver.getPageSource.getBytes
+    writeFiles(testName, png, html)
   }
 }
 
@@ -73,9 +79,7 @@ trait TakeScreenshot {
 
   override def takeScreenshot(testName: String, webDriver: WebDriver with TakesScreenshot): Unit = {
     if (TakeScreenshot.enabled) {
-      val png = webDriver.getScreenshotAs(OutputType.BYTES)
-      val html = webDriver.getPageSource.getBytes
-      TakeScreenshot.writeFiles(testName, png, html)
+      TakeScreenshot(testName, webDriver)
     }
   }
 }

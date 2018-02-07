@@ -9,6 +9,8 @@
 * updated geckodriver to 0.19.1
 * updated sbt to 0.13.17
 * updated tigervnc to 1.8.0
+* Take screenshot is now public and can be called from any test class
+
 # 0.3.0
 * macOS Sierra support: detect "mac os x" for system property "os.name"
 * local drivers will take screenshots on test failure #22
