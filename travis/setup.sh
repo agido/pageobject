@@ -94,7 +94,7 @@ function setup_vnc() {
 }
 
 function setup_seleniumserver() {
-	download selenium/selenium-server-standalone.jar https://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar a7ace476df475dfff49567774605bdf2
+	download selenium/selenium-server-standalone.jar https://selenium-release.storage.googleapis.com/3.9/selenium-server-standalone-3.9.0.jar 306a475b6f1d540969416cdf11cd7361
 }
 
 function setup_chromedriver() {
