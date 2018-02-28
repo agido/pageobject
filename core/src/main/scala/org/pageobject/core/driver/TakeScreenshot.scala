@@ -47,8 +47,8 @@ object TakeScreenshot extends Logging {
     val base = replaceInvalidChars(s"$screenshotId-$testName")
     val png = s"$base.png"
     val html = s"$base.html"
-    error(s"Screenshot Image: file:///screenshots/$screenshotDate/$png")
-    error(s"Screenshot HTML: file:///screenshots/$screenshotDate/$html")
+    info(s"Screenshot Image: file:///screenshots/$screenshotDate/$png")
+    info(s"Screenshot HTML: file:///screenshots/$screenshotDate/$html")
     (new File(screenshotsDir, png), new File(screenshotsDir, html))
   }
 

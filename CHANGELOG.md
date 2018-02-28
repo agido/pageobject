@@ -1,3 +1,6 @@
+# 0.3.2
+* Info message instead of error on taking screenshot
+
 # 0.3.1
 * updated jetty to 9.4.8
 * updated selenium to 3.9.0
