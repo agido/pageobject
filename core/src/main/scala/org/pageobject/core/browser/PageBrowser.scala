@@ -96,7 +96,7 @@ trait PageBrowser extends WaitFor with PageHolder with Logging {
 
   protected def atCancelTestPage(unexpectedPage: AtChecker) = {
     val message = s"browser is at unexpected page $unexpectedPage, test canceled!"
-    error(message)
+    info(message)
     TestHelper.cancelTest(message)
   }
 
