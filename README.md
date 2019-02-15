@@ -34,7 +34,7 @@ A PageObject can contain PageModules (for example "navigation", "content" and "f
 Use a **PageObjectSuite** to interact with the PageObject in your test.
 
 ## A first example
-[source can be found here](../master/test/src/test/scala/org/pageobject/examples/readme/Readme.scala)
+[source can be found here](examples/src/test/scala/org/pageobject/examples/readme/Readme.scala)
 ```scala
 /*
  * Copyright 2016 agido GmbH
